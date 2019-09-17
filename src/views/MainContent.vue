@@ -7,7 +7,7 @@
                 </li>
                 <li class="active"><router-link tag="a" to="/main"><span><span class="fa fa-bullseye"></span>实时监控</span></router-link></li>
                 <li><router-link tag="a" to="/sbgl"><span><span class="fa fa-table"></span>设备管理</span></router-link></li>
-                <li><router-link tag="a" to="/main"><span><span class="fa fa-cogs"></span>数据解析</span></router-link></li>
+                <li><router-link tag="a" to="/sjjx"><span><span class="fa fa-cogs"></span>数据解析</span></router-link></li>
                 <li class="nav-footer"><router-link to="/"><span><span class="fa fa-sign-out"></span>退出</span></router-link></li>
             </ul>
         </nav>

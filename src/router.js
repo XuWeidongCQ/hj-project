@@ -29,6 +29,12 @@ export default new Router({
           component:function () {
             return import('./components/SBGL.vue')
           }
+        },
+        {
+          path:'/sjjx',
+          component:function () {
+            return import('./components/SJJX.vue')
+          }
         }
       ]
     }
