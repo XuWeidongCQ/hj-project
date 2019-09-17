@@ -1,7 +1,11 @@
 <template>
     <div class="login-page-wrapper">
         <div style="background-color: #23c6c8;height: 50vh;text-align: center">
-            <h1 style="color: #ffffff;display:inline-block;margin: 0 auto;padding-top: 150px">欢迎登录发动机远程健康监护系统</h1>
+            <h1 style="color: #ffffff;display:inline-block;margin: 0 auto;padding-top: 50px">欢迎登录发动机远程健康监护系统</h1>
+            <div>
+                <img src="../assets/cqu-logo_nobg.jpg" alt="" style="width: 200px;height: 134px;padding-right: 20px">
+                <img src="../assets/de_hongjiang_logo.png" alt="" style="width: 200px;height: 94px;padding-left: 20px">
+            </div>
         </div>
         <div style="background-color: #f5f5f5;height: 50vh"></div>
         <div class="xu-login-container animated fadeInDown">
