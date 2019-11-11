@@ -1,13 +1,25 @@
 <template>
     <div class="main-wrapper">
         <nav class="navbar-default navbar-static-side">
-            <ul class="nav">
+            <ul class="x-nav">
                 <li class="nav-header">
-                    <img src="../assets/hongjiang_logo.png" alt="" style="width: 100px;height: 100px;border-radius: 50%">
+                    <img src="../assets/hongjiang_logo.png" alt="" style="width: 150px">
                 </li>
-                <li class="active"><router-link tag="a" to="/main"><span><span class="fa fa-bullseye"></span>实时监控</span></router-link></li>
-                <li><router-link tag="a" to="/sbgl"><span><span class="fa fa-table"></span>设备管理</span></router-link></li>
-                <li><router-link tag="a" to="/sjjx"><span><span class="fa fa-cogs"></span>数据解析</span></router-link></li>
+                <li>
+                    <router-link tag="a" to="/main" active-class="active" exact>
+                        <span><span class="fa fa-bullseye"></span>实时监控</span>
+                    </router-link>
+                </li>
+                <li>
+                    <router-link tag="a" to="/sbgl" active-class="active" exact>
+                        <span><span class="fa fa-table"></span>设备管理</span>
+                    </router-link>
+                </li>
+                <li>
+                    <router-link tag="a" to="/sjjx" active-class="active" exact>
+                        <span><span class="fa fa-cogs"></span>数据解析</span>
+                    </router-link>
+                </li>
                 <li class="nav-footer"><router-link to="/"><span><span class="fa fa-sign-out"></span>退出</span></router-link></li>
             </ul>
         </nav>
@@ -17,6 +29,8 @@
                 <span>时长：44秒</span>
                 <span><span class="fa fa-user-circle-o"></span>  用户名</span>
             </div>
+
+            <!--不同菜单栏的入口-->
             <router-view></router-view>
 
             <div class="row">
@@ -47,7 +61,7 @@
       }
     },
     mounted(){
-      this.menuStyle()
+      // this.menuStyle()
     }
   }
 </script>
@@ -70,44 +84,49 @@
         width: 220px;
         z-index: 10;
     }
-    .nav {
+    .x-nav {
         list-style: none;
         display: block;
     }
     #page-wrapper{
         margin: 0 0 0 220px;
-        padding: 0 15px;
+        padding: 0 15px 35px 15px;
         position: relative !important;
+        outline: 1px solid red;
+        min-height: 100vh;
     }
     .gray-bg{
-        background-color: #f3f3f4;
+        background-color: #e9e9e9;
     }
     .main-footer{
         padding: 10px 20px;
         background-color: white;
-        width: 100%;
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        right: 0;
     }
     .nav-header{
-        padding: 33px 50px 33px 25px;
+        padding: 33px 0;
         text-align: center;
     }
-    .nav>li{
+    .x-nav>li{
         position: relative;
         display: block;
     }
-    .nav>li>a{
+    .x-nav>li>a{
         color:white;
         font-weight: 400;
         position: relative;
         display: block;
-        padding: 14px 20px 14px 25px;
+        padding: 10px 20px;
         text-decoration: none;
         font-size: 18px;
     }
-    .nav>li>a:hover{
+    .x-nav>li>a:hover{
         background-color: black;
     }
-    .nav>li>a span{
+    .x-nav>li>a span{
         margin-right: 10px;
     }
     .nav-footer{
@@ -116,11 +135,11 @@
     .login-duration-wrapper{
         margin-left: -15px;
         margin-right: -15px;
-        background-color: #ededed;
-        padding:10px 15px 10px 15px;
-        font-size: 18px;
+        background-color: #e9e9e9;
+        padding: 5px 15px;
+        font-size: 14px;
         font-weight: 100;
-        border-bottom: 1px solid #D9DEE4;
+        outline: 1px solid red;
     }
     .login-duration-wrapper>span {
         margin-left: 40px;

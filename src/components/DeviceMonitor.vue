@@ -6,8 +6,8 @@
 </template>
 
 <script>
-  import ECUStaticsInfo from "@/components/SSJK/ECUStaticsInfo";
-  import MainMap from "@/components/SSJK/MainMap";
+  import ECUStaticsInfo from "@/components/DeviceMonitor/ECUStaticsInfo";
+  import MainMap from "@/components/DeviceMonitor/MainMap";
   export default {
     name: "SSJK",
     components:{

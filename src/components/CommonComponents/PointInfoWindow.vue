@@ -78,7 +78,4 @@
     .normal {
         color: #23c6c8;
     }
-    p {
-        margin: 0;
-    }
 </style>

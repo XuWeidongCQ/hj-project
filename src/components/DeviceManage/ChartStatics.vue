@@ -1,5 +1,5 @@
 <template>
-    <div class="chart-wrapper">
+    <div class="xubox xubox-content mb-integer">
         <div class="row">
             <div class="col-8">
                 <div class="chart-head">
@@ -48,7 +48,7 @@
       drawLineChart:function (pos,period,ECUNormal,ECUAlert) {
         let lineChartInstance = echarts.init(pos);
         lineChartInstance.setOption({
-          color:['#23c6c8','#ed5565'],
+          color:['#0098d9','#c12e34'],
           tooltip: {
             trigger: 'item',
           },
@@ -73,10 +73,10 @@
               type: 'line',
               smooth:true,
               itemStyle:{
-                borderWidth:4
+                borderWidth:2
               },
               lineStyle:{
-                width:4
+                width:2
               },
               encode:{
                 x:'period',
@@ -87,10 +87,10 @@
               type: 'line',
               smooth:true,
               itemStyle:{
-                borderWidth:4
+                borderWidth:2
               },
               lineStyle:{
-                width:4
+                width:2
               },
               encode:{
                 x:'period',
@@ -106,7 +106,7 @@
       drawPieChart:function(pos,ECUNormal,ECUAlert){
         let pieChartInstance = echarts.init(pos);
         pieChartInstance.setOption({
-          color:['#23c6c8','#ed5565'],
+          color:['#0098d9','#c12e34'],
           tooltip: {
             trigger: 'item',
           },
@@ -159,9 +159,6 @@
 </script>
 
 <style scoped>
-    .chart-wrapper {
-        background-color: white;
-    }
     .chart-head {
         padding: 15px 0;
         display: flex;
@@ -177,10 +174,10 @@
         height: 300px;
     }
     .dev-normal{
-        color: #23c6c8;
+        color: #0098d9;
     }
     .dev-alert{
-        color: #ed5565;
+        color: #c12e34;
     }
     .chart-title {
         padding: 0 5px;

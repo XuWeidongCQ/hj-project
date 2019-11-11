@@ -6,10 +6,10 @@
 </template>
 
 <script>
-  import ChartStatics from "@/components/SBGL/ChartStatics";
-  import TableStatics from "@/components/SBGL/TableStatics";
+  import ChartStatics from "@/components/DeviceManage/ChartStatics";
+  import TableStatics from "@/components/DeviceManage/TableStatics";
   export default {
-    name: "SBGL",
+    name: "DeviceManage",
     components:{
       ChartStatics,
       TableStatics

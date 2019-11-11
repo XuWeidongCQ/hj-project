@@ -1,9 +1,9 @@
 <template>
-    <div class="table-wrapper">
+    <div class="xubox xubox-content">
         <div class="table-title">
             <div class="search-field-container">
-                <label for="searchField">搜索：</label>
-                <select id="searchField" name="searchField" class="searchField ml-5">
+<!--                <label for="searchField">搜索：</label>-->
+                <select id="searchField" name="searchField" class="searchField">
                     <option value="status">运行状态</option>
                     <option value="ECUNumber">设备编号</option>
                     <option value="engineNumber">机型编号</option>
@@ -13,11 +13,11 @@
                 </select>
                 -
                 <input class="searchField" type="text">
-                <button class="search-field-icon"><span class="fa fa-search"></span></button>
+                <button class="btn btn-primary ml-3"><span class="fa fa-search">  搜索</span></button>
             </div>
             <button class="btn btn-info" @click="showDeviceInfoInputModal"><span class="fa fa-plus"></span>&nbsp;&nbsp;新增设备</button>
         </div>
-        <table class="table border-bottom text-center">
+        <table class="table border-bottom text-center table-sm">
             <thead>
             <tr>
                 <th v-for="thead in theadContents">
@@ -28,8 +28,8 @@
             <tbody>
             <tr v-for="tbody in tbodyContents">
                 <td>
-                    <span v-if="tbody.status === 1" class="dev-normal">{{ tbody.status | correctECUStatus }}</span>
-                    <span class="dev-alert" v-else>{{ tbody.status | correctECUStatus }}</span>
+                    <span v-if="tbody.status === 1" class="badge badge-success">{{ tbody.status | correctECUStatus }}</span>
+                    <span class="badge badge-danger" v-else>{{ tbody.status | correctECUStatus }}</span>
                 </td>
                 <td>{{tbody.ECUNumber}}</td>
                 <td>{{tbody.engineNumber}}</td>
@@ -57,6 +57,7 @@
         <device-info-input-modal v-show="isModalVisible"
                                  @close="closeDeviceInfoInputModal">
         </device-info-input-modal>
+        <!--单点监控模态框-->
         <single-monitor-modal v-if="isSingleMonitorVisible"
                               :point-info="propsToSingleMonitorModal"
                               @close="closeSingleModal">
@@ -115,10 +116,6 @@
 </script>
 
 <style scoped>
-    .table-wrapper{
-        margin-top: 15px;
-        background-color: white;
-    }
     .table-title {
         padding: 15px 10px;
         display: flex;
@@ -145,36 +142,12 @@
         border: solid 1px #cccccc;
     }
     .table>thead {
-        background-color: black;
+        background-color: #2f4050;
         color: white;
         border: none;
     }
     .table>tbody>tr:hover {
         background-color: #f3f3f4;
-    }
-    .btn-icon {
-        background-color: transparent;
-        padding: 0 6px;
-        text-align: center;
-        border:none;
-        color: #999999;
-        font-size: 18px;
-    }
-    .dev-normal{
-        display: inline-block;
-        padding: 4px 8px;
-        background-color: #23c6c8;
-        border-radius: 3px;
-        color: white;
-        font-size: 12px;
-    }
-    .dev-alert {
-        display: inline-block;
-        padding: 4px 8px;
-        background-color: #ed5565;
-        border-radius: 3px;
-        color: white;
-        font-size: 12px;
     }
     .table-footer {
         display: flex;

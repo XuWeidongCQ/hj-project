@@ -5,7 +5,7 @@
 <!--                <span>已有数据</span>-->
 <!--                {{ this.tbodyContents.length }}-->
 <!--            </div>-->
-            <table class="table border-bottom text-center">
+            <table class="table border-bottom text-center table-sm">
                 <thead>
                 <tr>
                     <th v-for="thead in theadContents">
@@ -34,7 +34,7 @@
 
 <script>
   export default {
-    name: "SJJX",
+    name: "DataParse",
     data:function () {
       return {
         theadContents:['数据名称','标识符','数据类型','数据范围','数据在电文中的位置','操作'],
@@ -62,16 +62,8 @@
         padding: 0 15px;
         height: 900px;
     }
-    .btn-icon {
-        background-color: transparent;
-        padding: 0 6px;
-        text-align: center;
-        border:none;
-        color: #999999;
-        font-size: 18px;
-    }
     .table>thead {
-        background-color: black;
+        background-color: #2f4050;
         color: white;
         border: none;
     }

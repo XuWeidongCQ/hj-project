@@ -18,22 +18,22 @@ export default new Router({
       children:[
         {
           path:'',
-          name:'SSJK',
+          name:'DeviceMonitor',
           component:function () {
-            return import('./components/SSJK.vue')
+            return import('./components/DeviceMonitor.vue')
           }
         },
         {
           path:'/sbgl',
-          name:'SBGL',
+          name:'DeviceManage',
           component:function () {
-            return import('./components/SBGL.vue')
+            return import('./components/DeviceManage.vue')
           }
         },
         {
           path:'/sjjx',
           component:function () {
-            return import('./components/SJJX.vue')
+            return import('./components/DataParse.vue')
           }
         }
       ]

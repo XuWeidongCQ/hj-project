@@ -12,7 +12,7 @@
                            <span class="form-label">参数：</span>
                            <input class="default-input-text" type="text" name="ECUParameter">
                        </label>
-                       <button class="btn-click"><span class="fa fa-search"></span>  搜索</button>
+                       <button class="btn btn-primary ml-5"><span class="fa fa-search"></span>  搜索</button>
                    </div>
                    <baidu-map class="map-wrapper"
                               :center="mapCenter"
@@ -173,6 +173,7 @@
         padding: 10px 30px;
         background-color: #ffffff;
         z-index: 100;
+        font-size: 14px;
     }
     .default-input-text {
         width: 150px;

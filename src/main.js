@@ -5,9 +5,10 @@ import $ from 'jquery'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import 'bootstrap/dist/js/bootstrap.min.js'
 import 'font-awesome/css/font-awesome.min.css'
+import '@/plugins/shareCSS.css'
 import BaiduMap from 'vue-baidu-map'
-import commonJS from "@/plugins/commonJS";
-import filters from "@/plugins/filters";
+import commonJS from "@/plugins/commonJS"
+import filters from "@/plugins/filters"
 
 
 Vue.config.productionTip = false;
