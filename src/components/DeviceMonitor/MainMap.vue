@@ -12,7 +12,7 @@
                            <span class="form-label">参数：</span>
                            <input class="default-input-text" type="text" name="ECUParameter">
                        </label>
-                       <button class="btn btn-primary ml-5"><span class="fa fa-search"></span>  搜索</button>
+                       <button class="btn-sm btn-primary ml-5"><span class="fa fa-search"></span>  搜索</button>
                    </div>
                    <baidu-map class="map-wrapper"
                               :center="mapCenter"
@@ -50,13 +50,17 @@
                </div>
            </div>
        </div>
-       <single-monitor-modal @close="closeSingleModal" v-if="isSingleMonitorVisible" :point-info="propsToSingleMonitorModal"></single-monitor-modal>
+       <single-monitor-modal @close="closeSingleModal"
+                             v-if="isSingleMonitorVisible"
+                             :point-info="propsToSingleMonitorModal">
+       </single-monitor-modal>
     </div>
 </template>
 
 <script>
-  import SingleMonitorModal from "@/components/CommonComponents/SingleMonitorModal";
+  import SingleMonitorModal from "@/components/CommonComponents/SingleMonitorPopUp";
   import PointInfoWindow from "@/components/CommonComponents/PointInfoWindow";
+
   export default {
     name: "MainMap",
     components:{
@@ -118,11 +122,13 @@
       }
     },
     methods:{
+      //改变地图中心
       exChangeMap:function (level,centerCity) {
         this.mapCenter = centerCity;
         this.mapInitZoom = level;
         level === 3?this.isWorldMap = true:this.isWorldMap = false;
       },
+      //显示单点监控弹窗
       showSingleModal:function(ECUNumber,engineNumber){
         this.isSingleMonitorVisible = true;
         this.propsToSingleMonitorModal = {
@@ -130,24 +136,31 @@
           engineNumber:engineNumber
         };
       },
+      //关闭单点监控弹窗
       closeSingleModal:function(){
         this.isSingleMonitorVisible = false
       },
+      //鼠标移到坐标点显示小窗口
       showInfoWindow:function(event,ECUNumber,status){
-        this.isInfoWindowVisible = true;
-        this.propsToInfoWindow = {
-          ECUNumber:ECUNumber,
-          status:status,
-          x:event.clientX,
-          y:event.clientY,
-        }
+        let x = event.clientX;
+        let y = event.clientY;
+        setTimeout(()=>{
+          this.isInfoWindowVisible = true;
+          this.propsToInfoWindow = {
+            ECUNumber:ECUNumber,
+            status:status,
+            x:x,
+            y:y,
+          }
+        },100);
       },
+      //鼠标移出坐标点关闭小窗口
       closeInfoWindow:function(){
-        this.isInfoWindowVisible = false
+        setTimeout(()=>{
+          this.isInfoWindowVisible = false
+        },150);
       },
-      test:function (event) {
-        console.log(event)
-      }
+
     },
     mounted() {
 
@@ -183,19 +196,6 @@
         line-height: 20px;
         color: #2f4050;
         font-weight: 300;
-    }
-    .btn-click {
-        margin-left: 30px;
-        border-radius: 3px;
-        border:none;
-        background-color: #1c84c6;
-        color: white;
-        padding: 0 10px;
-        vertical-align: middle;
-        outline: none;
-    }
-    .btn-click:hover {
-        background-color: #1a7bb9;
     }
     .map-change-wrapper{
         position: absolute;

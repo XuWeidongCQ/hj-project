@@ -1,0 +1,107 @@
+<template>
+    <div class="xu-modal-backdrop" v-if="shown" @click.self="close">
+        <div class="xu-modal" :class="{fadeIn:shown}">
+            <div class="xu-modal-header" v-if="headerShown">
+                <div class="modal-title-wrapper">
+                    <!--弹出框标题部分-->
+                    <slot name="header"><div>这是模态框标题</div></slot>
+                </div>
+                <div class="close-icon" @click="close">×</div>
+            </div>
+            <div class="xu-modal-content">
+                <!--弹出框主体部分-->
+                <slot name="content" >
+                    <div>这是模态框内容</div>
+                </slot>
+            </div>
+            <div  class="xu-modal-footer" v-if="footerShown">
+                <!--弹出框尾部部分-->
+                <slot name="footer">
+                    <div>这是模态框尾部</div>
+                </slot>
+            </div>
+        </div>
+    </div>
+</template>
+
+<script>
+  export default {
+    name: "xu-modal",
+    props:{
+      shown:{
+        type:Boolean,
+        default:false
+      },
+      footerShown:{
+        type: Boolean,
+        default: false
+      },
+      headerShown:{
+        type:Boolean,
+        default:false
+      }
+    },
+    data:function(){
+      return {
+
+      }
+    },
+    methods:{
+      close:function () {
+        this.$emit('close')
+      }
+    }
+  }
+</script>
+
+<style scoped>
+    .xu-modal-backdrop {
+        position: fixed;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        z-index: 1040;
+        background-color: rgba(0,0,0,0.3);
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+    }
+    .xu-modal {
+        border-radius: 5px;
+        border: 1px solid #cccccc;
+        position: relative;
+        background-color: #ffffff;
+        margin-top: 50px;
+    }
+    .xu-modal-header {
+        padding: 10px 15px 5px 15px;
+        border-bottom: 1px solid #cccccc;
+    }
+    .modal-title-wrapper {
+        height: 20px;
+        line-height: 20px;
+        font-size: 17px;
+        color: #7b8294;
+        display: inline-block;
+    }
+    .close-icon {
+        float: right;
+        height: 20px;
+        line-height: 20px;
+        font-size: 20px;
+        color: #a4abbd;
+        margin-left: 30px;
+        cursor: pointer;
+    }
+    .close-icon:hover {
+        color: #ced5e7;
+    }
+    .xu-modal-content {
+        padding: 10px 15px 5px 15px;
+    }
+    .xu-modal-footer {
+        padding: 10px 15px 10px 15px;
+        border-top: 1px solid #cccccc;
+    }
+</style>

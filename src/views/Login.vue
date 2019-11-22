@@ -14,7 +14,7 @@
                         <img src="../assets/login01.png" alt="" style="width: 70px;height:70px">
                     </div>
                     <hr>
-                    <form style="padding: 10px 40px">
+                    <form style="padding: 5px 10px">
                         <div class="form-group">
                             <label for="username">请输入用户名：</label>
                             <input id="username" type="text" class="form-control" placeholder="用户名">
@@ -23,7 +23,7 @@
                             <label for="password">请输入密码：</label>
                             <input id="password" type="password" class="form-control" placeholder="密码">
                         </div>
-                        <router-link to="/main" tag="button" class="btn btn-block btn-info">登录</router-link>
+                        <router-link to="/device-monitor" tag="button" class="btn btn-block btn-info">登录</router-link>
                         <a href="#"><small>忘记密码？</small></a>
                         <p class="text-muted text-center"><small>还没有账号？</small></p>
                         <a class="btn btn-block btn-link" href="#">创建一个账户</a>

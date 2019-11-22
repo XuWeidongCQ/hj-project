@@ -6,17 +6,17 @@
                     <img src="../assets/hongjiang_logo.png" alt="" style="width: 150px">
                 </li>
                 <li>
-                    <router-link tag="a" to="/main" active-class="active" exact>
+                    <router-link tag="a" to="/device-monitor" active-class="active" exact>
                         <span><span class="fa fa-bullseye"></span>实时监控</span>
                     </router-link>
                 </li>
                 <li>
-                    <router-link tag="a" to="/sbgl" active-class="active" exact>
+                    <router-link tag="a" to="/device-manage" active-class="active" exact>
                         <span><span class="fa fa-table"></span>设备管理</span>
                     </router-link>
                 </li>
                 <li>
-                    <router-link tag="a" to="/sjjx" active-class="active" exact>
+                    <router-link tag="a" to="/data-parse" active-class="active" exact>
                         <span><span class="fa fa-cogs"></span>数据解析</span>
                     </router-link>
                 </li>
@@ -25,9 +25,8 @@
         </nav>
         <div id="page-wrapper" class="gray-bg">
             <div class="login-duration-wrapper text-right">
-                <span><span class="fa fa-clock-o"></span>  登录时间：2019-09-07 17:19</span>
-                <span>时长：44秒</span>
-                <span><span class="fa fa-user-circle-o"></span>  用户名</span>
+                <span><span class="fa fa-clock-o"></span> 登录时间：{{ loginTime }}</span>
+                <span><span class="fa fa-user-circle-o"></span> 用户名</span>
             </div>
 
             <!--不同菜单栏的入口-->
@@ -58,6 +57,11 @@
             li[i].className = 'active';
           }
         }
+      }
+    },
+    data:function(){
+      return {
+        loginTime:this.extendJS.getDate().YYYYMMDDHHMMSS
       }
     },
     mounted(){

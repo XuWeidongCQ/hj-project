@@ -13,7 +13,7 @@ export default new Router({
       component: Login
     },
     {
-      path: '/main',
+      path: '/device-monitor',
       component: MainContent,
       children:[
         {
@@ -24,14 +24,14 @@ export default new Router({
           }
         },
         {
-          path:'/sbgl',
+          path:'/device-manage',
           name:'DeviceManage',
           component:function () {
             return import('./components/DeviceManage.vue')
           }
         },
         {
-          path:'/sjjx',
+          path:'/data-parse',
           component:function () {
             return import('./components/DataParse.vue')
           }

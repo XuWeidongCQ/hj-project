@@ -13,9 +13,9 @@
                 </select>
                 -
                 <input class="searchField" type="text">
-                <button class="btn btn-primary ml-3"><span class="fa fa-search">  搜索</span></button>
+                <button class="btn-sm btn-primary ml-3"><span class="fa fa-search">  搜索</span></button>
             </div>
-            <button class="btn btn-info" @click="showDeviceInfoInputModal"><span class="fa fa-plus"></span>&nbsp;&nbsp;新增设备</button>
+            <button class="btn-sm btn-info" @click="showDeviceInfoInputModal"><span class="fa fa-plus"></span>&nbsp;&nbsp;新增设备</button>
         </div>
         <table class="table border-bottom text-center table-sm">
             <thead>
@@ -66,8 +66,8 @@
 </template>
 
 <script>
-  import DeviceInfoInputModal from "@/components/CommonComponents/DeviceInfoInputModal";
-  import SingleMonitorModal from "@/components/CommonComponents/SingleMonitorModal";
+  import DeviceInfoInputModal from "@/components/CommonComponents/DeviceInfoInputPopUp";
+  import SingleMonitorModal from "@/components/CommonComponents/SingleMonitorPopUp";
   export default {
     name: "TableStatics",
     data(){

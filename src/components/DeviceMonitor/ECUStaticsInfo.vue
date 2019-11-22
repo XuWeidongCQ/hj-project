@@ -1,30 +1,39 @@
 <template>
     <div>
         <div class="row">
-            <div class="col-4">
+            <div class="col-3">
+                <div class="statics-info-container dev-total">
+                    <span class="statics-icon"><span class="fa fa-desktop"></span></span>
+                    <span class="statics-info">
+                            <span class="statics-number">529</span><br>
+                            <span class="statics-explain">设备总数</span>
+                        </span>
+                </div>
+            </div>
+            <div class="col-3">
                 <div class="statics-info-container dev-online">
                         <span class="statics-icon"><span class="fa fa-desktop"></span></span>
                         <span class="statics-info">
                             <span class="statics-number">529</span><br>
-                            <span class="statics-explain">在线</span>
+                            <span class="statics-explain">在线设备数目</span>
                         </span>
                 </div>
             </div>
-            <div class="col-4">
+            <div class="col-3">
                 <div class="statics-info-container dev-normal">
                     <span class="statics-icon"><span class="fa fa-calendar-check-o"></span></span>
                     <span class="statics-info">
                             <span class="statics-number">509</span><br>
-                            <span class="statics-explain">正常</span>
+                            <span class="statics-explain">正常设备数目</span>
                         </span>
                 </div>
             </div>
-            <div class="col-4">
+            <div class="col-3">
                 <div class="statics-info-container dev-alert">
                     <span class="statics-icon"><span class="fa fa-lightbulb-o"></span></span>
                     <span class="statics-info">
                             <span class="statics-number">20</span><br>
-                            <span class="statics-explain">报警</span>
+                            <span class="statics-explain">报警设备数目</span>
                         </span>
                 </div>
             </div>
@@ -34,7 +43,12 @@
 
 <script>
   export default {
-    name: "ECUStaticsInfo"
+    name: "ECUStaticsInfo",
+    data:function () {
+      return {
+
+      }
+    },
   }
 </script>
 
@@ -61,6 +75,9 @@
     .statics-explain{
        float: right;
         font-size: 12px;
+    }
+    .dev-total {
+        background-color: #28a745;
     }
     .dev-online{
         background-color: #1ab394;

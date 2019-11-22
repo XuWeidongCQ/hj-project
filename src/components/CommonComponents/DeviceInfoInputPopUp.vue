@@ -191,23 +191,4 @@
         padding: 6px 12px;
         border: solid 1px #cccccc;
     }
-    .form-submit {
-        padding: 6px 20px;
-        background-color: #23c6c8;
-        color: white;
-        border: 1px solid #23c6c8;
-        border-radius: 3px;
-    }
-    .form-submit:hover {
-        background-color: #39b2a9;
-    }
-    .form-reset {
-        padding: 6px 20px;
-        background-color: transparent;
-        border: 1px solid #cccccc;
-        border-radius: 3px;
-    }
-    .form-reset:hover {
-        background-color: #f5f5f5;
-    }
 </style>

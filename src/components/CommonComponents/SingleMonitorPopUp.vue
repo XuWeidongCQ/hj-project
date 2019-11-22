@@ -1,12 +1,15 @@
 <template>
-    <div class="xu-modal-backdrop">
-        <div class="xu-modal">
-            <div class="xu-modal-header">
-                <span class="xu-modal-title">单点监控模式</span>
-                <button @click="close" class="btn-close">×</button>
-            </div>
-            <div class="xu-modal-body">
-                <div class="box-title">设备编号：{{ pointInfo.ECUNumber }}&nbsp;&nbsp;&nbsp;&nbsp;机型编号：{{ pointInfo.engineNumber }}</div>
+    <div>
+        <xu-modal :shown="true"
+                  :header-shown="true"
+                  @close="close">
+            <div slot="header">单点监控模式</div>
+            <div slot="content">
+                <div class="box-title">
+                    <span>客户公司：</span><span class="mr-4">某某厂</span>
+                    <span>设备编号：</span><span class="mr-4">{{ pointInfo.ECUNumber }}</span>
+                    <span>机型编号：</span><span>{{ pointInfo.engineNumber }}</span>
+                </div>
                 <div class="box-content">
                     <div class="row">
                         <div class="col-7">
@@ -40,49 +43,44 @@
                             <button><span class="fa fa-file-excel-o"></span>&nbsp;导出Excel</button>
                         </div>
                         <table class="table table-sm border-bottom text-center">
-                           <thead>
-                           <tr>
-                               <th v-for="thead in theadContents">
-                                   {{ thead }}
-                               </th>
-                           </tr>
-                           </thead>
-                           <tbody>
-                           <tr v-for="item in getRecordForTable(0,5)">
-                               <td>{{ item.time }}</td>
-                               <td>{{ item.ECUNumber }}</td>
-                               <td>{{ item.rotateSpeed }}</td>
-                               <td>{{ item.greasePressure }}</td>
-                               <td>{{ item.coolingWaterTemperature }}</td>
-                               <td>
-                                   <span v-if="item.status===1" class="dev-normal">{{ item.status | correctECUStatus }}</span>
-                                   <span v-else class="dev-alert">{{ item.status | correctECUStatus }}</span>
-                               </td>
-                           </tr>
-                           </tbody>
+                            <thead>
+                            <tr>
+                                <th v-for="thead in theadContents">
+                                    {{ thead }}
+                                </th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr v-for="item in getRecordForTable(0,5)">
+                                <td>{{ item.time }}</td>
+                                <td>{{ item.ECUNumber }}</td>
+                                <td>{{ item.rotateSpeed }}</td>
+                                <td>{{ item.greasePressure }}</td>
+                                <td>{{ item.coolingWaterTemperature }}</td>
+                                <td>
+                                    <span v-if="item.status===1" class="dev-normal">{{ item.status | correctECUStatus }}</span>
+                                    <span v-else class="dev-alert">{{ item.status | correctECUStatus }}</span>
+                                </td>
+                            </tr>
+                            </tbody>
                         </table>
-                        <div class="table-footer">
-                            <ul class="pagination">
-                                <li class="page-item"><button class="page-link">1</button></li>
-                                <li class="page-item"><button class="page-link">2</button></li>
-                                <li class="page-item"><button class="page-link">3</button></li>
-                                <li class="page-item"><button class="page-link">4</button></li>
-                                <li class="page-item"><button class="page-link">5</button></li>
-                            </ul>
-                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </xu-modal>
     </div>
 </template>
 
 <script>
+  import XuModal from "@/components/CommonComponents/XuModal";
   let echarts = require('echarts/lib/echarts');
   require('echarts/lib/chart/line');
   require('echarts/lib/component/tooltip');
   export default {
     name: "SingleMonitorModal",
+    components:{
+      XuModal
+    },
     props:{
       pointInfo:Object,
     },
@@ -298,65 +296,18 @@
 </script>
 
 <style scoped>
-    .xu-modal-backdrop {
-        position: fixed;
-        top:0;
-        right: 0;
-        bottom: 0;
-        left:0;
-        z-index: 1040;
-        background-color: rgba(0,0,0,0.3);
-        display: flex; /*这是为了保证模态框上下左右居中*/
-        justify-content: center; /*这是为了保证模态框左右居中*/
-        align-items: flex-start;
-    }
-    /*模态主内容块*/
-    .xu-modal {
-        border: 1px solid #cccccc;
-        border-radius: 3px;
-        background-color: white;
-        margin-top: 30px;
-        width: 1400px;
-    }
-    .xu-modal-header {
-        padding: 5px 10px 0 10px;
-        display: flex;
-        justify-content: space-between;
-        border-bottom: 1px solid #f5f5f5;
-        background-color: #f3f3f4;
-    }
-    .xu-modal-body {
-        padding: 15px 10px 15px 10px;
-        border-bottom: 1px solid #f5f5f5;
-    }
-    .xu-modal-footer {
-        padding: 15px;
-    }
-    .xu-modal-title {
-        color: #676a6c;
-        font-size: 22px;
-    }
-    .btn-close {
-        background-color: transparent;
-        border: none;
-        font-size: 21px;
-        padding: 0;
-        color: #999999;
-        margin-top: -5px;
-    }
-    .btn-close:hover {
-        color: #000000;
-    }
     .box-title {
         color: #676a6c;
         background-color: transparent;
+        width: 1200px;
+        font-size: 14px;
     }
     .chart-container {
-        height: 150px;
+        height: 100px;
     }
     .map-container {
         border: 1px solid black;
-        height: 450px;
+        height: 300px;
     }
     .table>thead {
         background-color: black;
