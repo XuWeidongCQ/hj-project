@@ -11,17 +11,10 @@ a {
 }
 
 body {
-    color: #7b8294;
-}
-
-thead {
+    color: #000000;
     font-size: 16px;
 }
 
-tbody {
-    font-size: 15px;
-    color: #7b8294;
-}
 
 /*2 容器样式*/
 .xubox {
@@ -46,14 +39,17 @@ tbody {
     border-top: 1px solid #fcfcfc;
 }
 .mb-integer {
-    margin-bottom: 15px;
+    margin-bottom: 10px;
+}
+.mt-integer {
+    margin-top: 10px;
 }
 
 /*3 按钮样式*/
 .xu-btn {
     /*调节按钮字体大小为父元素一样大*/
     font-size: 1em;
-    padding: 0.12em 0.3em;
+    padding: 0.12em 0.5em;
     border-radius: 0.3em;
     cursor: pointer;
 }
@@ -78,7 +74,15 @@ tbody {
     background-color: #006fde;
     border: 1px solid #006fde;
 }
-
+.xu-btn-info {
+    background-color: #17b2c8;
+    color: #ffffff;
+    border: 1px solid  #17b2c8;
+}
+.xu-btn-info:hover {
+    background-color: #178ca2;
+    border: 1px solid  #178ca2;
+}
 .xu-btn-success {
     background-color: #28a745;
     color: #ffffff;
@@ -94,6 +98,7 @@ tbody {
 .xu-label-text {
     /*调节输入框字体大小*/
     font-size: 14px;
+    margin: 0;
 }
 .xu-input {
     padding: 0;
@@ -115,6 +120,7 @@ tbody {
 .xu-label-choose {
     font-size: 14px;
     position: relative;
+    margin: 0;
 }
 
 .xu-choose {
@@ -177,33 +183,111 @@ tbody {
 }
 
 /*5 表格样式*/
-.form-submit {
-    padding: 6px 20px;
-    background-color: #23c6c8;
-    color: white;
-    border: 1px solid #23c6c8;
-    border-radius: 3px;
+.xu-table {
+    border-collapse: collapse;
+    width: 100%;
 }
-.form-submit:hover {
-    background-color: #39b2a9;
+.xu-table th {
+    border-top: 1px solid #cccccc;
+    border-bottom: 1px solid #cccccc;
+    text-align: start;
 }
-.form-reset {
-    padding: 6px 20px;
-    background-color: transparent;
+.xu-table td {
+    border-top: 1px solid #cccccc;
+    border-bottom: 1px solid #cccccc;
+}
+.xu-table-border th{
     border: 1px solid #cccccc;
-    border-radius: 3px;
 }
-.form-reset:hover {
-    background-color: #f5f5f5;
+.xu-table-border td{
+    border: 1px solid #cccccc;
+}
+.xu-table-center td{
+    text-align: center;
+}
+.xu-table-center th{
+    text-align: center;
+}
+.xu-table-sm th {
+    padding: 3px 6px;
+    font-size: 14px;
+}
+.xu-table-sm td {
+    padding: 3px 6px;
+    font-size: 14px;
+}
+.xu-table-lg th {
+    padding: 6px 8px;
+    font-size: 16px;
+}
+.xu-table-lg td {
+    padding: 4px 8px;
+    font-size: 16px;
+}
+.xu-table-hover tbody tr:hover {
+    cursor: pointer;
+    background: #cccccc !important;
+}
+.xu-thead-light tr{
+    background-color: #41cac0;
+}
+.xu-table-strip tbody tr:nth-child(2n-1){
+    background-color: #f7f7f7;
+}
+.xu-table-strip tbody tr:nth-child(2n){
+    background-color: #e8e8e8;
+}
+/*6. 字体与颜色*/
+.xu-text-level4 {
+    font-size: 12px;
+}
+.xu-text-level3 {
+    font-size: 14px;
+}
+.xu-text-level2 {
+    font-size: 16px;
+}
+.xu-text-level1 {
+    font-size: 18px;
+}
+.xu-text-level0 {
+    font-size: 20px;
+}
+.xu-text-white-level0 {
+    color: #ffffff;
+}
+.xu-text-white-level1 {
+    color: #ebebeb;
+}
+.xu-text-dark-level0 {
+    color: #000000;
+}
+.xu-text-dark-level1 {
+    color: #4d5875;
 }
 
-/*增删改按钮*/
-.btn-icon {
-    background-color: transparent;
-    padding: 0 6px;
-    text-align: center;
-    color: #4d5875;
-    font-size: 14px;
-    border: 1px solid #a4abbd;
-    margin: 0 2px;
+/*7.滚动条样式*/
+.scrollBar-style{
+    overflow: auto;
+    -ms-scrollbar-face-color: #e3e3e3;
+    -ms-scrollbar-track-color: #bcbcbc;
+}
+.scrollBar-style::-webkit-scrollbar {
+    width: 8px;
+    border-radius: 4px;
+    background-color: #e6e6e6;
+}
+
+.scrollBar-style::-webkit-scrollbar-thumb{
+    background-color: #9a9a9a;
+    border-radius: 3px;
+}
+.scrollBar-style::-webkit-scrollbar-thumb:hover {
+    background-color: #808080;
+}
+/*工程专用*/
+.clear::after {
+    content: '';
+    clear: both;
+    display: block;
 }

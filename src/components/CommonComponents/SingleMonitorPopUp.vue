@@ -11,11 +11,11 @@
                     <span>机型编号：</span><span>{{ pointInfo.engineNumber }}</span>
                 </div>
                 <div class="box-content">
-                    <div class="row">
+                    <div class="row mb-integer">
                         <div class="col-7">
-                            <div class="chart-container border-bottom" id="rotate-speed"></div>
-                            <div class="chart-container border-bottom" id="grease-pressure"></div>
-                            <div class="chart-container" id="cooling-water"></div>
+                            <div class="chart-container border" id="rotate-speed"></div>
+                            <div class="chart-container border" id="grease-pressure"></div>
+                            <div class="chart-container border" id="cooling-water"></div>
                         </div>
                         <div class="col-5">
                             <baidu-map class="map-container"
@@ -32,38 +32,85 @@
                             </baidu-map>
                         </div>
                     </div>
-                    <div class="table-container">
-                        <div class="table-title">
-                            <label class="mt-1">
-                                <span>选择时段:</span>
-                                <input type="text" name="startTime">
-                                ——
-                                <input type="text" name="endTime">
-                            </label>
-                            <button><span class="fa fa-file-excel-o"></span>&nbsp;导出Excel</button>
+                    <div class="statics-info-wrapper mb-integer">
+                        <div class="statics-item bg-light border">
+                            <span>在线率:</span><span>98%</span>
                         </div>
-                        <table class="table table-sm border-bottom text-center">
-                            <thead>
-                            <tr>
-                                <th v-for="thead in theadContents">
-                                    {{ thead }}
-                                </th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr v-for="item in getRecordForTable(0,5)">
-                                <td>{{ item.time }}</td>
-                                <td>{{ item.ECUNumber }}</td>
-                                <td>{{ item.rotateSpeed }}</td>
-                                <td>{{ item.greasePressure }}</td>
-                                <td>{{ item.coolingWaterTemperature }}</td>
-                                <td>
-                                    <span v-if="item.status===1" class="dev-normal">{{ item.status | correctECUStatus }}</span>
-                                    <span v-else class="dev-alert">{{ item.status | correctECUStatus }}</span>
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
+                        <div class="statics-item bg-light border">
+                            <span>累计在线时间:</span><span>1450s</span>
+                        </div>
+                        <div class="statics-item bg-light border">
+                            <span>累计正常时间:</span><span>1450s</span>
+                        </div>
+                        <div class="statics-item bg-light border">
+                            <span>累计报警时间:</span><span>98s</span>
+                        </div>
+                    </div>
+                    <div class="table-container clearfix">
+                        <div class="table-title">
+                            <label class="xu-label-text">
+                                <span>选择时段:</span>
+                                <input type="datetime-local" name="startTime" class="xu-input">
+                                —
+                                <input type="datetime-local" name="endTime" class="xu-input">
+                            </label>
+                            <button class="xu-btn-sm xu-btn-info ml-3"><span class="fa fa-file-excel-o"></span>&nbsp;导出Excel</button>
+                        </div>
+                        <div class="history-table scrollBar-style">
+                            <table class="xu-table xu-table-center xu-table-sm xu-table-hover">
+                                <thead class="xu-text-white-level0">
+                                <tr class="bg-info">
+                                    <th v-for="thead in theadContents">
+                                        {{ thead }}
+                                    </th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr v-for="(item,index) in pointHistoryRecord" :key="index">
+                                    <td>{{ item.time }}</td>
+                                    <td>{{ item.rotateSpeed }}</td>
+                                    <td>{{ item.greasePressure }}</td>
+                                    <td>{{ item.coolingWaterTemperature }}</td>
+                                    <td>
+                                        <span v-if="item.status===1" class="badge badge-success">{{ item.status | correctECUStatus }}</span>
+                                        <span v-else class="badge badge-danger">{{ item.status | correctECUStatus }}</span>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="warn-maintain-table">
+                            <div class="warn-table mb-integer scrollBar-style">
+                                <table class="xu-table xu-table-center xu-table-sm xu-table-hover">
+                                    <thead class="xu-text-white-level0">
+                                    <tr class="bg-warning">
+                                        <th>信息</th>
+                                        <th>类型</th>
+                                        <th>故障码</th>
+                                        <th>报警时间</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="maintain-table scrollBar-style">
+                                <table class="xu-table xu-table-center xu-table-sm xu-table-hover">
+                                    <thead class="xu-text-white-level0">
+                                    <tr class="bg-danger">
+                                        <th>更换类型</th>
+                                        <th>维修人</th>
+                                        <th>备注</th>
+                                        <th>维修时间</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -86,19 +133,19 @@
     },
     data(){
       return {
-        theadContents:['监测时间','设备编号','转速/rpm','滑油压力/kpa','冷却水温度/℃','运行状态'],
+        theadContents:['监测时间','转速/rpm','滑油压力/kpa','冷却水温度/℃','运行状态'],
         pointHistoryRecord:[
-          {ECUNumber:'122019080323',engineNumber:'32ab',time:'2019-9-11 10:22',status:1,rotateSpeed:1000,greasePressure:1.3,coolingWaterTemperature:30,coordinate:{lng:136,lat:10}},
-          {ECUNumber:'122019080323',engineNumber:'32ab',time:'2019-9-11 11:22',status:1,rotateSpeed:980,greasePressure:1.2,coolingWaterTemperature:35,coordinate:{lng:136,lat:10.2}},
-          {ECUNumber:'122019080323',engineNumber:'32ab',time:'2019-9-11 12:22',status:0,rotateSpeed:970,greasePressure:1.4,coolingWaterTemperature:29,coordinate:{lng:136,lat:10.4}},
-          {ECUNumber:'122019080323',engineNumber:'32ab',time:'2019-9-11 13:22',status:1,rotateSpeed:1120,greasePressure:1.6,coolingWaterTemperature:38,coordinate:{lng:136,lat:10.6}},
-          {ECUNumber:'122019080323',engineNumber:'32ab',time:'2019-9-11 14:22',status:0,rotateSpeed:1234,greasePressure:1.3,coolingWaterTemperature:45,coordinate:{lng:136,lat:10.7}},
-          {ECUNumber:'122019080323',engineNumber:'32ab',time:'2019-9-11 15:22',status:1,rotateSpeed:1090,greasePressure:1.7,coolingWaterTemperature:30,coordinate:{lng:136,lat:10.9}},
-          {ECUNumber:'122019080323',engineNumber:'32ab',time:'2019-9-11 16:22',status:1,rotateSpeed:1256,greasePressure:1.9,coolingWaterTemperature:37,coordinate:{lng:136.5,lat:10}},
-          {ECUNumber:'122019080323',engineNumber:'32ab',time:'2019-9-11 17:22',status:1,rotateSpeed:1050,greasePressure:1.1,coolingWaterTemperature:42,coordinate:{lng:136.6,lat:10.4}},
-          {ECUNumber:'122019080323',engineNumber:'32ab',time:'2019-9-11 18:22',status:1,rotateSpeed:946,greasePressure:1.4,coolingWaterTemperature:39,coordinate:{lng:136.4,lat:10.8}},
-          {ECUNumber:'122019080323',engineNumber:'32ab',time:'2019-9-11 19:22',status:1,rotateSpeed:989,greasePressure:1.3,coolingWaterTemperature:30,coordinate:{lng:136.9,lat:10.9}},
-          {ECUNumber:'122019080323',engineNumber:'32ab',time:'2019-9-11 20:22',status:1,rotateSpeed:1045,greasePressure:1.2,coolingWaterTemperature:33,coordinate:{lng:137,lat:11.5}},
+          {time:'2019-9-11 10:22',status:1,rotateSpeed:1000,greasePressure:1.3,coolingWaterTemperature:30,coordinate:{lng:136,lat:10}},
+          {time:'2019-9-11 11:22',status:1,rotateSpeed:980,greasePressure:1.2,coolingWaterTemperature:35,coordinate:{lng:136,lat:10.2}},
+          {time:'2019-9-11 12:22',status:0,rotateSpeed:970,greasePressure:1.4,coolingWaterTemperature:29,coordinate:{lng:136,lat:10.4}},
+          {time:'2019-9-11 13:22',status:1,rotateSpeed:1120,greasePressure:1.6,coolingWaterTemperature:38,coordinate:{lng:136,lat:10.6}},
+          {time:'2019-9-11 14:22',status:0,rotateSpeed:1234,greasePressure:1.3,coolingWaterTemperature:45,coordinate:{lng:136,lat:10.7}},
+          {time:'2019-9-11 15:22',status:1,rotateSpeed:1090,greasePressure:1.7,coolingWaterTemperature:30,coordinate:{lng:136,lat:10.9}},
+          {time:'2019-9-11 16:22',status:1,rotateSpeed:1256,greasePressure:1.9,coolingWaterTemperature:37,coordinate:{lng:136.5,lat:10}},
+          {time:'2019-9-11 17:22',status:1,rotateSpeed:1050,greasePressure:1.1,coolingWaterTemperature:42,coordinate:{lng:136.6,lat:10.4}},
+          {time:'2019-9-11 18:22',status:1,rotateSpeed:946,greasePressure:1.4,coolingWaterTemperature:39,coordinate:{lng:136.4,lat:10.8}},
+          {time:'2019-9-11 19:22',status:1,rotateSpeed:989,greasePressure:1.3,coolingWaterTemperature:30,coordinate:{lng:136.9,lat:10.9}},
+          {time:'2019-9-11 20:22',status:1,rotateSpeed:1045,greasePressure:1.2,coolingWaterTemperature:33,coordinate:{lng:137,lat:11.5}},
         ]
       }
     },
@@ -289,7 +336,7 @@
     // filters:
     mounted(){
       this.drawRotateSpeedChart(document.getElementById('rotate-speed'),this.parameterHistoryRecord.rotateSpeed,this.parameterHistoryRecord.time);
-      this.drawGreasePressureChart(document.getElementById('grease-pressure'),this.parameterHistoryRecord.greasePressure,this.parameterHistoryRecord.time)
+      this.drawGreasePressureChart(document.getElementById('grease-pressure'),this.parameterHistoryRecord.greasePressure,this.parameterHistoryRecord.time);
       this.drawCoolingWaterChart(document.getElementById('cooling-water'),this.parameterHistoryRecord.coolingWaterTemperature,this.parameterHistoryRecord.time)
     }
   }
@@ -297,10 +344,9 @@
 
 <style scoped>
     .box-title {
-        color: #676a6c;
         background-color: transparent;
         width: 1200px;
-        font-size: 14px;
+        font-size: 16px;
     }
     .chart-container {
         height: 100px;
@@ -309,63 +355,41 @@
         border: 1px solid black;
         height: 300px;
     }
-    .table>thead {
-        background-color: black;
-        color: white;
-        border: none;
-    }
-    .table>tbody>tr:hover {
-        background-color: #f5f5f5;
-    }
-    .dev-normal{
-        display: inline-block;
-        padding: 4px 8px;
-        background-color: #23c6c8;
-        border-radius: 3px;
-        color: white;
-        font-size: 12px;
-    }
-    .dev-alert {
-        display: inline-block;
-        padding: 4px 8px;
-        background-color: #ed5565;
-        border-radius: 3px;
-        color: white;
-        font-size: 12px;
-    }
-    .table-footer {
+    .statics-info-wrapper {
         display: flex;
-        justify-content: flex-end;
-        padding: 5px 20px;
+        color: #4d5875;
+        font-weight: 900;
+        font-size: 18px;
+        justify-content: space-between;
+    }
+    .statics-item {
+        padding: 15px 20px;
+        border-radius: 5px;
+        width: 250px;
+        text-align: center;
+    }
+    /*.table-container {*/
+    /*    border: 1px solid #cccccc;*/
+    /*}*/
+    .history-table {
+        width: 650px;
+        height: 250px;
+        float: left;
     }
     .table-title {
-        padding: 10px 10px;
-        height: 45px;
-        display: flex;
-        justify-content: flex-end;
-        /*line-height: 45px;*/
+        padding: 10px 0;
     }
-    .table-title input {
-        height: 25px;
-        width: 140px;
-        border-radius: 2px;
-        font-size: 14px;
-        font-weight: 100;
-        padding: 3px 12px;
-        border: solid 1px #cccccc;
+    .warn-maintain-table {
+        float: right;
+        height: 350px;
+        width: 530px;
     }
-    .table-title button {
-        margin-left: 20px;
-        display: inline-block;
-        border: 1px solid #58c9f3;
-        height: 30px;
-        line-height: 30px;
-        background-color: #58c9f3;
-        border-radius: 3px;
-        font-size: 15px;
-        color: #ffffff;
+    .warn-table {
+        height: 170px;
+        outline: 1px solid #cccccc;
     }
-    .table-title button:hover{
-        background-color: #53bee6;
+    .maintain-table {
+        height: 170px;
+        outline: 1px solid #cccccc;
     }
 </style>

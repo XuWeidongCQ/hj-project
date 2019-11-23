@@ -81,8 +81,8 @@
     .modal-title-wrapper {
         height: 20px;
         line-height: 20px;
-        font-size: 17px;
-        color: #7b8294;
+        font-size: 18px;
+        color: #000000;
         display: inline-block;
     }
     .close-icon {

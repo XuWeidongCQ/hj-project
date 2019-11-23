@@ -2,51 +2,53 @@
     <div class="main-map-wrapper">
        <div class="row">
            <div class="col-12">
-               <div>
-                   <div class="info-filter-wrapper">
-                       <label class="mb-0">
-                           <span class="form-label">类型：</span>
-                           <input class="default-input-text" type="text" name="ECUType">
-                       </label>
-                       <label class="ml-5 mb-0">
-                           <span class="form-label">参数：</span>
-                           <input class="default-input-text" type="text" name="ECUParameter">
-                       </label>
-                       <button class="btn-sm btn-primary ml-5"><span class="fa fa-search"></span>  搜索</button>
-                   </div>
-                   <baidu-map class="map-wrapper"
-                              :center="mapCenter"
-                              :zoom="mapInitZoom"
-                              :scroll-wheel-zoom="true">
-                        <!--添加比例尺子组件-->
-                       <bm-scale anchor="BMAP_ANCHOR_TOP_LEFT" :offset="{top:'5px',left:'5px'}"></bm-scale>
-                       <!--添加缩放控件-->
-                       <bm-navigation anchor="BMAP_ANCHOR_BOTTOM_LEFT"></bm-navigation>
-                       <!--添加点-->
-                       <div v-for="marker in ECUPositionCoordinates">
-                           <bm-marker v-if="marker.status === 1"
-                                      :position="marker.coordinate"
-                                      :icon="icon.iconNormal"
-                                      @mouseover="showInfoWindow($event,marker.ECUNumber,marker.status)"
-                                      @mouseout="closeInfoWindow"
-                                      @click="showSingleModal(marker.ECUNumber,marker.engineNumber)">
+               <div class="info-filter-wrapper">
+                   <label>
+                       <select style="height:26px;">
+                           <option>发动机机型</option>
+                           <option>控制系统编号</option>
+                           <option>公司名称</option>
+                           <option>出厂日期</option>
+                           <option>设备状态</option>
+                       </select>
+                   </label>
+                   <label>
+                       <input type="text" placeholder="请输入内容">
+                   </label>
+                   <button class="xu-btn xu-btn-primary" style="border-radius: 0"><span class="fa fa-search"></span></button>
+               </div>
+               <baidu-map class="map-wrapper"
+                          :center="mapCenter"
+                          :zoom="mapInitZoom"
+                          :scroll-wheel-zoom="true">
+                    <!--添加比例尺子组件-->
+                   <bm-scale anchor="BMAP_ANCHOR_TOP_LEFT" :offset="{top:'5px',left:'5px'}"></bm-scale>
+                   <!--添加缩放控件-->
+                   <bm-navigation anchor="BMAP_ANCHOR_BOTTOM_LEFT"></bm-navigation>
+                   <!--添加点-->
+                   <div v-for="marker in ECUPositionCoordinates">
+                       <bm-marker v-if="marker.status === 1"
+                                  :position="marker.coordinate"
+                                  :icon="icon.iconNormal"
+                                  @mouseover="showInfoWindow($event,marker.ECUNumber,marker.status)"
+                                  @mouseout="closeInfoWindow"
+                                  @click="showSingleModal(marker.ECUNumber,marker.engineNumber)">
 
-                           </bm-marker>
-                           <bm-marker v-else
-                                      :position="marker.coordinate"
-                                      :icon="icon.iconAlert"
-                                      @mouseover="showInfoWindow($event,marker.ECUNumber,marker.status)"
-                                      @mouseout="closeInfoWindow"
-                                      @click="showSingleModal(marker.ECUNumber,marker.engineNumber)">
+                       </bm-marker>
+                       <bm-marker v-else
+                                  :position="marker.coordinate"
+                                  :icon="icon.iconAlert"
+                                  @mouseover="showInfoWindow($event,marker.ECUNumber,marker.status)"
+                                  @mouseout="closeInfoWindow"
+                                  @click="showSingleModal(marker.ECUNumber,marker.engineNumber)">
 
-                           </bm-marker>
-                       </div>
-                       <point-info-window :point-info="propsToInfoWindow" v-if="isInfoWindowVisible"></point-info-window>
-                   </baidu-map>
-                   <div class="map-change-wrapper">
-                       <button class="btn btn-world" @click.stop="exChangeMap(3,'重庆')" v-show="!isWorldMap"><span class="fa fa-exchange"></span>  世界地图</button>
-                       <button class="btn btn-china" @click.stop="exChangeMap(6,'武汉')" v-show="isWorldMap"><span class="fa fa-exchange"></span>  中国地图</button>
+                       </bm-marker>
                    </div>
+                   <point-info-window :point-info="propsToInfoWindow" v-if="isInfoWindowVisible"></point-info-window>
+               </baidu-map>
+               <div class="map-change-wrapper">
+                   <button class="btn btn-world" @click.stop="exChangeMap(3,'重庆')" v-show="!isWorldMap"><span class="fa fa-exchange"></span>  世界地图</button>
+                   <button class="btn btn-china" @click.stop="exChangeMap(6,'武汉')" v-show="isWorldMap"><span class="fa fa-exchange"></span>  中国地图</button>
                </div>
            </div>
        </div>
@@ -79,26 +81,26 @@
         ],
         mapInitZoom:3,//缩放等级只能是3到19
         mapCenter:'重庆',
-        isWorldMap:true,
-        isSingleMonitorVisible:false,
-        isInfoWindowVisible:false,
+        isWorldMap:true,//是否是世界地图
+        isSingleMonitorVisible:false,//是否显示单点监控页面
+        isInfoWindowVisible:false,//是否显示地图信息窗口
         propsToSingleMonitorModal:{}, //用于向单点监控界面传递的信息
-        propsToInfoWindow:{},
-        icon:{
+        propsToInfoWindow:{},//用于向地图信息窗口传递信息
+        icon:{//地图坐标点图例
           iconNormal:{
             url: require('@/assets/marker.png'),
-            size:{width:30,height:30},
+            size:{width:20,height:20},
             opts:{
               anchor:{top:0,left:0},
-              imageSize:{width:30,height:30}
+              imageSize:{width:20,height:20}
             }
           },
           iconAlert:{
             url: require('@/assets/markerAlert.png'),
-            size:{width:30,height:30},
+            size:{width:20,height:20},
             opts:{
               anchor:{top:0,left:0},
-              imageSize:{width:30,height:30}
+              imageSize:{width:20,height:20}
             }
           },
         }
@@ -175,31 +177,26 @@
     }
     .map-wrapper {
         height: 705px;
-        border: solid 3px white;
+        border: solid 1px white;
         position: relative;
     }
     .info-filter-wrapper {
         position: absolute;
-        right: 30px;
-        top: 15px;
-        border-radius: 5px;
-        padding: 10px 30px;
+        right: 20px;
+        top: 5px;
+        border-radius: 3px;
+        padding: 5px 10px;
         background-color: #ffffff;
         z-index: 100;
         font-size: 14px;
     }
-    .default-input-text {
-        width: 150px;
-        line-height: 20px;
-    }
-    .form-label{
-        line-height: 20px;
-        color: #2f4050;
-        font-weight: 300;
+    .info-filter-wrapper label {
+        height: 100%;
+        margin: 0;
     }
     .map-change-wrapper{
         position: absolute;
-        right: 30px;
+        right: 0;
         bottom: 0;
         padding: 10px 30px;
         background-color: transparent;
