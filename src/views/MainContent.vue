@@ -20,6 +20,11 @@
                         <span><span class="fa fa-cogs"></span>数据解析</span>
                     </router-link>
                 </li>
+                <li>
+                    <router-link tag="a" to="/backend-manage" active-class="active" exact>
+                        <span><span class="fa fa-cogs"></span>后台管理</span>
+                    </router-link>
+                </li>
                 <li class="nav-footer"><router-link to="/"><span><span class="fa fa-sign-out"></span>退出</span></router-link></li>
             </ul>
         </nav>

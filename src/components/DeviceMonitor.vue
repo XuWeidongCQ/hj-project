@@ -1,5 +1,5 @@
 <template>
-    <div class="SSJK-wrapper">
+    <div class="vue-views-wrapper">
         <e-c-u-statics-info></e-c-u-statics-info>
         <main-map></main-map>
     </div>
@@ -18,8 +18,5 @@
 </script>
 
 <style scoped>
-    .SSJK-wrapper {
-        background-color: transparent;
-        margin-top: 15px;
-    }
+
 </style>

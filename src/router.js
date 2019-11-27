@@ -35,6 +35,12 @@ export default new Router({
           component:function () {
             return import('./components/DataParse.vue')
           }
+        },
+        {
+          path:'/backend-manage',
+          component:function () {
+            return import('./components/BackendManage.vue')
+          }
         }
       ]
     }

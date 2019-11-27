@@ -1,5 +1,5 @@
 <template>
-    <div class="SBGL-wrapper">
+    <div class="vue-views-wrapper">
         <chart-statics></chart-statics>
         <table-statics></table-statics>
     </div>
@@ -18,8 +18,5 @@
 </script>
 
 <style scoped>
-    .SBGL-wrapper{
-        background-color: transparent;
-        margin: 15px 0;
-    }
+
 </style>

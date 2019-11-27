@@ -176,7 +176,7 @@
         background-color: transparent;
     }
     .map-wrapper {
-        height: 705px;
+        height: 725px;
         border: solid 1px white;
         position: relative;
     }

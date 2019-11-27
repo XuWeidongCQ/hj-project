@@ -1,7 +1,7 @@
 <template>
     <div class="xu-modal-backdrop" v-if="shown" @click.self="close">
         <div class="xu-modal" :class="{fadeIn:shown}">
-            <div class="xu-modal-header" v-if="headerShown">
+            <div class="xu-modal-header" :style="headerStyle" v-if="headerShown">
                 <div class="modal-title-wrapper">
                     <!--弹出框标题部分-->
                     <slot name="header"><div>这是模态框标题</div></slot>
@@ -28,21 +28,23 @@
   export default {
     name: "xu-modal",
     props:{
+      //接收数据1：是否显示
       shown:{
         type:Boolean,
         default:false
       },
+      //接收数据2：是否显示头部
       footerShown:{
         type: Boolean,
         default: false
       },
+      //接收数据3：是否显示尾部
       headerShown:{
         type:Boolean,
         default:false
-      }
-    },
-    data:function(){
-      return {
+      },
+      ///接收数据4：头部样式
+      headerStyle:{
 
       }
     },

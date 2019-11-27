@@ -56,7 +56,7 @@
                             </label>
                             <button class="xu-btn-sm xu-btn-info ml-3"><span class="fa fa-file-excel-o"></span>&nbsp;导出Excel</button>
                         </div>
-                        <div class="history-table scrollBar-style">
+                        <div class="history-table xu-fix-table-wrapper scrollBar-style">
                             <table class="xu-table xu-table-center xu-table-sm xu-table-hover">
                                 <thead class="xu-text-white-level0">
                                 <tr class="bg-info">
@@ -119,7 +119,8 @@
 </template>
 
 <script>
-  import XuModal from "@/components/CommonComponents/XuModal";
+  import XuModal from "@/components/CommonComponents/XuComponent/XuModal";
+  import XuCSS from "@/plugins/XuCSS";
   let echarts = require('echarts/lib/echarts');
   require('echarts/lib/chart/line');
   require('echarts/lib/component/tooltip');
@@ -337,7 +338,8 @@
     mounted(){
       this.drawRotateSpeedChart(document.getElementById('rotate-speed'),this.parameterHistoryRecord.rotateSpeed,this.parameterHistoryRecord.time);
       this.drawGreasePressureChart(document.getElementById('grease-pressure'),this.parameterHistoryRecord.greasePressure,this.parameterHistoryRecord.time);
-      this.drawCoolingWaterChart(document.getElementById('cooling-water'),this.parameterHistoryRecord.coolingWaterTemperature,this.parameterHistoryRecord.time)
+      this.drawCoolingWaterChart(document.getElementById('cooling-water'),this.parameterHistoryRecord.coolingWaterTemperature,this.parameterHistoryRecord.time);
+      XuCSS.fixTableThead()
     }
   }
 </script>

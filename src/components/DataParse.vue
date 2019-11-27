@@ -1,5 +1,5 @@
 <template>
-    <div class="sjjx-wrapper">
+    <div class="vue-views-wrapper">
         <div class="sjjx-container">
 <!--            <div class="table-title">-->
 <!--                <span>已有数据</span>-->
@@ -52,10 +52,6 @@
 </script>
 
 <style scoped>
-    .sjjx-wrapper {
-        background-color: transparent;
-        margin-top: 15px;
-    }
     .sjjx-container {
         background-color: #ffffff;
         margin: 15px 0;
