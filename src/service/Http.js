@@ -19,8 +19,8 @@ Object.keys(API).forEach(key => {
 
       switch (method) {
         case 'get':
-          Http[key][requestName] = function (config={},urlSuffix='') {
-            return axiosInst[method](url+urlSuffix,config)
+          Http[key][requestName] = function (config={}) {
+            return axiosInst[method](url,config)
           };
           break;
         case 'delete':
@@ -29,13 +29,13 @@ Object.keys(API).forEach(key => {
           };
           break;
         case 'post':
-          Http[key][requestName] = function (data={},config={},urlSuffix='') {
-            return axiosInst[method](url+urlSuffix,data,config)
+          Http[key][requestName] = function (data={},config={}) {
+            return axiosInst[method](url,data,config)
           };
           break;
         case 'put':
-          Http[key][requestName] = function (data={},config={},urlSuffix='') {
-            return axiosInst[method](url+urlSuffix,data,config)
+          Http[key][requestName] = function (data={},config={}) {
+            return axiosInst[method](url,data,config)
           };
           break;
         default:

@@ -16,7 +16,8 @@
     "popper.js": "^1.15.0",
     "vue": "^2.6.10",
     "vue-baidu-map": "^0.21.22",
-    "vue-router": "^3.0.3"
+    "vue-router": "^3.0.3",
+    "vue-toastr": "^2.1.2"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.11.0",

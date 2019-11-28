@@ -6,7 +6,7 @@
                 <span class="xu-indicator xu-indicator-add xu-float-right" @click="showAddCompanyForm">添加公司</span>
             </div>
             <div class="xubox-content">
-                <table class="xu-table xu-table-hover xu-table-center">
+                <table class="xu-table xu-table-sm xu-table-hover xu-table-center">
                     <thead class="bg-info xu-text-level2 xu-text-white-level0">
                     <tr>
                         <th>#ID</th>
@@ -42,7 +42,7 @@
         <xu-form v-if="isFormShown"
                  :is-pop-up="true"
                  :form-title="formTitle"
-                 :render-data="addCompanyProps"
+                 :render-data="formRenderData"
                  @submit="submit($event)"
                  @close="isFormShown = false">
 
@@ -53,6 +53,8 @@
 <script>
   import XuForm from "@/components/CommonComponents/XuComponent/XuForm";
   import XuPageNav from "@/components/CommonComponents/XuComponent/XuPageNav";
+  import {notice} from "@/plugins/toastrConfig";
+
   export default {
     name: "CompanyManage",
     components:{
@@ -62,7 +64,7 @@
     data:function () {
       return {
         isFormShown:false,//是否显示信息窗口
-        addCompanyProps:[],//用于添加客户公司表单渲染的信息
+        formRenderData:[],//用于表单渲染的数据
         formTitle:'',//信息窗口标题
         submitType:0,//信息窗口提交事件的类型，0-post，1-put
         selectedCompany:{},//被选中的公司
@@ -96,7 +98,7 @@
       showAddCompanyForm:function () {
         this.formTitle = '添加客户公司信息';
         this.submitType = 0;
-        this.addCompanyProps = [
+        this.formRenderData = [
           {content:'公司名称：',value:'',field:'name'},
           {content:'公司地址：',value:'',field:'address'},
         ];
@@ -104,10 +106,11 @@
       },
       //3.删除公司信息
       deleteCompanyInfo:function (companyId) {
-        this.$Http['backendManage']['deleteCompanyInfo'](companyId)
+        this.$Http['backendManage']['delCompanyInfo'](companyId)
           .then( res => {
-            console.log('删除成功');
-            this.getCompanyInfos()
+            const feedback = res.data === ''?'删除成功':res.data;
+            res.data === '' && this.getCompanyInfos();
+            this.$toastr.Add(notice(feedback));
           })
           .catch(error => {});
       },
@@ -116,7 +119,7 @@
         this.formTitle = '修改客户公司信息';
         this.submitType = 1;
         this.selectedCompany = company;
-        this.addCompanyProps = [
+        this.formRenderData = [
           {content:'公司名称：',value:company.name,field:'name'},
           {content:'公司地址：',value:company.address,field:'address'},
         ];
@@ -130,7 +133,8 @@
           case 0:
             this.$Http['backendManage']['postCompanyInfo'](formData)
               .then( res => {
-                console.log('提交成功');
+                // console.log('提交成功');
+                this.$toastr.Add(notice('创建成功'));
                 this.getCompanyInfos()
               })
               .catch(error => {});
@@ -139,7 +143,8 @@
             formData['id'] = this.selectedCompany.id;
             this.$Http['backendManage']['editCompanyInfo'](formData)
               .then( res => {
-                console.log('提交成功');
+                // console.log('提交成功');
+                this.$toastr.Add(notice('修改成功'));
                 this.getCompanyInfos()
               })
               .catch(error => {});

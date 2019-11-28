@@ -1,14 +1,14 @@
 <template>
     <div v-if="isShown" class="wrapper">
       <ul class="x-page-nav-wrapper">
-        <li class="x-page-item x-page-number" v-show="selectPage !== 1" @click="previousPage">上一页</li>
+        <li class="x-page-item x-page-number"  @click="previousPage">上一页</li>
         <li :class="{'x-page-number':pageNumber !== '...','active':pageNumber === selectPage}"
             class="x-page-item"
             v-for="pageNumber in pageNumbers"
             @click="getPage(pageNumber)">
           {{ pageNumber }}
         </li>
-        <li class="x-page-item x-page-number" v-show="selectPage !== totalPage" @click="nextPage">下一页</li>
+        <li class="x-page-item x-page-number"  @click="nextPage">下一页</li>
         <li class="x-page-item">
           共{{ totalPage }}页
         </li>
@@ -18,7 +18,7 @@
           <span>页</span>
         </li>
         <li class="x-page-item">
-          <button class="xu-btn xu-btn-info" @click="choosePage">确定</button>
+          <button class="xu-btn nav-btn" @click="choosePage">确定</button>
         </li>
       </ul>
     </div>
@@ -110,15 +110,19 @@
       },
       //点击上一页跳转
       previousPage:function () {
-        this.selectPage = this.selectPage - 1;
-        this.adjustPageNumbers(this.selectPage);
-        this.$emit('selectedPage',this.selectPage);
+        if (this.selectPage > 1){
+          this.selectPage = this.selectPage - 1;
+          this.adjustPageNumbers(this.selectPage);
+          this.$emit('selectedPage',this.selectPage);
+        }
       },
       //点击下一页跳转
       nextPage:function () {
-        this.selectPage = this.selectPage + 1;
-        this.adjustPageNumbers(this.selectPage);
-        this.$emit('selectedPage',this.selectPage);
+        if (this.selectPage < this.totalPage){
+          this.selectPage = this.selectPage + 1;
+          this.adjustPageNumbers(this.selectPage);
+          this.$emit('selectedPage',this.selectPage);
+        }
       },
       //点击页码选择跳转
       choosePage:function () {
@@ -148,7 +152,7 @@
   }
   .x-page-nav-wrapper {
     font-size: 12px;
-    color: #4d5875;
+    color:#4d5875;
   }
   .x-page-number {
     border: 1px solid #00a1d6;
@@ -166,19 +170,21 @@
   }
   .active {
     background-color: #00a1d6;
+    color:#ffffff;
   }
   .choose-page {
     width: 45px;
   }
-  .nav-page-btn {
-    height: 25px;
-    margin-left: 10px;
-    background-color: #00b3f0;
-    width: 50px;
-    color: #f7f7f7;
-    border-radius: 3px;
+  .nav-btn {
+      background-color: #00a1d6;
+      color: #ffffff;
+      border: 1px solid  #00a1d6;
   }
-  .nav-page-btn:hover {
-    background-color: #00a0d9;
+  .nav-btn:hover{
+      background-color: #00a1d6;
+      border: 1px solid #00a1d6;
   }
+    .hidden {
+        visibility: hidden;
+    }
 </style>
