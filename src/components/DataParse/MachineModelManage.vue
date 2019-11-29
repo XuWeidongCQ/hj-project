@@ -26,7 +26,7 @@
                             <span class="xu-indicator xu-indicator-edit"
                                   @click="editMachineModelInfo(machineModel)">修改</span>
                             <span class="xu-indicator xu-indicator-check"
-                                  >数据解析管理</span>
+                                  @click="showMachineDataParse(machineModel)">数据解析管理</span>
                         </td>
                     </tr>
                     </tbody>
@@ -43,19 +43,25 @@
                  @close="isFormShown = false">
 
         </xu-form>
+        <machine-data-parse :machine-model="selectedMachineModel"
+                            @close="isMachineDataParseShown = false"
+                            v-if="isMachineDataParseShown">
+        </machine-data-parse>
     </div>
 </template>
 
 <script>
   import XuForm from "@/components/CommonComponents/XuComponent/XuForm";
+  import MachineDataParse from "@/components/DataParse/MachineDataParse";
   import {notice} from "@/plugins/toastrConfig";
 
   export default {
     name: "MachineModelManage",
-    components: {XuForm},
+    components: {XuForm,MachineDataParse},
     data:function () {
       return {
         isFormShown:false,//是否显示信息窗口
+        isMachineDataParseShown:false,//是否显示机型数据解析表
         formRenderData:[],//用于表单渲染的数据
         formTitle:'',//信息窗口标题
         submitType:0,//信息窗口提交事件的类型，0-post，1-put
@@ -109,7 +115,11 @@
         ];
         this.isFormShown = true
       },
-      //5.
+      //5.显示机型的数据解析
+      showMachineDataParse:function(machineModel){
+        this.selectedMachineModel = machineModel;
+        this.isMachineDataParseShown = true;
+      },
       //*.信息窗口的提交按钮事件
       submit:function (formData) {
         switch (this.submitType) {

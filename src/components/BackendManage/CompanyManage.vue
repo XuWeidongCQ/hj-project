@@ -33,8 +33,10 @@
                 <div class="xu-text-center">
                     <xu-page-nav :is-shown="true"
                                  :size="serverData.size"
+                                 :now-page="serverData.number"
                                  :total-elements="serverData.totalElements"
-                                 :total-page="serverData.totalPages">
+                                 :total-page="serverData.totalPages"
+                                 @selectedPage="jumpSelectedPage($event)">
                     </xu-page-nav>
                 </div>
             </div>
@@ -81,13 +83,12 @@
     },
     methods:{
       //1.获取所有客户公司信息
-      getCompanyInfos:function () {
+      getCompanyInfos:function (page = 0) {
         this.companyInfos = [];
-        this.$Http['backendManage']['getCompanyInfos']()
+        this.$Http['backendManage']['getCompanyInfos']('',{params:{start:page}})
           .then( res => {
             this.serverData = res.data;
             const { content } = res.data;
-            // console.log(res.data);
             content.forEach(ele => {
               this.companyInfos.push({id:ele.id,name:ele.name,address:ele.address})
             });
@@ -125,11 +126,15 @@
         ];
         this.isFormShown = true
       },
+      //5.分页器跳转
+      jumpSelectedPage:function(selectedPage){
+        this.getCompanyInfos(selectedPage-1)
+      },
 
       //*.信息窗口的提交按钮事件
       submit:function (formData) {
         switch (this.submitType) {
-          //post事件类型
+          //添加公司信息
           case 0:
             this.$Http['backendManage']['postCompanyInfo'](formData)
               .then( res => {
@@ -139,6 +144,7 @@
               })
               .catch(error => {});
             break;
+          //修改公司信息
           case 1:
             formData['id'] = this.selectedCompany.id;
             this.$Http['backendManage']['editCompanyInfo'](formData)

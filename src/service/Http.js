@@ -19,23 +19,23 @@ Object.keys(API).forEach(key => {
 
       switch (method) {
         case 'get':
-          Http[key][requestName] = function (config={}) {
-            return axiosInst[method](url,config)
+          Http[key][requestName] = function (suffixUrl='',config={}) {
+            return axiosInst[method](url+suffixUrl,config)
           };
           break;
         case 'delete':
-          Http[key][requestName] = function (urlSuffix='',config={}) {
-            return axiosInst[method](url+urlSuffix,config)
+          Http[key][requestName] = function (suffixUrl='',config={}) {
+            return axiosInst[method](url+suffixUrl,config)
           };
           break;
         case 'post':
-          Http[key][requestName] = function (data={},config={}) {
-            return axiosInst[method](url,data,config)
+          Http[key][requestName] = function (data={},config={},suffixUrl='') {
+            return axiosInst[method](url+suffixUrl,data,config)
           };
           break;
         case 'put':
-          Http[key][requestName] = function (data={},config={}) {
-            return axiosInst[method](url,data,config)
+          Http[key][requestName] = function (data={},config={},suffixUrl='') {
+            return axiosInst[method](url+suffixUrl,data,config)
           };
           break;
         default:

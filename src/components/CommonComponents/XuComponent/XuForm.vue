@@ -6,13 +6,25 @@
                   @close="close"
                   :header-style="{backgroundColor:'#fcfcfc'}"
                   v-if="isPopUp">
-            <div slot="header">{{ formTitle }}</div>
+            <span slot="header">{{ formTitle }}</span>
             <div slot="content">
-                <div class="xu-form-control" v-for="formItem in renderData">
-                    <label class="xu-label-text">
-                        <span>{{ formItem.content }}</span>
-                        <input type="text" class="xu-input" v-model="formItem.value">
-                    </label>
+                <div v-for="formItem in renderData">
+                    <!--1.type=radio-->
+                    <div class="xu-form-control" v-if="formItem.additionalInfo && formItem.additionalInfo.type === 'radio'">
+                        <span class="fix-width-80">{{ formItem.content }}</span>
+                        <label class="xu-label-choose mr-integer" v-for="option in formItem.additionalInfo.optional">
+                            <input type="radio" class="xu-choose xu-radio" :value="option" v-model="formItem.value">
+                            <span>{{ option }}</span>
+                        </label>
+                    </div>
+                    <!--*.type=text-->
+                    <div class="xu-form-control" v-else>
+                        <label class="xu-label-text">
+                            <span class="fix-width-80">{{ formItem.content }}</span>
+                            <input type="text" class="xu-input" v-model="formItem.value"
+                                   :disabled="rules.length !== 0 && applyFormRules(formItem.field)">
+                        </label>
+                    </div>
                 </div>
             </div>
             <div slot="footer">
@@ -49,11 +61,16 @@
         default:[{content:'默认',value:'',field:''}],
         type:Array
       },
-      // //接收数据4：表单确认按钮事件的类型（0-提交，1-修改）
-      // submitType:{
-      //   default:0,
-      //   type:Number
-      // }
+      //接收数据4：表单禁用启用规则
+      rules:{
+        default:() => [],
+        type:Array
+      }
+    },
+    data:function(){
+      return {
+
+      }
     },
     methods:{
       //1.关闭事件
@@ -66,11 +83,42 @@
         this.renderData.forEach(ele => {formData[ele.field] = ele.value});
         this.$emit('submit',formData);
         this.$emit('close');
+      },
+      //3.应用表单规则
+      applyFormRules:function (field) {
+        for (let i=0;i<this.rules.length;i++){
+          let fieldLimited = this.rules[i].field;
+          let fieldToLimit = this.rules[i].limitBy.field;
+          let fieldToLimitValue = this.rules[i].limitBy.value;
+          let valueLimitedIndex;
+          if (field === fieldLimited) {
+
+            for (let j=0;j<this.renderData.length;j++){
+              switch (this.renderData[j].field) {
+                case fieldLimited:
+                  valueLimitedIndex = j;
+                  break;
+                case fieldToLimit:
+                  if (String(this.renderData[j].value) === fieldToLimitValue) {
+                    this.renderData[valueLimitedIndex].value = '';
+                    return true;
+                  }
+                  break;
+              }
+            }
+          }
+        }
+        return false;
       }
     }
   }
 </script>
 
 <style scoped>
+    .fix-width-80 {
+        display: inline-block;
+        width: 80px;
+        text-align: right;
+    }
 
 </style>

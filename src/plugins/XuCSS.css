@@ -355,7 +355,22 @@ body {
     border: 1px solid #228d3b;
 }
 
-/*9.辅助功能*/
+/*9.动画和过渡*/
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+.fadeIn {
+    animation: 300ms fadeIn;
+}
+
+/*#.辅助功能*/
 .clear::after {
     content: '';
     clear: both;
@@ -381,4 +396,7 @@ body {
 }
 .mr-integer {
     margin-right: 10px;
+}
+.min-width-1000 {
+    min-width: 1000px;
 }

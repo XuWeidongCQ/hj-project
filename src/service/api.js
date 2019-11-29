@@ -61,7 +61,60 @@ const API = {
     editMachineModelInfo:{
       method:'put',
       url:'/models'
-    }
+    },
+
+    //6.获取某一机型的数据解析表
+    getDataParseInfos:{
+      method:'get',
+      url:'/models/'
+    },
+    //7.获取某一条机型解析数据
+    getDataParseInfo:{
+      method:'get',
+      url:'/parses/'
+    },
+    //8.提交一条机型解析数据
+    postDataParseInfo:{
+      method:'post',
+      url:'/parses'
+    },
+    //9.删除某一条机型解析数据
+    delDataParseInfo:{
+      method:'delete',
+      url:'/parses/'
+    },
+    //10.修改一条机型解析数据
+    editDataParseInfo:{
+      method:'put',
+      url:'/parses'
+    },
+
+
+    //11.获取某一条数据解析下的所有的配置信息
+    getMachineConfigInfos:{
+      method:'get',
+      url:'/parses/'
+    },
+    //12.获取某一条配置信息
+    getMachineConfigInfo:{
+      method:'get',
+      url:'/matchs/'
+    },
+    //13.提交一条配置信息
+    postMachineConfigInfo:{
+      method:'post',
+      url:'/matchs'
+    },
+    //14.删除某一条配置信息
+    delMachineConfigInfo:{
+      method:'delete',
+      url:'/matchs/'
+    },
+    //15.修改一条配置信息
+    editMachineConfigInfo:{
+      method:'put',
+      url:'/matchs'
+    },
   }
 };
 

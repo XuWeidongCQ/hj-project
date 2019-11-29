@@ -33,31 +33,25 @@
         type:Boolean,
         default:false,
       },
-      //2.是否有下一页
-      hasNext:{
-        type:Boolean,
-        default:false,
-      },
-      //3.是否有上一页
-      hasPrevious:{
-        type:Boolean,
-        default:false,
-      },
-      //4.每一页有多少元素
+      //2.每一页有多少元素
       size:{
         type:Number,
         default:0,
       },
-      //5.一共多少元素
+      //3.一共多少元素
       totalElements:{
         type:Number,
         default:0
       },
-      //6.一共多少页
+      //4.一共多少页
       totalPage:{
         type: Number,
         default: 1
       },
+      //5.当前页
+      nowPage:{
+        type: Number,
+      }
     },
     data:function () {
       return {
@@ -127,7 +121,9 @@
       //点击页码选择跳转
       choosePage:function () {
         //限定页码的范围才能进行点击
-        if (Number(this.chosenPage) > 0 && Number(this.chosenPage) <= this.totalPage){
+        if (Number(this.chosenPage) > 0 &&
+            Number(this.chosenPage) <= this.totalPage &&
+            this.selectPage !== Number(this.chosenPage)){
           this.selectPage = Number(this.chosenPage);
           this.adjustPageNumbers(this.selectPage);
           this.$emit('selectedPage',this.selectPage);
@@ -136,12 +132,10 @@
     },
     watch:{
       totalPage:function () {
-        this.initPageNumbers()
+        this.initPageNumbers();
+        this.selectPage = this.nowPage + 1;
       }
     },
-    mounted() {
-      this.initPageNumbers()
-    }
   }
 </script>
 

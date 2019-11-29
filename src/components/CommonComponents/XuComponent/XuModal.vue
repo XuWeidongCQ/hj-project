@@ -64,7 +64,7 @@
         bottom: 0;
         left: 0;
         z-index: 1040;
-        background-color: rgba(0,0,0,0.3);
+        background-color: rgba(0,0,0,0.5);
         display: flex;
         justify-content: center;
         align-items: flex-start;
@@ -77,6 +77,8 @@
         margin-top: 50px;
     }
     .xu-modal-header {
+        border-top-left-radius: 5px;
+        border-top-right-radius: 5px;
         padding: 10px 15px 5px 15px;
         border-bottom: 1px solid #cccccc;
     }
@@ -103,6 +105,8 @@
         padding: 10px 15px 5px 15px;
     }
     .xu-modal-footer {
+        border-bottom-left-radius: 5px;
+        border-bottom-right-radius: 5px;
         padding: 10px 15px 10px 15px;
         border-top: 1px solid #cccccc;
     }
