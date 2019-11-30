@@ -6,7 +6,7 @@
                 <span class="xu-indicator xu-indicator-add xu-float-right" @click="showAddCompanyForm">添加公司</span>
             </div>
             <div class="xubox-content">
-                <table class="xu-table xu-table-sm xu-table-hover xu-table-center">
+                <table class="xu-table xu-table-hover xu-table-center">
                     <thead class="bg-info xu-text-level2 xu-text-white-level0">
                     <tr>
                         <th>#ID</th>
@@ -47,7 +47,6 @@
                  :render-data="formRenderData"
                  @submit="submit($event)"
                  @close="isFormShown = false">
-
         </xu-form>
     </div>
 </template>
@@ -88,6 +87,7 @@
         this.$Http['backendManage']['getCompanyInfos']('',{params:{start:page}})
           .then( res => {
             this.serverData = res.data;
+            // console.log(this.serverData);
             const { content } = res.data;
             content.forEach(ele => {
               this.companyInfos.push({id:ele.id,name:ele.name,address:ele.address})
@@ -149,7 +149,7 @@
             formData['id'] = this.selectedCompany.id;
             this.$Http['backendManage']['editCompanyInfo'](formData)
               .then( res => {
-                // console.log('提交成功');
+                console.log(res.data);
                 this.$toastr.Add(notice('修改成功'));
                 this.getCompanyInfos()
               })

@@ -9,6 +9,14 @@ a,ul,li,p {
 a {
     color: inherit;
 }
+    /*消除数字input后面的上下三角*/
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+}
+input[type="number"]{
+    -moz-appearance: textfield;
+}
 
 body {
     color: #000000;
@@ -104,17 +112,17 @@ body {
     margin: 0;
 }
 .xu-input {
-    padding: 0 0.5em;
-    border: 1px solid #48a8ff;
-    border-radius: 0.3em;
-    height: 1.5em;
-    line-height: 1.5em;
+    padding: 0 0.8em;
+    border: 1px solid #dcdfe6;
+    border-radius: 4px;
+    height: 2em;
+    line-height: 2em;
     font-size: 1em;
 }
 .xu-input:focus {
     outline: none;
-    border: 1px solid #3b6ab4;
-    border-radius: 0.3em;
+    border: 1px solid #48a8ff;
+    border-radius: 4px;
 }
 
 /*4.2 单选多选框*/
@@ -122,6 +130,8 @@ body {
     /*font-size: 14px;*/
     position: relative;
     margin: 0;
+    height: 2em;
+    line-height: 2em;
 }
 
 .xu-choose {
@@ -196,16 +206,18 @@ body {
     width: 100%;
 }
 .xu-table th {
-    border-top: 1px solid #cccccc;
+    border-top: 1px solid #ebeef5;
     text-align: start;
+    padding: 6px 4px;
 }
 .xu-table td {
-    border-top: 1px solid #cccccc;
-    border-bottom: 1px solid #cccccc;
+    border-top: 1px solid #ebeef5;
+    border-bottom: 1px solid #ebeef5;
+    padding: 6px 4px;
 }
 /*5.1 带边框的表格样式*/
 .xu-table-border th, .xu-table-border td{
-    border: 1px solid #cccccc;
+    border: 1px solid #ebeef5;
 }
 /*5.2 居中表格*/
 .xu-table-center td, .xu-table-center th{
@@ -213,12 +225,12 @@ body {
 }
 /*5.3 小表格*/
 .xu-table-sm th, .xu-table-sm td {
-    padding: 3px 6px;
+    padding: 4px 2px;
     font-size: 14px;
 }
 /*5.4 大表格*/
 .xu-table-lg th,.xu-table-lg td {
-    padding: 6px 8px;
+    padding: 8px 6px;
     font-size: 16px;
 }
 /*5.5 悬停表格*/
@@ -303,20 +315,20 @@ body {
 /*8.徽章和增、删、改、查指示器*/
 .xu-badge {
     display: inline-block;
-    padding: 0.1em 0.2em;
+    padding: 0.1em 0.3em;
     font-size: 0.7em;
-    border-radius: 0.4em;
+    border-radius: 999px;
     margin: 0 0.3em;
 }
 
 .xu-indicator {
     display: inline-block;
     padding: 0 0.2em;
-    font-size: 1em;
+    font-size: 0.9em;
     border-radius: 0.2em;
     margin: 0 0.3em;
     cursor: pointer;
-    line-height: 1.4em;
+    line-height: 1.6em;
 }
 .xu-indicator-add {
      background-color: #007bff;
@@ -383,7 +395,10 @@ body {
     float: right;
 }
 .xu-text-center {
-    text-align: center;
+    text-align: center !important;
+}
+.xu-text-start {
+    text-align: start !important;
 }
 .mb-integer {
     margin-bottom: 10px;

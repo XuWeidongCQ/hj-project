@@ -17,6 +17,25 @@
                             <span>{{ option }}</span>
                         </label>
                     </div>
+                    <!--2.type=number-->
+                    <div class="xu-form-control" v-else-if="formItem.additionalInfo && formItem.additionalInfo.type === 'number'">
+                        <label class="xu-label-text">
+                            <span class="fix-width-80">{{ formItem.content }}</span>
+                            <input type="number" class="xu-input" v-model="formItem.value"
+                                   :disabled="rules.length !== 0 && applyFormRules(formItem.field)">
+                        </label>
+                    </div>
+                    <!--2.select-->
+                    <div class="xu-form-control" v-else-if="formItem.additionalInfo && formItem.additionalInfo.type === 'select'">
+                        <label class="xu-label-text">
+                            <span class="fix-width-80">{{ formItem.content }}</span>
+                            <select v-model="formItem.value" class="xu-input">
+                                <option v-for="option in formItem.additionalInfo.optional">
+                                    {{ option }}
+                                </option>
+                            </select>
+                        </label>
+                    </div>
                     <!--*.type=text-->
                     <div class="xu-form-control" v-else>
                         <label class="xu-label-text">
@@ -91,6 +110,7 @@
           let fieldToLimit = this.rules[i].limitBy.field;
           let fieldToLimitValue = this.rules[i].limitBy.value;
           let valueLimitedIndex;
+          let result = false;
           if (field === fieldLimited) {
 
             for (let j=0;j<this.renderData.length;j++){
@@ -101,11 +121,12 @@
                 case fieldToLimit:
                   if (String(this.renderData[j].value) === fieldToLimitValue) {
                     this.renderData[valueLimitedIndex].value = '';
-                    return true;
+                    result = true;
                   }
                   break;
               }
             }
+            return result;
           }
         }
         return false;

@@ -3,12 +3,13 @@
         <xu-modal :shown="true"
                   :header-shown="true"
                   :footer-shown="true"
+                  :model-style="{marginTop:'150px'}"
                   @close="close">
             <div slot="header">
                 <span>#{{machineModel.id}}-{{machineModel.modelName}}的机型数据解析[不用分页]</span>
             </div>
             <div slot="content">
-                <table class="xu-table xu-table-sm xu-table-hover xu-table-center min-width-1000">
+                <table class="xu-table xu-table-sm xu-table-hover min-width-1000">
                     <thead class="bg-info xu-text-level2 xu-text-white-level0">
                     <tr>
                         <th>#ID</th>
@@ -41,6 +42,8 @@
                                   @click="delDataParseInfo(dataParse.id)">删除</span>
                             <span class="xu-indicator xu-indicator-edit"
                                   @click="showEditDataParseForm(dataParse)">修改</span>
+                            <span class="xu-indicator xu-indicator-check"
+                                  @click="showDataParseMatch(dataParse)" v-if="dataParse.isMatch === true">查看匹配信息</span>
                         </td>
                     </tr>
                     </tbody>
@@ -59,17 +62,23 @@
                  @close="isFormShown = false">
 
         </xu-form>
+        <data-parse-match v-if="isDataParseMatchShown"
+                          @close="isDataParseMatchShown = false"
+                          :data-parse="selectedDataParse">
+
+        </data-parse-match>
     </div>
 </template>
 
 <script>
   import XuModal from "@/components/CommonComponents/XuComponent/XuModal";
   import XuForm from "@/components/CommonComponents/XuComponent/XuForm";
+  import DataParseMatch from "@/components/DataParse/DataParseMatch";
   import {notice} from "@/plugins/toastrConfig";
 
   export default {
     name: "MachineDataParse",
-    components: {XuModal,XuForm},
+    components: {XuModal,XuForm,DataParseMatch},
     props:{
       //1.显示的机型
       machineModel:{
@@ -80,12 +89,13 @@
     data:function () {
       return {
         isFormShown:false,//是否显示信息窗口
+        isDataParseMatchShown:false,//是否显示数据解析配置表
         formRenderData:[],//用于表单渲染的数据
         formTitle:'',//信息窗口标题
         submitType:0,//信息窗口提交事件的类型，0-post，1-put
         selectedDataParse:{},//被选中的数据解析
         serverData:{},//从服务器获取的所有数据
-        dataParseInfos:[],////存放获取的机型表的信息
+        dataParseInfos:[],//存放获取的数据解析的信息
       }
     },
     methods:{
@@ -121,7 +131,6 @@
                 isMatch:ele.match,
                 isDisplay:ele.display
               });
-              console.log(typeof ele.match)
             })
           })
       },
@@ -132,11 +141,11 @@
         this.formRenderData = [
           {content:'名称：',value:'',field:'dataName'},
           {content:'标识符：',value:'',field:'dataIdentifier'},
-          {content:'解析规则：',value:'',field:'parseRule'},
-          {content:'起始字节：',value:'',field:'byteStart',},
-          {content:'结束字节：',value:'',field:'byteEnd'},
-          {content:'最小值：',value:'',field:'minValue'},
-          {content:'最大值：',value:'',field:'maxValue'},
+          {content:'解析规则：',value:'unsignedShort',field:'parseRule',additionalInfo:{type:'select',optional:['unsignedShort','unsignedInt','float']}},
+          {content:'起始字节：',value:'',field:'byteStart',additionalInfo:{type:'number'}},
+          {content:'结束字节：',value:'',field:'byteEnd',additionalInfo:{type:'number'}},
+          {content:'最小值：',value:'',field:'minValue',additionalInfo:{type:'number'}},
+          {content:'最大值：',value:'',field:'maxValue',additionalInfo:{type:'number'}},
           {content:'是否匹配：',value:'true',field:'match',additionalInfo:{type:'radio',optional:['true','false']}},
           {content:'是否显示：',value:'true',field:'display',additionalInfo:{type:'radio',optional:['true','false']}},
         ];
@@ -160,15 +169,20 @@
         this.formRenderData = [
           {content:'名称：',value:dataParse.dataName,field:'dataName'},
           {content:'标识符：',value:dataParse.dataIdentifier,field:'dataIdentifier'},
-          {content:'解析规则：',value:dataParse.parseRule,field:'parseRule'},
-          {content:'起始字节：',value:dataParse.byteStart,field:'byteStart'},
-          {content:'结束字节：',value:dataParse.byteEnd,field:'byteEnd'},
-          {content:'最小值：',value:dataParse.minValue,field:'minValue'},
-          {content:'最大值：',value:dataParse.maxValue,field:'maxValue'},
+          {content:'解析规则：',value:dataParse.parseRule,field:'parseRule',additionalInfo:{type:'select',optional:['unsignedShort','unsignedInt','float']}},
+          {content:'起始字节：',value:dataParse.byteStart,field:'byteStart',additionalInfo:{type:'number'}},
+          {content:'结束字节：',value:dataParse.byteEnd,field:'byteEnd',additionalInfo:{type:'number'}},
+          {content:'最小值：',value:dataParse.minValue,field:'minValue',additionalInfo:{type:'number'}},
+          {content:'最大值：',value:dataParse.maxValue,field:'maxValue',additionalInfo:{type:'number'}},
           {content:'是否匹配：',value:dataParse.isMatch,field:'match',additionalInfo:{type:'radio',optional:['true','false']}},
           {content:'是否显示：',value:dataParse.isDisplay,field:'display',additionalInfo:{type:'radio',optional:['true','false']}},
         ];
         this.isFormShown = true
+      },
+      //6.查看数据解析的匹配信息
+      showDataParseMatch:function(dataParse){
+        this.selectedDataParse = dataParse;
+        this.isDataParseMatchShown = true;
       },
       //*.信息窗口的提交按钮事件
       submit:function (formData) {

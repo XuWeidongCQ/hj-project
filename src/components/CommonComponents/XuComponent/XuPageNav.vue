@@ -36,17 +36,14 @@
       //2.每一页有多少元素
       size:{
         type:Number,
-        default:0,
       },
       //3.一共多少元素
       totalElements:{
         type:Number,
-        default:0
       },
       //4.一共多少页
       totalPage:{
         type: Number,
-        default: 1
       },
       //5.当前页
       nowPage:{
@@ -126,8 +123,17 @@
             this.selectPage !== Number(this.chosenPage)){
           this.selectPage = Number(this.chosenPage);
           this.adjustPageNumbers(this.selectPage);
+          this.chosenPage = '';
           this.$emit('selectedPage',this.selectPage);
         }
+      },
+      //打印获取的数据--父组件向子组件异步传递数据的测试
+      propsData:function () {
+        console.log('1.isShown:',this.isShown);
+        console.log('2.size:',this.size);
+        console.log('3.totalElements:',this.totalElements);
+        console.log('4.totalPage:',this.totalPage);
+        console.log('5.nowPage:',this.nowPage);
       }
     },
     watch:{

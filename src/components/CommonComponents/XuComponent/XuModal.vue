@@ -1,6 +1,6 @@
 <template>
     <div class="xu-modal-backdrop" v-if="shown" @click.self="close">
-        <div class="xu-modal" :class="{fadeIn:shown}">
+        <div class="xu-modal" :class="{fadeIn:shown}" :style="modelStyle">
             <div class="xu-modal-header" :style="headerStyle" v-if="headerShown">
                 <div class="modal-title-wrapper">
                     <!--弹出框标题部分-->
@@ -43,10 +43,11 @@
         type:Boolean,
         default:false
       },
-      ///接收数据4：头部样式
+      //接收数据4：头部样式
       headerStyle:{
-
-      }
+      },
+      //接收数据5：整体弹窗框样式
+      modelStyle:{}
     },
     methods:{
       close:function () {
