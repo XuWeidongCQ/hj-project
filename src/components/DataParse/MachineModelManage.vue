@@ -50,22 +50,22 @@
                  @close="isFormShown = false">
 
         </xu-form>
-        <machine-data-parse :machine-model="selectedMachineModel"
+        <machine-data-parse-pop-up :machine-model="selectedMachineModel"
                             @close="isMachineDataParseShown = false"
                             v-if="isMachineDataParseShown">
-        </machine-data-parse>
+        </machine-data-parse-pop-up>
     </div>
 </template>
 
 <script>
   import XuForm from "@/components/CommonComponents/XuComponent/XuForm";
-  import MachineDataParse from "@/components/DataParse/MachineDataParse";
+  import MachineDataParsePopUp from "@/components/DataParse/MachineDataParsePopUp";
   import XuPageNav from "@/components/CommonComponents/XuComponent/XuPageNav";
   import {notice} from "@/plugins/toastrConfig";
 
   export default {
     name: "MachineModelManage",
-    components: {XuForm,MachineDataParse,XuPageNav},
+    components: {XuForm,MachineDataParsePopUp,XuPageNav},
     data:function () {
       return {
         isFormShown:false,//是否显示信息窗口

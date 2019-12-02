@@ -75,7 +75,9 @@
       initPageNumbers:function () {
         if (this.totalPage <= 6 && this.totalPage >= 1){//最大页码在4页之内
           this.pageNumbers = this.getArray(1,this.totalPage);
-        } else {//最大页码超过了6页
+        } else if (this.totalPage === 0){
+          this.pageNumbers = [0]
+        } else { //最大页码超过了6页
           this.pageNumbers = [1,2,3,4,5,'...',this.totalPage];
         }
       },

@@ -7,7 +7,7 @@
                   :header-style="{backgroundColor:'#fcfcfc'}"
                   v-if="isPopUp">
             <span slot="header">{{ formTitle }}</span>
-            <div slot="content">
+            <div slot="content" class="xu-text-level3">
                 <div v-for="formItem in renderData">
                     <!--1.type=radio-->
                     <div class="xu-form-control" v-if="formItem.additionalInfo && formItem.additionalInfo.type === 'radio'">
@@ -28,7 +28,7 @@
                     <!--2.select-->
                     <div class="xu-form-control" v-else-if="formItem.additionalInfo && formItem.additionalInfo.type === 'select'">
                         <label class="xu-label-text">
-                            <span class="fix-width-80">{{ formItem.content }}</span>
+                            <span class="fix-width-100">{{ formItem.content }}</span>
                             <select v-model="formItem.value" class="xu-input">
                                 <option v-for="option in formItem.additionalInfo.optional">
                                     {{ option }}
@@ -36,10 +36,27 @@
                             </select>
                         </label>
                     </div>
+                    <!--3.textarea-->
+                    <div class="xu-form-control" v-else-if="formItem.additionalInfo && formItem.additionalInfo.type === 'textarea'">
+                        <label class="xu-label-text">
+                            <span class="fix-width-100">{{ formItem.content }}</span>
+                            <textarea type="text" v-model="formItem.value" class="xu-textarea"
+                                      :disabled="rules.length !== 0 && applyFormRules(formItem.field)">
+                            </textarea>
+                        </label>
+                    </div>
+                    <!--3.type=date-->
+                    <div class="xu-form-control" v-else-if="formItem.additionalInfo && formItem.additionalInfo.type === 'date'">
+                        <label class="xu-label-text">
+                            <span class="fix-width-100">{{ formItem.content }}</span>
+                            <input type="date" class="xu-input" v-model="formItem.value"
+                                   :disabled="rules.length !== 0 && applyFormRules(formItem.field)">
+                        </label>
+                    </div>
                     <!--*.type=text-->
                     <div class="xu-form-control" v-else>
                         <label class="xu-label-text">
-                            <span class="fix-width-80">{{ formItem.content }}</span>
+                            <span class="fix-width-100">{{ formItem.content }}</span>
                             <input type="text" class="xu-input" v-model="formItem.value"
                                    :disabled="rules.length !== 0 && applyFormRules(formItem.field)">
                         </label>
@@ -136,9 +153,9 @@
 </script>
 
 <style scoped>
-    .fix-width-80 {
+    .fix-width-100 {
         display: inline-block;
-        width: 80px;
+        max-width: 100px;
         text-align: right;
     }
 

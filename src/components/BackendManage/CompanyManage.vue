@@ -25,7 +25,8 @@
                                   @click="deleteCompanyInfo(company.id)">删除</span>
                             <span class="xu-indicator xu-indicator-edit"
                                   @click="showEditCompanyForm(company)">修改</span>
-                            <!--                            <span class="xu-indicator xu-indicator-check">查看</span>-->
+                            <span class="xu-indicator xu-indicator-check"
+                                  @click="showDeviceTable(company)">查看设备</span>
                         </td>
                     </tr>
                     </tbody>
@@ -41,6 +42,11 @@
                 </div>
             </div>
         </div>
+        <device-table-pop-up
+            v-if="isDeviceTableShown"
+            :company="selectedCompany"
+            @close="isDeviceTableShown = false">
+        </device-table-pop-up>
         <xu-form v-if="isFormShown"
                  :is-pop-up="true"
                  :form-title="formTitle"
@@ -54,17 +60,20 @@
 <script>
   import XuForm from "@/components/CommonComponents/XuComponent/XuForm";
   import XuPageNav from "@/components/CommonComponents/XuComponent/XuPageNav";
+  import DeviceTablePopUp from "@/components/BackendManage/DeviceTablePopUp";
   import {notice} from "@/plugins/toastrConfig";
 
   export default {
     name: "CompanyManage",
     components:{
       XuForm,
-      XuPageNav
+      XuPageNav,
+      DeviceTablePopUp
     },
     data:function () {
       return {
         isFormShown:false,//是否显示信息窗口
+        isDeviceTableShown:false,//是否显示公司设备管理表格
         formRenderData:[],//用于表单渲染的数据
         formTitle:'',//信息窗口标题
         submitType:0,//信息窗口提交事件的类型，0-post，1-put
@@ -130,7 +139,11 @@
       jumpSelectedPage:function(selectedPage){
         this.getCompanyInfos(selectedPage-1)
       },
-
+      //6.显示公司设备管理表格
+      showDeviceTable:function(company){
+        this.selectedCompany = company;
+        this.isDeviceTableShown = true;
+      },
       //*.信息窗口的提交按钮事件
       submit:function (formData) {
         switch (this.submitType) {
@@ -156,7 +169,7 @@
               .catch(error => {});
             break;
         }
-      },
+      }
     },
     created(){
       this.getCompanyInfos()

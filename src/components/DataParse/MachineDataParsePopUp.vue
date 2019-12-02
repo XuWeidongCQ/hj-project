@@ -60,25 +60,24 @@
                  :rules="getFormRules()"
                  @submit="submit($event)"
                  @close="isFormShown = false">
-
         </xu-form>
-        <data-parse-match v-if="isDataParseMatchShown"
-                          @close="isDataParseMatchShown = false"
-                          :data-parse="selectedDataParse">
-
-        </data-parse-match>
+        <data-parse-match-pop-up
+            v-if="isDataParseMatchShown"
+            @close="isDataParseMatchShown = false"
+            :data-parse="selectedDataParse">
+        </data-parse-match-pop-up>
     </div>
 </template>
 
 <script>
   import XuModal from "@/components/CommonComponents/XuComponent/XuModal";
   import XuForm from "@/components/CommonComponents/XuComponent/XuForm";
-  import DataParseMatch from "@/components/DataParse/DataParseMatch";
+  import DataParseMatchPopUp from "@/components/DataParse/DataParseMatchPopUp";
   import {notice} from "@/plugins/toastrConfig";
 
   export default {
-    name: "MachineDataParse",
-    components: {XuModal,XuForm,DataParseMatch},
+    name: "MachineDataParsePopUp",
+    components: {XuModal,XuForm,DataParseMatchPopUp},
     props:{
       //1.显示的机型
       machineModel:{

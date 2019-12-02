@@ -19,28 +19,24 @@ export default new Router({
         {
           path:'',
           name:'DeviceMonitor',
-          component:function () {
-            return import('./components/DeviceMonitor.vue')
-          }
+          component:() => import('./components/DeviceMonitor.vue')
         },
         {
           path:'/device-manage',
           name:'DeviceManage',
-          component:function () {
-            return import('./components/DeviceManage.vue')
-          }
+          component:() => import('./components/DeviceManage.vue')
         },
         {
           path:'/data-parse',
-          component:function () {
-            return import('./components/DataParse.vue')
-          }
+          component:() => import('./components/DataParse.vue')
         },
         {
           path:'/backend-manage',
-          component:function () {
-            return import('./components/BackendManage.vue')
-          }
+          component: () => import('./components/BackendManage.vue')
+        },
+        {
+          path:'/repair-center',
+          component:() => import('./components/RepairCenter.vue')
         }
       ]
     }
