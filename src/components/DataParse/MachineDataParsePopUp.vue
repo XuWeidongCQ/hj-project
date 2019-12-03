@@ -6,7 +6,7 @@
                   :model-style="{marginTop:'150px'}"
                   @close="close">
             <div slot="header">
-                <span>#{{machineModel.id}}-{{machineModel.modelName}}的机型数据解析[不用分页]</span>
+                <span>#{{machineModel.id}}-{{machineModel.modelName}}的机型数据解析</span>
             </div>
             <div slot="content">
                 <table class="xu-table xu-table-sm xu-table-hover min-width-1000">
@@ -93,7 +93,7 @@
         formTitle:'',//信息窗口标题
         submitType:0,//信息窗口提交事件的类型，0-post，1-put
         selectedDataParse:{},//被选中的数据解析
-        serverData:{},//从服务器获取的所有数据
+        // serverData:{},//从服务器获取的所有数据
         dataParseInfos:[],//存放获取的数据解析的信息
       }
     },
@@ -114,9 +114,8 @@
         this.dataParseInfos = [];
         this.$Http['dataParse']['getDataParseInfos'](this.machineModel.id+'/parses')
           .then(res => {
-            this.serverData = res.data;
-            const {content} = res.data;
-            // console.log(content);
+            // this.serverData = res.data;
+            const content = res.data;
             content.forEach(ele => {
               this.dataParseInfos.push({
                 id:ele.id,

@@ -14,14 +14,15 @@
                     <tr>
                         <th>#ID</th>
                         <th>控制系统编号</th>
+                        <th>机型名称</th>
                         <th>北斗卡号</th>
                         <th>最后一次在线时刻</th>
                         <th>出厂日期</th>
                         <th>使用日期</th>
                         <th>服务时长</th>
-                        <th>创建时间</th>
                         <th>报废时间</th>
                         <th>状态</th>
+                        <th>创建时间</th>
                         <th>操作</th>
                     </tr>
                     </thead>
@@ -29,12 +30,12 @@
                     <tr v-for="deviceInfo in devicesInfos" :key="deviceInfo.id">
                         <td>{{deviceInfo.id}}</td>
                         <td>{{deviceInfo.csNumber}}</td>
+                        <td>{{deviceInfo.model.modelName}}</td>
                         <td>{{deviceInfo.beidouId}}</td>
                         <td>{{deviceInfo.lastTime}}</td>
                         <td>{{deviceInfo.factoryDate}}</td>
                         <td>{{deviceInfo.startDate}}</td>
-                        <td>{{deviceInfo.serviceLife}}</td>
-                        <td>{{deviceInfo.createTime}}</td>
+                        <td>{{deviceInfo.serviceLife | serviceLifeFilter}}</td>
                         <td>{{deviceInfo.scrapTime}}</td>
                         <td>
                             <span class="xu-badge"
@@ -49,11 +50,12 @@
                                 {{deviceInfo.status | statusFilter }}
                             </span>
                         </td>
+                        <td>{{deviceInfo.createTime}}</td>
                         <td>
                             <span class="xu-indicator xu-indicator-delete"
-                                  @click="">删除</span>
+                                  @click="delDeviceInfo(deviceInfo.id)">删除</span>
                             <span class="xu-indicator xu-indicator-edit"
-                                  @click="">修改</span>
+                                  @click="showEditDeviceForm(deviceInfo)">修改</span>
                         </td>
                     </tr>
                     </tbody>
@@ -76,6 +78,7 @@
                  :is-pop-up="true"
                  :form-title="formTitle"
                  :render-data="formRenderData"
+                 :rules="getFormRules()"
                  @submit="submit($event)"
                  @close="isFormShown = false">
         </xu-form>
@@ -106,6 +109,7 @@
         selectedDeviceInfo:{},//被选中的数据解析
         serverData:{},//从服务器获取的所有数据
         devicesInfos:[],//存放获取的公司设备信息
+        modelInfos:[],//存放所有机型的信息
       }
     },
     filters:{
@@ -130,16 +134,32 @@
           default:
             return '未知'
         }
+      },
+      serviceLifeFilter:function (value) {
+        const hours = Math.floor(value / 3600000);
+        const minutes = Math.floor(value % 3600000 / 60000);
+        return `${hours}h${minutes}min`
       }
     },
+    // computed:{
+    //   //1 从公司所有设备中提取中机型信息
+    //   devicesInfos:
+    // },
     methods:{
       //0 关闭事件
       close:function(){
         this.$emit('close');
       },
+      //0.1 表单渲染规则
+      getFormRules:function(){
+        return [
+          {field:'scrapTime',limitBy:{field:'status',value:'否',rule:'disable'}},
+        ]
+      },
       //1 获取一个公司的所有设备
       getDeviceInfos: function (page=0) {
         this.devicesInfos = [];
+        this.modelInfos = [];
         this.$Http['backendManage']['getDeviceInfos'](this.company.id + '/devices',{params:{start:page}})
           .then(res => {
             // console.log(res.data);
@@ -158,22 +178,60 @@
                 scrapTime:ele.scrapTime,
                 isOnline:ele.online,
                 status:ele.status,
-                modelId:ele.model.id
+                model:ele.model
               })
+            })
+          });
+        this.$Http['dataParse']['getMachineModelInfos']()
+          .then(res => {
+            res.data.forEach(ele => {
+              this.modelInfos.push({id:ele.id,modelName:ele.modelName,modelNumber:ele.modelNumber})
             })
           })
       },
       //2.新建一台设备
       showAddDeviceForm:function(){
+        const selectModel = this.modelInfos.map(value => 'ID#' + value.id + '—' + value.modelName);
         this.formTitle = '添加设备';
         this.submitType = 0;
         this.formRenderData = [
+          {content:'选择机型：',value:'',field:'modelName',additionalInfo:{type:'select',optional:selectModel}},
           {content:'控制系统编号：',value:'',field:'csNumber'},
           {content:'北斗编号：',value:'',field:'beidouId'},
           {content:'出厂日期：',value:'',field:'factoryDate',additionalInfo:{type:'date'}},
           {content:'使用时期：',value:'',field:'startDate',additionalInfo:{type:'date'}},
+          {content:'是否报废：',value:'否',field:'status',additionalInfo:{type:'radio',optional:['是','否']}},
+          {content:'报废时间：',value:'',field:'scrapTime',additionalInfo:{type:'date'}},
         ];
         this.isFormShown = true
+      },
+      //3.修改一台设备
+      showEditDeviceForm:function(deviceInfo){
+        const selectModel = this.modelInfos.map(value => 'ID#' + value.id + '—' + value.modelName);//构造机型信息用于表单的下拉选择
+        const isScrap = deviceInfo.status === 0 ? '是':'否';
+        this.selectedDeviceInfo = deviceInfo;
+        this.formTitle = '修改设备信息';
+        this.submitType = 1;
+        this.formRenderData = [
+          {content:'选择机型：',value:'ID#' + deviceInfo.model.id + '—' + deviceInfo.model.modelName,field:'modelName',additionalInfo:{type:'select',optional:selectModel}},
+          {content:'控制系统编号：',value:deviceInfo.csNumber,field:'csNumber'},
+          {content:'北斗编号：',value:deviceInfo.beidouId,field:'beidouId'},
+          {content:'出厂日期：',value:deviceInfo.factoryDate,field:'factoryDate',additionalInfo:{type:'date'}},
+          {content:'使用时期：',value:deviceInfo.startDate,field:'startDate',additionalInfo:{type:'date'}},
+          {content:'是否报废：',value:isScrap,field:'status',additionalInfo:{type:'radio',optional:['是','否']}},
+          {content:'报废时间：',value:deviceInfo.scrapTime,field:'scrapTime',additionalInfo:{type:'date'}},
+        ];
+        this.isFormShown = true
+      },
+      //4.删除一台设备
+      delDeviceInfo:function(deviceInfoId){
+        this.$Http['backendManage']['delDeviceInfo'](deviceInfoId)
+          .then( res => {
+            const feedback = res.data === ''?'删除成功':res.data;
+            res.data === '' && this.getDeviceInfos();
+            this.$toastr.Add(notice(feedback));
+          })
+          .catch(error => {});
       },
 
       //5.分页器跳转
@@ -182,28 +240,42 @@
       },
       //*.信息窗口的提交按钮事件
       submit:function (formData) {
+        const reg= /(\d+)(?=—)/;
+        const modelId = formData.modelName.match(reg)[0];
+        if(formData['status'] === '否'){
+          delete formData.status;
+          delete formData.scrapTime;
+        } else {
+          formData.status = 0;
+          formData.scrapTime += ' 00:00:00';//修复报废时间，和后端接口对应。
+        }
+        delete formData.modelName;
+        //添加外键信息
+        formData['model'] = {id:modelId};
+        formData['company'] = {id:this.company.id};
         switch (this.submitType) {
-          //添加公司信息
+          //添加设备信息
           case 0:
-            console.log(formData);
+            // console.log(formData);
             this.$Http['backendManage']['postDeviceInfo'](formData)
               .then( res => {
-                console.log(res.data);
+                // console.log(res.data);
                 this.$toastr.Add(notice('创建成功'));
                 this.getDeviceInfos()
               })
               .catch(error => {});
             break;
-          //修改公司信息
+          //修改设备信息
           case 1:
-            // formData['id'] = this.selectedCompany.id;
-            // this.$Http['backendManage']['editCompanyInfo'](formData)
-            //   .then( res => {
-            //     console.log(res.data);
-            //     this.$toastr.Add(notice('修改成功'));
-            //     this.getCompanyInfos()
-            //   })
-            //   .catch(error => {});
+            // console.log(formData);
+            formData['id'] = this.selectedDeviceInfo.id;
+            this.$Http['backendManage']['editDeviceInfo'](formData)
+              .then( res => {
+                // console.log(res.data);
+                this.$toastr.Add(notice('修改成功'));
+                this.getDeviceInfos()
+              })
+              .catch(error => {});
             break;
         }
       }

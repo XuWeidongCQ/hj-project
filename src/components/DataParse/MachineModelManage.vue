@@ -31,15 +31,6 @@
                     </tr>
                     </tbody>
                 </table>
-                <div class="xu-text-center">
-                    <xu-page-nav :is-shown="true"
-                                 :size="serverData.size"
-                                 :now-page="serverData.number"
-                                 :total-elements="serverData.totalElements"
-                                 :total-page="serverData.totalPages"
-                                 @selectedPage="jumpSelectedPage($event)">
-                    </xu-page-nav>
-                </div>
             </div>
         </div>
         <xu-form v-if="isFormShown"
@@ -60,12 +51,11 @@
 <script>
   import XuForm from "@/components/CommonComponents/XuComponent/XuForm";
   import MachineDataParsePopUp from "@/components/DataParse/MachineDataParsePopUp";
-  import XuPageNav from "@/components/CommonComponents/XuComponent/XuPageNav";
   import {notice} from "@/plugins/toastrConfig";
 
   export default {
     name: "MachineModelManage",
-    components: {XuForm,MachineDataParsePopUp,XuPageNav},
+    components: {XuForm,MachineDataParsePopUp},
     data:function () {
       return {
         isFormShown:false,//是否显示信息窗口
@@ -74,7 +64,7 @@
         formTitle:'',//信息窗口标题
         submitType:0,//信息窗口提交事件的类型，0-post，1-put
         selectedMachineModel:{},//被选中的公司
-        serverData:{},//从服务器获取的所有数据
+        // serverData:{},//从服务器获取的所有数据
         machineModelInfos:[],////存放获取的机型表的信息
       }
     },
@@ -84,8 +74,9 @@
         this.machineModelInfos = [];
         this.$Http['dataParse']['getMachineModelInfos']('',{params:{start:page}})
           .then(res => {
-            this.serverData = res.data;
-            const {content} = res.data;
+            // console.log(res);
+            // this.serverData = res.data;
+            const content = res.data;
             // console.log(content);
             content.forEach(ele => {
               this.machineModelInfos.push({id:ele.id,modelName:ele.modelName,modelNumber:ele.modelNumber})
@@ -128,10 +119,7 @@
         this.selectedMachineModel = machineModel;
         this.isMachineDataParseShown = true;
       },
-      //6.分页器跳转
-      jumpSelectedPage:function(selectedPage){
-        this.getMachineModelInfos(selectedPage-1)
-      },
+
       //*.信息窗口的提交按钮事件
       submit:function (formData) {
         switch (this.submitType) {

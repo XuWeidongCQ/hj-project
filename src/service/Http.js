@@ -7,6 +7,23 @@ let axiosInst = axios.create({
 });
 
 let Http = {};
+//请求拦截器
+axiosInst.interceptors.request.use(config => {
+  // console.log(config);
+  return config
+});
+
+
+//响应拦截器
+axiosInst.interceptors.response.use(res=>{
+  const data = res.data;
+  if (data.content){
+    console.log(data.content)
+  } else {
+    console.log(data);
+  }
+  return res //必须返回，不然响应会被阻断
+});
 
 
 Object.keys(API).forEach(key => {

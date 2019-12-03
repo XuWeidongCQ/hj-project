@@ -11,7 +11,7 @@
                 <div v-for="formItem in renderData">
                     <!--1.type=radio-->
                     <div class="xu-form-control" v-if="formItem.additionalInfo && formItem.additionalInfo.type === 'radio'">
-                        <span class="fix-width-80">{{ formItem.content }}</span>
+                        <span class="fix-width-100">{{ formItem.content }}</span>
                         <label class="xu-label-choose mr-integer" v-for="option in formItem.additionalInfo.optional">
                             <input type="radio" class="xu-choose xu-radio" :value="option" v-model="formItem.value">
                             <span>{{ option }}</span>
@@ -20,7 +20,7 @@
                     <!--2.type=number-->
                     <div class="xu-form-control" v-else-if="formItem.additionalInfo && formItem.additionalInfo.type === 'number'">
                         <label class="xu-label-text">
-                            <span class="fix-width-80">{{ formItem.content }}</span>
+                            <span class="fix-width-100">{{ formItem.content }}</span>
                             <input type="number" class="xu-input" v-model="formItem.value"
                                    :disabled="rules.length !== 0 && applyFormRules(formItem.field)">
                         </label>
@@ -120,6 +120,17 @@
         this.$emit('submit',formData);
         this.$emit('close');
       },
+  //     switch (this.renderData[j].field) {
+  // case fieldLimited:
+  //     valueLimitedIndex = j;
+  //   break;
+  // case fieldToLimit:
+  //     if (String(this.renderData[j].value) === fieldToLimitValue) {
+  //       this.renderData[valueLimitedIndex].value = '';
+  //       result = true;
+  //     }
+  //   break;
+  // }
       //3.应用表单规则
       applyFormRules:function (field) {
         for (let i=0;i<this.rules.length;i++){
@@ -129,18 +140,19 @@
           let valueLimitedIndex;
           let result = false;
           if (field === fieldLimited) {
-
             for (let j=0;j<this.renderData.length;j++){
-              switch (this.renderData[j].field) {
-                case fieldLimited:
-                  valueLimitedIndex = j;
+              if (this.renderData[j].field === fieldLimited){
+                valueLimitedIndex = j;
+                break;
+              }
+            }
+            for (let j=0;j<this.renderData.length;j++){
+              if (this.renderData[j].field === fieldToLimit){
+                if (String(this.renderData[j].value) === fieldToLimitValue){
+                  this.renderData[valueLimitedIndex].value = '';
+                  result = true;
                   break;
-                case fieldToLimit:
-                  if (String(this.renderData[j].value) === fieldToLimitValue) {
-                    this.renderData[valueLimitedIndex].value = '';
-                    result = true;
-                  }
-                  break;
+                }
               }
             }
             return result;
@@ -155,7 +167,7 @@
 <style scoped>
     .fix-width-100 {
         display: inline-block;
-        max-width: 100px;
+        width: 100px;
         text-align: right;
     }
 

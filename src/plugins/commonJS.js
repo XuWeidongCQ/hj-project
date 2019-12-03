@@ -49,12 +49,13 @@ export default {
     }else {
       now = new Date()
     }
-    let nowYear = now.getFullYear();
-    let nowMonth = now.getMonth() + 1;
-    let nowDay = now.getDate();
-    let nowHour = now.getHours();
-    let nowMinute = now.getMinutes();
-    let nowSecond = now.getSeconds();
+    let nowYear = now.getFullYear();//获得年
+    let nowMonth = now.getMonth() + 1;//获得月份，从0开始
+    let nowDay = now.getDate();//获得第几天
+    let nowHour = now.getHours();//获取小时
+    let nowMinute = now.getMinutes();//获取分钟
+    let nowSecond = now.getSeconds();//获取秒
+    //格式化时间输出
     nowMonth < 10 ? nowMonth = '0' + nowMonth : nowMonth = '' + nowMonth;
     nowDay >= 10 ? nowDay = '' + nowDay : nowDay = '0' + nowDay;
     nowHour >= 10 ? nowHour = '' + nowHour : nowHour = '0' + nowHour;
@@ -69,14 +70,4 @@ export default {
     }
   },
 
-  forEachObject:function (obj,fn) {
-    //property就是对象中的键
-    if (JSON.stringify(obj) !== '{}'){
-      for (let property in obj){
-        if (obj.hasOwnProperty(property)){
-          fn(property,obj[property])
-        }
-      }
-    }
-  },
 }
