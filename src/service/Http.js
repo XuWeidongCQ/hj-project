@@ -11,6 +11,9 @@ let Http = {};
 axiosInst.interceptors.request.use(config => {
   // console.log(config);
   return config
+},error => {
+  console.log(error);
+  return Promise.reject(error)
 });
 
 
@@ -18,11 +21,14 @@ axiosInst.interceptors.request.use(config => {
 axiosInst.interceptors.response.use(res=>{
   const data = res.data;
   if (data.content){
-    console.log(data.content)
+    // console.log(data.content)
   } else {
-    console.log(data);
+    // console.log(data);
   }
   return res //必须返回，不然响应会被阻断
+},error => {
+  console.log(error);
+  return Promise.reject(error)
 });
 
 

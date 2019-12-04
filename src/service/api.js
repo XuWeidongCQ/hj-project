@@ -178,6 +178,29 @@ const API = {
       method:'put',
       url:'/repairs'
     }
+  },
+  //报警中心
+  alarmCenter:{
+    //1 获取所有设备的报警记录
+    getAlarmInfos:{
+      method:'get',
+      url:'/alarms',
+    },
+    //2 获取一条报警记录
+    getAlarmInfo:{
+      method:'get',
+      url:'/alarms/' // '/alarms/{id}'
+    },
+    //3 获取一台设备的所有报警记录
+    getDeviceAlarmInfos:{
+      method:'get',
+      url:'/devices/' // '/devices/{device_id}/alarms'
+    },
+    //4 删除一条报警记录
+    delAlarmInfo:{
+      method:'delete',
+      url:'/alarms/' // '/alarms/{id}'
+    }
   }
 };
 

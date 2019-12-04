@@ -37,6 +37,10 @@ export default new Router({
         {
           path:'/repair-center',
           component:() => import('./components/RepairCenter.vue')
+        },
+        {
+          path:'/alarm-center',
+          component:() => import('./components/AlarmCenter.vue')
         }
       ]
     }
