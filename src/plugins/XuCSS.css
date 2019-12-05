@@ -55,6 +55,12 @@ body {
     border-radius: 0.3em;
     cursor: pointer;
 }
+.xu-btn-lg {
+    font-size: 1.2em;
+    padding: 0.2em 0.8em;
+    border-radius: 0.3em;
+    cursor: pointer;
+}
 .xu-btn-sm {
     /*调节按钮字体大小*/
     font-size: 0.8em;
@@ -95,13 +101,13 @@ body {
     border: 1px solid #268d43;
 }
 .xu-btn-cancel {
-    background-color: #f8f9fa;
+    background-color: #e8e9ea;
     color: #4d5875;
-    border: 1px solid  #f8f9fa;
+    border: 1px solid  #e8e9ea;
 }
 .xu-btn-cancel:hover{
-    background-color: #eaebec;
-    border: 1px solid #eaebec;
+    background-color: #dadbdc;
+    border: 1px solid #dadbdc;
 }
 
 /*4 表单样式*/

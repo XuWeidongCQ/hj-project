@@ -4,6 +4,16 @@
   </div>
 </template>
 
+<script>
+  export default {
+    data:function () {
+      return {
+
+      }
+    }
+  }
+</script>
+
 <style>
 #app {
   font-family: 'Arial', 'Microsoft YaHei UI', sans-serif;

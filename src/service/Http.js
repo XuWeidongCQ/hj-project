@@ -1,16 +1,31 @@
 
 import axios from 'axios'
 import API from "@/service/api";
+import { XuToastr } from "@/components/CommonComponents/XuComponent/XuToastr/XuToastr";
 
+
+//需要登录才能访问的接口
 let axiosInst = axios.create({
   baseURL:'http://172.20.29.59:8080/beidou'
 });
 
+
 let Http = {};
 //请求拦截器
-axiosInst.interceptors.request.use(config => {
-  // console.log(config);
-  return config
+axiosInst.interceptors.request.use(config =>{
+  const {method} = config;
+  switch (method) {
+    case "delete":
+      XuToastr('确认删除',()=>{
+        return config;
+      });
+      break;
+    case "get":
+      console.log('get');
+      return config;
+    default:
+      return config;
+  }
 },error => {
   console.log(error);
   return Promise.reject(error)
