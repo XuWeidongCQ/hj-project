@@ -1,7 +1,9 @@
 <template>
     <div class="vue-views-wrapper">
-        <e-c-u-statics-info></e-c-u-statics-info>
-        <main-map></main-map>
+        <e-c-u-statics-info :statistical-data="statisticalData"></e-c-u-statics-info>
+        <main-map :map-device-infos="mapDeviceInfos"
+                  :company-names-dropdown="companyNamesDropdown"
+                  :model-names-dropdown="modelNamesDropdown"></main-map>
     </div>
 </template>
 
@@ -9,10 +11,77 @@
   import ECUStaticsInfo from "@/components/DeviceMonitor/ECUStaticsInfo";
   import MainMap from "@/components/DeviceMonitor/MainMap";
   export default {
-    name: "SSJK",
+    name: "DeviceMonitor",
     components:{
       ECUStaticsInfo,
       MainMap
+    },
+    data:function() {
+      return {
+        statisticalData:{},//四个统计数据值
+        mapDeviceInfos:[],//用来地图上显示的设备
+        modelNamesDropdown:[],//机型名下拉列表
+        companyNamesDropdown:[],//客户公司名下拉列表
+      }
+    },
+    methods:{
+      //1 获取整个页面所需数据
+      getCollection: function () {
+        this.statisticalData = {};
+        this.mapDeviceInfos = [];
+        this.modelNamesDropdown = [];
+        this.companyNamesDropdown = [];
+        this.$Http['deviceMonitor']['getCollection']()
+          .then(res => {
+            const data = res.data;
+            // console.log(data);
+            const { statistical,devices } = data;
+            // console.log(statistical);
+            this.statisticalData = {
+              totalNum:statistical.totalNum,
+              onlineNum:statistical.onlineNum,
+              normalNum:statistical.normalNum,
+              alarmNum:statistical.alarmNum
+            };
+            //只有在线设备才会传到devices中
+            devices.forEach(ele => {
+              //处理地图显示数据
+              this.mapDeviceInfos.push({
+                id:ele.id,
+                isAlert:ele.status,//2--报警,1--正常,0--报废(不会出现，报废离线)
+                modelName:ele.model.modelName,
+                companyName:ele.company.name,
+                infoWindowData:{
+                  status:ele.dataDevices.length === 0 ? '': ele.dataDevices[0].status,
+                  csNumber:ele.csNumber,
+                  beidouId: ele.beidouId,
+                  rotateSpeed:ele.dataDevices.length === 0 ? '': ele.dataDevices[0].speed,
+                  greasePressure:ele.dataDevices.length === 0 ? '': ele.dataDevices[0].greasePressure,
+                  coolingWater:ele.dataDevices.length === 0 ? '': ele.dataDevices[0].waterTemp,
+                },
+                coordinate:{
+                  lng:ele.dataDevices.length === 0 ? '': ele.dataDevices[0].longitude,
+                  lat:ele.dataDevices.length === 0 ? '': ele.dataDevices[0].latitude
+                },
+              });
+              //处理机型名下拉列表数据
+              if (!this.modelNamesDropdown.includes(ele.model.modelName)){
+                this.modelNamesDropdown.push(ele.model.modelName);
+              }
+              //处理客户公司名下拉列表数据
+              if (!this.companyNamesDropdown.includes(ele.company.name)) {
+                this.companyNamesDropdown.push(ele.company.name)
+              }
+            });
+
+            console.log(this.mapDeviceInfos);
+            // console.log(this.modelNamesDropdown);
+            // console.log(this.companyNamesDropdown);
+          })
+      }
+    },
+    created(){
+      this.getCollection()
     }
   }
 </script>

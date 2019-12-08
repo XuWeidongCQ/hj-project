@@ -1,5 +1,5 @@
 
-/*1 修改默认样式*/
+/*0 修改默认样式*/
 a,ul,li,p {
     padding: 0;
     margin: 0;
@@ -21,6 +21,102 @@ input[type="number"]{
 body {
     color: #000000;
     font-size: 16px;
+}
+
+/*1.布局样式*/
+.xu-row {
+    display: flex;
+    display: -ms-flexbox;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    margin-right: -15px;
+    margin-left: -15px;
+}
+
+.xu-col-auto,
+.xu-col-1,.xu-col-2,.xu-col-3,.xu-col-4,.xu-col-5,.xu-col-6,
+.xu-col-7,.xu-col-8,.xu-col-9,.xu-col-10,.xu-col-11,.xu-col-12 {
+    position: relative;
+    width: 100%;
+    padding-right: 15px;
+    padding-left: 15px;
+    box-sizing: border-box;
+}
+.xu-col-auto {
+    -ms-flex: 0 0 auto;
+    flex: 0 0 auto;
+    width: auto;
+    max-width: 100%;
+}
+.xu-col-1 {
+    -ms-flex: 0 0 8.333333%;
+    flex: 0 0 8.333333%;
+    max-width: 8.333333%;
+}
+.xu-col-2 {
+    -ms-flex: 0 0 16.666667%;
+    flex: 0 0 16.666667%;
+    max-width: 16.666667%;
+}
+
+.xu-col-3 {
+    -ms-flex: 0 0 25%;
+    flex: 0 0 25%;
+    max-width: 25%;
+}
+
+.xu-col-4 {
+    -ms-flex: 0 0 33.333333%;
+    flex: 0 0 33.333333%;
+    max-width: 33.333333%;
+}
+
+.xu-col-5 {
+    -ms-flex: 0 0 41.666667%;
+    flex: 0 0 41.666667%;
+    max-width: 41.666667%;
+}
+
+.xu-col-6 {
+    -ms-flex: 0 0 50%;
+    flex: 0 0 50%;
+    max-width: 50%;
+}
+
+.xu-col-7 {
+    -ms-flex: 0 0 58.333333%;
+    flex: 0 0 58.333333%;
+    max-width: 58.333333%;
+}
+
+.xu-col-8 {
+    -ms-flex: 0 0 66.666667%;
+    flex: 0 0 66.666667%;
+    max-width: 66.666667%;
+}
+
+.xu-col-9 {
+    -ms-flex: 0 0 75%;
+    flex: 0 0 75%;
+    max-width: 75%;
+}
+
+.xu-col-10 {
+    -ms-flex: 0 0 83.333333%;
+    flex: 0 0 83.333333%;
+    max-width: 83.333333%;
+}
+
+.xu-col-11 {
+    -ms-flex: 0 0 91.666667%;
+    flex: 0 0 91.666667%;
+    max-width: 91.666667%;
+}
+
+.xu-col-12 {
+    -ms-flex: 0 0 100%;
+    flex: 0 0 100%;
+    max-width: 100%;
 }
 
 
@@ -227,12 +323,12 @@ body {
 .xu-table th {
     border-top: 1px solid #ebeef5;
     text-align: start;
-    padding: 6px 4px;
+    padding: 8px 4px;
 }
 .xu-table td {
     border-top: 1px solid #ebeef5;
     border-bottom: 1px solid #ebeef5;
-    padding: 6px 4px;
+    padding: 8px 4px;
 }
 /*5.1 带边框的表格样式*/
 .xu-table-border th, .xu-table-border td{
@@ -249,7 +345,7 @@ body {
 }
 /*5.4 大表格*/
 .xu-table-lg th,.xu-table-lg td {
-    padding: 8px 6px;
+    padding: 12px 6px;
     font-size: 16px;
 }
 /*5.5 悬停表格*/

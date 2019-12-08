@@ -16,12 +16,13 @@ axiosInst.interceptors.request.use(config =>{
   const {method} = config;
   switch (method) {
     case "delete":
-      XuToastr('确认删除',()=>{
-        return config;
+      return new Promise(resolve => {
+        XuToastr('确认删除',()=>{
+          resolve(config)
+        });
       });
-      break;
+
     case "get":
-      console.log('get');
       return config;
     default:
       return config;

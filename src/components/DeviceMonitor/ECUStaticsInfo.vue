@@ -5,7 +5,9 @@
                 <div class="statics-info-container dev-total">
                     <span class="statics-icon"><span class="fa fa-desktop"></span></span>
                     <span class="statics-info">
-                            <span class="statics-number">529</span><br>
+                            <span class="statics-number">
+                                {{statisticalData.totalNum}}
+                            </span><br>
                             <span class="statics-explain">设备总数</span>
                         </span>
                 </div>
@@ -14,7 +16,9 @@
                 <div class="statics-info-container dev-online">
                         <span class="statics-icon"><span class="fa fa-desktop"></span></span>
                         <span class="statics-info">
-                            <span class="statics-number">529</span><br>
+                            <span class="statics-number">
+                                {{statisticalData.onlineNum}}
+                            </span><br>
                             <span class="statics-explain">在线设备数目</span>
                         </span>
                 </div>
@@ -23,7 +27,9 @@
                 <div class="statics-info-container dev-normal">
                     <span class="statics-icon"><span class="fa fa-calendar-check-o"></span></span>
                     <span class="statics-info">
-                            <span class="statics-number">509</span><br>
+                            <span class="statics-number">
+                                {{statisticalData.normalNum}}
+                            </span><br>
                             <span class="statics-explain">正常设备数目</span>
                         </span>
                 </div>
@@ -32,7 +38,9 @@
                 <div class="statics-info-container dev-alert">
                     <span class="statics-icon"><span class="fa fa-lightbulb-o"></span></span>
                     <span class="statics-info">
-                            <span class="statics-number">20</span><br>
+                            <span class="statics-number">
+                                {{statisticalData.alarmNum}}
+                            </span><br>
                             <span class="statics-explain">报警设备数目</span>
                         </span>
                 </div>
@@ -44,6 +52,11 @@
 <script>
   export default {
     name: "ECUStaticsInfo",
+    props:{
+      statisticalData:{
+        type:Object
+      }
+    },
     data:function () {
       return {
 

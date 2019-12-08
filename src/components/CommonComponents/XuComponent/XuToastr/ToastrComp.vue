@@ -12,7 +12,7 @@
                     <button class="xu-btn xu-btn-lg xu-btn-primary mr-integer"
                             @click="confirm">确认</button>
                     <button class="xu-btn xu-btn-lg xu-btn-cancel"
-                            @click="isShown = false">取消</button>
+                            @click="cancel">取消</button>
                 </div>
             </div>
         </div>
@@ -22,11 +22,6 @@
 <script>
   export default {
     name: "ToastrComp",
-    data(){
-      return {
-        isShown: true
-      }
-    },
   }
 </script>
 
@@ -60,6 +55,6 @@
     }
     .xu-toastr-footer {
         margin: 10px 0;
-        text-align: right;
+        text-align: center;
     }
 </style>

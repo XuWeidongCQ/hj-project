@@ -18,6 +18,7 @@
                    <button class="xu-btn xu-btn-primary" style="border-radius: 0"><span class="fa fa-search"></span></button>
                </div>
                <baidu-map class="map-wrapper"
+                          ak="HMsRLrPGidU6hIisM4HYgx0APRKhpm6p"
                           :center="mapCenter"
                           :zoom="mapInitZoom"
                           :scroll-wheel-zoom="true">
@@ -26,21 +27,21 @@
                    <!--添加缩放控件-->
                    <bm-navigation anchor="BMAP_ANCHOR_BOTTOM_LEFT"></bm-navigation>
                    <!--添加点-->
-                   <div v-for="marker in ECUPositionCoordinates">
-                       <bm-marker v-if="marker.status === 1"
+                   <div v-for="marker in mapDeviceInfos">
+                       <bm-marker v-if="marker.isAlert === 1"
                                   :position="marker.coordinate"
                                   :icon="icon.iconNormal"
-                                  @mouseover="showInfoWindow($event,marker.ECUNumber,marker.status)"
+                                  @mouseover="showInfoWindow($event,marker)"
                                   @mouseout="closeInfoWindow"
-                                  @click="showSingleModal(marker.ECUNumber,marker.engineNumber)">
+                                  @click="">
 
                        </bm-marker>
                        <bm-marker v-else
                                   :position="marker.coordinate"
                                   :icon="icon.iconAlert"
-                                  @mouseover="showInfoWindow($event,marker.ECUNumber,marker.status)"
+                                  @mouseover="showInfoWindow($event,marker)"
                                   @mouseout="closeInfoWindow"
-                                  @click="showSingleModal(marker.ECUNumber,marker.engineNumber)">
+                                  @click="">
 
                        </bm-marker>
                    </div>
@@ -60,6 +61,7 @@
 </template>
 
 <script>
+  import { BaiduMap,BmScale,BmNavigation,BmMarker } from 'vue-baidu-map'
   import SingleMonitorModal from "@/components/CommonComponents/SingleMonitorPopUp";
   import PointInfoWindow from "@/components/CommonComponents/PointInfoWindow";
 
@@ -67,17 +69,38 @@
     name: "MainMap",
     components:{
       PointInfoWindow,
-      SingleMonitorModal
+      SingleMonitorModal,
+      BaiduMap,
+      BmMarker,
+      BmScale,
+      BmNavigation
+    },
+    props:{
+      //1.用来地图上显示的设备
+      mapDeviceInfos:{
+        type:Array,
+        default:() => []
+      },
+      //2.机型下来列表
+      modelNamesDropdown:{
+        type:Array,
+        default:() => []
+      },
+      //3.客户公司下拉列表
+      companyNamesDropdown:{
+        type:Array,
+        default:() => []
+      }
     },
     data:function () {
       return {
         ECUPositionCoordinates:[
-          {ECUNumber:'122019080323',engineNumber:'32ab',status:1,coordinate:{lng:136,lat:10}},
-          {ECUNumber:'122019080324',engineNumber:'33ab',status:1,coordinate:{lng:132,lat:15}},
-          {ECUNumber:'122019080325',engineNumber:'34ab',status:1,coordinate:{lng:116,lat:39}},
-          {ECUNumber:'122019080326',engineNumber:'35ab',status:0,coordinate:{lng:114,lat:30}},
-          {ECUNumber:'122019080327',engineNumber:'36ab',status:0,coordinate:{lng:126,lat:13}},
-          {ECUNumber:'122019080328',engineNumber:'37ab',status:0,coordinate:{lng:124,lat:16}},
+          {ECUNumber:'122019080323',engineNumber:'32ab',isAlert:1,coordinate:{lng:"",lat:""}},
+          {ECUNumber:'122019080324',engineNumber:'33ab',isAlert:1,coordinate:{lng:132,lat:15}},
+          {ECUNumber:'122019080325',engineNumber:'34ab',isAlert:1,coordinate:{lng:116,lat:39}},
+          {ECUNumber:'122019080326',engineNumber:'35ab',isAlert:0,coordinate:{lng:114,lat:30}},
+          {ECUNumber:'122019080327',engineNumber:'36ab',isAlert:0,coordinate:{lng:126,lat:13}},
+          {ECUNumber:'122019080328',engineNumber:'37ab',isAlert:0,coordinate:{lng:124,lat:16}},
         ],
         mapInitZoom:3,//缩放等级只能是3到19
         mapCenter:'重庆',
@@ -86,6 +109,7 @@
         isInfoWindowVisible:false,//是否显示地图信息窗口
         propsToSingleMonitorModal:{}, //用于向单点监控界面传递的信息
         propsToInfoWindow:{},//用于向地图信息窗口传递信息
+        // mapDeviceInfos:[],//用来地图上显示的设备
         icon:{//地图坐标点图例
           iconNormal:{
             url: require('@/assets/marker.png'),
@@ -162,6 +186,9 @@
           this.isInfoWindowVisible = false
         },150);
       },
+
+    },
+    created(){
 
     },
     mounted() {

@@ -1,5 +1,13 @@
 
 const API = {
+  //实时监控部分
+  deviceMonitor:{
+    //1 获取整体所有数据
+    getCollection:{
+      method:'get',
+      url:'/forehome'
+    }
+  },
   //后台管理部分
   backendManage:{
     //1.获取所有客户公司信息

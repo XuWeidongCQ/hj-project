@@ -25,9 +25,9 @@ Vue.config.productionTip = false;
 Vue.prototype.extendJS = commonJS;
 Vue.prototype.$Http = Http;
 Vue.use(VueToastr,{});
-Vue.use(BaiduMap,{
-  ak:'HMsRLrPGidU6hIisM4HYgx0APRKhpm6p'
-});
+// Vue.use(BaiduMap,{
+//   ak:'HMsRLrPGidU6hIisM4HYgx0APRKhpm6p'
+// });
 //注册全局过滤器
 Object.keys(filters).forEach(key => {
   Vue.filter(key,filters[key])
