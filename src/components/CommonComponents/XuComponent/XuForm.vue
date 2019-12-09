@@ -78,6 +78,8 @@
 
 <script>
   import XuModal from "./XuModal";
+  import {notice} from "@/plugins/toastrConfig";
+
   export default {
     name: "XuForm",
     components: {XuModal},
@@ -115,10 +117,23 @@
       },
       //2.确认按钮事件
       submit:function () {
+        let hasFormEmpty = false;
         const formData = {};
         this.renderData.forEach(ele => {formData[ele.field] = ele.value});
-        this.$emit('submit',formData);
-        this.$emit('close');
+        //表单中是否有空值
+        for (const key in formData){
+          if (formData[key] === ''){
+            hasFormEmpty = true;
+            break;
+          }
+        }
+        if (!hasFormEmpty){
+          this.$emit('submit',formData);
+          this.$emit('close');
+        } else {
+          this.$toastr.Add(notice('请填完所有表单项','info'));
+        }
+
       },
   //     switch (this.renderData[j].field) {
   // case fieldLimited:

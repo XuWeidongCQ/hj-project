@@ -37,6 +37,7 @@
             // console.log(data);
             const { statistical,devices } = data;
             // console.log(statistical);
+            // console.log(devices);
             this.statisticalData = {
               totalNum:statistical.totalNum,
               onlineNum:statistical.onlineNum,

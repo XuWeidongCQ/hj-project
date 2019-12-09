@@ -13,6 +13,7 @@ let axiosInst = axios.create({
 let Http = {};
 //请求拦截器
 axiosInst.interceptors.request.use(config =>{
+  // console.log(config);
   const {method} = config;
   switch (method) {
     case "delete":
@@ -35,11 +36,28 @@ axiosInst.interceptors.request.use(config =>{
 
 //响应拦截器
 axiosInst.interceptors.response.use(res=>{
-  const data = res.data;
-  if (data.content){
-    // console.log(data.content)
+  // console.log(res);
+  //1.reqConfig    -HTTP请求的配置
+  //2.resData      -HTTP请求响应的数据
+  //3.resStatus    -HTTP请求的状态
+  //4.reqMethod    -HTTP请求的方法
+  //5.reqData      -HTTP请求过程中上传的数据(放在请求体中)
+  //6.reqParams    -HTTP请求过程中上传的数据(放在url中)
+  const {config:reqConfig,data:resData,status:resStatus} = res;
+  const {method:reqMethod,data:reqData,params:reqParams} = reqConfig;
+  // console.log(`请求方法为${reqMethod}`,`请求数据为${reqData}`,'请求参数为',reqParams);
+
+  // switch (reqMethod) {
+  //   case "post":
+  //     if (resData){
+  //       const {code,message} = resData;
+  //
+  //     }
+  // }
+  if (resData.content){
+    // console.log(resData.content)
   } else {
-    // console.log(data);
+    // console.log(resData);
   }
   return res //必须返回，不然响应会被阻断
 },error => {

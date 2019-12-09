@@ -243,7 +243,7 @@
         const reg= /(\d+)(?=—)/;
         const modelId = formData.modelName.match(reg)[0];
         if(formData['status'] === '否'){
-          delete formData.status;
+          formData.status = 1;
           delete formData.scrapTime;
         } else {
           formData.status = 0;
@@ -260,8 +260,13 @@
             this.$Http['backendManage']['postDeviceInfo'](formData)
               .then( res => {
                 // console.log(res.data);
-                this.$toastr.Add(notice('创建成功'));
-                this.getDeviceInfos()
+                const {code,message} = res.data;
+                if (code === 0) {
+                  this.$toastr.Add(notice('创建成功'));
+                  this.getDeviceInfos()
+                } else {
+                  this.$toastr.Add(notice(message,'warning'));
+                }
               })
               .catch(error => {});
             break;

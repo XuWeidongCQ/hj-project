@@ -151,9 +151,14 @@
           case 0:
             this.$Http['backendManage']['postCompanyInfo'](formData)
               .then( res => {
-                // console.log('提交成功');
-                this.$toastr.Add(notice('创建成功'));
-                this.getCompanyInfos()
+                const {code,message} = res.data;
+                if (code === 0) {
+                  this.$toastr.Add(notice('创建成功'));
+                  this.getCompanyInfos()
+                } else {
+                  this.$toastr.Add(notice(message,'warning'));
+                }
+
               })
               .catch(error => {});
             break;
@@ -172,10 +177,10 @@
       }
     },
     created(){
-      this.getCompanyInfos()
+      // this.getCompanyInfos()
     },
     mounted(){
-
+      this.getCompanyInfos()
     }
   }
 </script>

@@ -10,16 +10,16 @@
                     <thead class="bg-info xu-text-level2 xu-text-white-level0">
                     <tr>
                         <th>#ID</th>
-                        <th>机型编号</th>
                         <th>机型名称</th>
+                        <th>机型编号</th>
                         <th>操作</th>
                     </tr>
                     </thead>
                     <tbody>
                     <tr v-for="machineModel in machineModelInfos" :key="machineModel.id">
                         <td>{{machineModel.id}}</td>
-                        <td>{{machineModel.modelNumber}}</td>
                         <td>{{machineModel.modelName}}</td>
+                        <td>{{machineModel.modelNumber}}</td>
                         <td>
                             <span class="xu-indicator xu-indicator-delete"
                                   @click="delMachineModelInfo(machineModel.id)">删除</span>
@@ -127,9 +127,14 @@
           case 0:
             this.$Http['dataParse']['postMachineModelInfo'](formData)
               .then( res => {
-                // console.log(res);
-                this.$toastr.Add(notice('创建成功'));
-                this.getMachineModelInfos()
+                console.log(res.data);
+                const {code,message} = res.data;
+                if (code === 0) {
+                  this.$toastr.Add(notice('创建成功'));
+                  this.getMachineModelInfos()
+                } else {
+                  this.$toastr.Add(notice(message,'warning'));
+                }
               })
               .catch(error => {
                 console.log(error)

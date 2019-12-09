@@ -6,7 +6,7 @@
                     <span class="statics-icon"><span class="fa fa-desktop"></span></span>
                     <span class="statics-info">
                             <span class="statics-number">
-                                {{statisticalData.totalNum}}
+                                {{statisticalData.totalNum }}
                             </span><br>
                             <span class="statics-explain">设备总数</span>
                         </span>
@@ -17,7 +17,7 @@
                         <span class="statics-icon"><span class="fa fa-desktop"></span></span>
                         <span class="statics-info">
                             <span class="statics-number">
-                                {{statisticalData.onlineNum}}
+                                {{statisticalData.onlineNum }}
                             </span><br>
                             <span class="statics-explain">在线设备数目</span>
                         </span>
@@ -28,7 +28,7 @@
                     <span class="statics-icon"><span class="fa fa-calendar-check-o"></span></span>
                     <span class="statics-info">
                             <span class="statics-number">
-                                {{statisticalData.normalNum}}
+                                {{statisticalData.normalNum }}
                             </span><br>
                             <span class="statics-explain">正常设备数目</span>
                         </span>
@@ -39,7 +39,7 @@
                     <span class="statics-icon"><span class="fa fa-lightbulb-o"></span></span>
                     <span class="statics-info">
                             <span class="statics-number">
-                                {{statisticalData.alarmNum}}
+                                {{statisticalData.alarmNum }}
                             </span><br>
                             <span class="statics-explain">报警设备数目</span>
                         </span>
@@ -54,12 +54,19 @@
     name: "ECUStaticsInfo",
     props:{
       statisticalData:{
-        type:Object
+        type:Object,
       }
     },
     data:function () {
       return {
 
+      }
+    },
+    filters:{
+      httpError:function (value) {
+        if (value === undefined){
+          return '--'
+        }
       }
     },
   }
