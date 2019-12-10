@@ -93,8 +93,8 @@
         this.$Http['repairCenter']['getRepairInfos']('',{params:{start:page}})
           .then(res => {
             // console.log(res.data);
-            this.serverData = res.data;
-            const {content} = res.data;
+            this.serverData = res;
+            const {content} = res;
             content.forEach(ele => {
               this.repairInfos.push({
                 id:ele.id,
@@ -129,9 +129,7 @@
       delRepairInfo:function(id){
         this.$Http['repairCenter']['delRepairInfo'](id)
           .then( res => {
-            const feedback = res.data === ''?'删除成功':res.data;
-            res.data === '' && this.getRepairInfos();
-            this.$toastr.Add(notice(feedback));
+            res && this.getRepairInfos()
           })
           .catch(error => {});
       },
@@ -146,9 +144,7 @@
         // console.log(formData)
         this.$Http['repairCenter']['editRepairInfo'](formData)
           .then( res => {
-            console.log(res.data);
-            this.$toastr.Add(notice('修改成功'));
-            this.getRepairInfos()
+            res && this.getRepairInfos()
           })
           .catch(error => {});
       },

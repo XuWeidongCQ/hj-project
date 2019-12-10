@@ -163,8 +163,8 @@
         this.$Http['backendManage']['getDeviceInfos'](this.company.id + '/devices',{params:{start:page}})
           .then(res => {
             // console.log(res.data);
-            this.serverData = res.data;
-            const {content} = res.data;
+            this.serverData = res;
+            const {content} = res;
             content.forEach(ele => {
               this.devicesInfos.push({
                 id:ele.id,
@@ -184,7 +184,7 @@
           });
         this.$Http['dataParse']['getMachineModelInfos']()
           .then(res => {
-            res.data.forEach(ele => {
+            res.forEach(ele => {
               this.modelInfos.push({id:ele.id,modelName:ele.modelName,modelNumber:ele.modelNumber})
             })
           })
@@ -227,9 +227,7 @@
       delDeviceInfo:function(deviceInfoId){
         this.$Http['backendManage']['delDeviceInfo'](deviceInfoId)
           .then( res => {
-            const feedback = res.data === ''?'删除成功':res.data;
-            res.data === '' && this.getDeviceInfos();
-            this.$toastr.Add(notice(feedback));
+            res && this.getDeviceInfos()
           })
           .catch(error => {});
       },
@@ -259,14 +257,7 @@
             // console.log(formData);
             this.$Http['backendManage']['postDeviceInfo'](formData)
               .then( res => {
-                // console.log(res.data);
-                const {code,message} = res.data;
-                if (code === 0) {
-                  this.$toastr.Add(notice('创建成功'));
-                  this.getDeviceInfos()
-                } else {
-                  this.$toastr.Add(notice(message,'warning'));
-                }
+                res && this.getDeviceInfos()
               })
               .catch(error => {});
             break;
@@ -276,9 +267,7 @@
             formData['id'] = this.selectedDeviceInfo.id;
             this.$Http['backendManage']['editDeviceInfo'](formData)
               .then( res => {
-                // console.log(res.data);
-                this.$toastr.Add(notice('修改成功'));
-                this.getDeviceInfos()
+                res && this.getDeviceInfos()
               })
               .catch(error => {});
             break;

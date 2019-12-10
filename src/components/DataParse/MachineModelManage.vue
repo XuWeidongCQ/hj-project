@@ -74,11 +74,7 @@
         this.machineModelInfos = [];
         this.$Http['dataParse']['getMachineModelInfos']('',{params:{start:page}})
           .then(res => {
-            // console.log(res);
-            // this.serverData = res.data;
-            const content = res.data;
-            // console.log(content);
-            content.forEach(ele => {
+            res.forEach(ele => {
               this.machineModelInfos.push({id:ele.id,modelName:ele.modelName,modelNumber:ele.modelNumber})
             })
           })
@@ -97,9 +93,7 @@
       delMachineModelInfo:function(machineModelId){
         this.$Http['dataParse']['delMachineModelInfo'](machineModelId)
           .then( res => {
-            const feedback = res.data === ''?'删除成功':res.data;
-            res.data === '' && this.getMachineModelInfos();
-            this.$toastr.Add(notice(feedback));
+            res && this.getMachineModelInfos()
           })
           .catch(error => {});
       },
@@ -127,30 +121,17 @@
           case 0:
             this.$Http['dataParse']['postMachineModelInfo'](formData)
               .then( res => {
-                console.log(res.data);
-                const {code,message} = res.data;
-                if (code === 0) {
-                  this.$toastr.Add(notice('创建成功'));
-                  this.getMachineModelInfos()
-                } else {
-                  this.$toastr.Add(notice(message,'warning'));
-                }
+                res && this.getMachineModelInfos()
               })
-              .catch(error => {
-                console.log(error)
-              });
+              .catch(error => {});
             break;
           case 1:
             formData['id'] = this.selectedMachineModel.id;
             this.$Http['dataParse']['editMachineModelInfo'](formData)
               .then( res => {
-                // console.log(res);
-                this.$toastr.Add(notice('修改成功'));
-                this.getMachineModelInfos()
+                res && this.getMachineModelInfos()
               })
-              .catch(error => {
-                console.log(error)
-              });
+              .catch(error => {});
             break;
         }
       },

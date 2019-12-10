@@ -2,20 +2,34 @@
     <div class="main-map-wrapper">
        <div class="row">
            <div class="col-12">
-               <div class="info-filter-wrapper">
-                   <label>
-                       <select style="height:26px;">
-                           <option>发动机机型</option>
-                           <option>控制系统编号</option>
-                           <option>公司名称</option>
-                           <option>出厂日期</option>
-                           <option>设备状态</option>
-                       </select>
-                   </label>
-                   <label>
-                       <input type="text" placeholder="请输入内容">
-                   </label>
-                   <button class="xu-btn xu-btn-primary" style="border-radius: 0"><span class="fa fa-search"></span></button>
+               <div class="info-filter-wrapper clear">
+                   <div class="left xu-float-left">
+                       <div class="mb-integer">
+                           <input type="text" class="xu-input" placeholder="请输入控制系统编号/出厂日期20190812">
+                           <label class="xu-label-choose">
+                               <input type="radio" class="xu-choose xu-radio">
+                               <span>在线</span>
+                           </label>
+
+                       </div>
+                       <div>
+                           <label class="xu-label-text">
+                               <span>机型名称：</span>
+                               <select class="xu-input mr-integer" v-model="searchData.modelName">
+                                   <option v-for="option in modelNamesDropdown">{{ option }}</option>
+                               </select>
+                           </label>
+                           <label class="xu-label-text">
+                               <span>公司名称：</span>
+                               <select class="xu-input" v-model="searchData.companyName">
+                                   <option v-for="option in companyNamesDropdown">{{ option }}</option>
+                               </select>
+                           </label>
+                       </div>
+                   </div>
+                   <div class="right xu-float-right">
+                       <button class="xu-btn xu-btn-lg xu-btn-primary">查找</button>
+                   </div>
                </div>
                <baidu-map class="map-wrapper"
                           ak="HMsRLrPGidU6hIisM4HYgx0APRKhpm6p"
@@ -31,7 +45,7 @@
                        <bm-marker v-if="marker.isAlert === 1"
                                   :position="marker.coordinate"
                                   :icon="icon.iconNormal"
-                                  @mouseover="showInfoWindow($event,marker)"
+                                  @mouseover="showInfoWindow($event,marker.infoWindowData)"
                                   @mouseout="closeInfoWindow"
                                   @click="">
 
@@ -39,12 +53,13 @@
                        <bm-marker v-else
                                   :position="marker.coordinate"
                                   :icon="icon.iconAlert"
-                                  @mouseover="showInfoWindow($event,marker)"
+                                  @mouseover="showInfoWindow($event,marker.infoWindowData)"
                                   @mouseout="closeInfoWindow"
                                   @click="">
 
                        </bm-marker>
                    </div>
+                   <!--信息窗口-->
                    <point-info-window :point-info="propsToInfoWindow" v-if="isInfoWindowVisible"></point-info-window>
                </baidu-map>
                <div class="map-change-wrapper">
@@ -53,6 +68,7 @@
                </div>
            </div>
        </div>
+       <!--单点监控-->
        <single-monitor-modal @close="closeSingleModal"
                              v-if="isSingleMonitorVisible"
                              :point-info="propsToSingleMonitorModal">
@@ -63,7 +79,7 @@
 <script>
   import { BaiduMap,BmScale,BmNavigation,BmMarker } from 'vue-baidu-map'
   import SingleMonitorModal from "@/components/CommonComponents/SingleMonitorPopUp";
-  import PointInfoWindow from "@/components/CommonComponents/PointInfoWindow";
+  import PointInfoWindow from "./PointInfoWindow";
 
   export default {
     name: "MainMap",
@@ -94,22 +110,19 @@
     },
     data:function () {
       return {
-        ECUPositionCoordinates:[
-          {ECUNumber:'122019080323',engineNumber:'32ab',isAlert:1,coordinate:{lng:"",lat:""}},
-          {ECUNumber:'122019080324',engineNumber:'33ab',isAlert:1,coordinate:{lng:132,lat:15}},
-          {ECUNumber:'122019080325',engineNumber:'34ab',isAlert:1,coordinate:{lng:116,lat:39}},
-          {ECUNumber:'122019080326',engineNumber:'35ab',isAlert:0,coordinate:{lng:114,lat:30}},
-          {ECUNumber:'122019080327',engineNumber:'36ab',isAlert:0,coordinate:{lng:126,lat:13}},
-          {ECUNumber:'122019080328',engineNumber:'37ab',isAlert:0,coordinate:{lng:124,lat:16}},
-        ],
-        mapInitZoom:3,//缩放等级只能是3到19
+        searchData:{
+          csNumberOrFactoryDate:'',
+          modelName:'不限',
+          companyName:'不限',
+          status:''
+        },
+        mapInitZoom:6,//缩放等级只能是3到19
         mapCenter:'重庆',
-        isWorldMap:true,//是否是世界地图
+        isWorldMap:false,//是否是世界地图
         isSingleMonitorVisible:false,//是否显示单点监控页面
         isInfoWindowVisible:false,//是否显示地图信息窗口
         propsToSingleMonitorModal:{}, //用于向单点监控界面传递的信息
         propsToInfoWindow:{},//用于向地图信息窗口传递信息
-        // mapDeviceInfos:[],//用来地图上显示的设备
         icon:{//地图坐标点图例
           iconNormal:{
             url: require('@/assets/marker.png'),
@@ -130,31 +143,14 @@
         }
       }
     },
-    computed:{
-      points:function () {
-        let pointsNormal = [];
-        let pointsAlert = [];
-        for (let i=0,len=this.ECUPositionCoordinates.length;i<len;i++){
-          if (this.ECUPositionCoordinates[i].status === 1){
-            pointsNormal.push(this.ECUPositionCoordinates[i])
-          } else {
-            pointsAlert.push(this.ECUPositionCoordinates[i])
-          }
-        }
-        return {
-          pointsNormal:pointsNormal,
-          pointsAlert:pointsAlert
-        }
-      }
-    },
     methods:{
-      //改变地图中心
+      //1.改变地图中心
       exChangeMap:function (level,centerCity) {
         this.mapCenter = centerCity;
         this.mapInitZoom = level;
         level === 3?this.isWorldMap = true:this.isWorldMap = false;
       },
-      //显示单点监控弹窗
+      //2.显示单点监控弹窗
       showSingleModal:function(ECUNumber,engineNumber){
         this.isSingleMonitorVisible = true;
         this.propsToSingleMonitorModal = {
@@ -162,25 +158,24 @@
           engineNumber:engineNumber
         };
       },
-      //关闭单点监控弹窗
+      //3.关闭单点监控弹窗
       closeSingleModal:function(){
         this.isSingleMonitorVisible = false
       },
-      //鼠标移到坐标点显示小窗口
-      showInfoWindow:function(event,ECUNumber,status){
+      //4.鼠标移到坐标点显示小窗口
+      showInfoWindow:function(event,infoWindowData){
         let x = event.clientX;
         let y = event.clientY;
         setTimeout(()=>{
           this.isInfoWindowVisible = true;
           this.propsToInfoWindow = {
-            ECUNumber:ECUNumber,
-            status:status,
+            data:infoWindowData,
             x:x,
             y:y,
           }
         },100);
       },
-      //鼠标移出坐标点关闭小窗口
+      //5.鼠标移出坐标点关闭小窗口
       closeInfoWindow:function(){
         setTimeout(()=>{
           this.isInfoWindowVisible = false
@@ -188,12 +183,6 @@
       },
 
     },
-    created(){
-
-    },
-    mounted() {
-
-    }
   }
 </script>
 
@@ -212,7 +201,7 @@
         right: 20px;
         top: 5px;
         border-radius: 3px;
-        padding: 5px 10px;
+        padding: 20px 10px;
         background-color: #ffffff;
         z-index: 100;
         font-size: 14px;
@@ -220,6 +209,23 @@
     .info-filter-wrapper label {
         height: 100%;
         margin: 0;
+    }
+    .left {
+        width: 600px;
+        /*outline: 1px solid red;*/
+    }
+    .left  input[type=text] {
+        width: 520px;
+        margin-right: 20px;
+    }
+    .left select{
+        width: 225px;
+    }
+    .right{
+        text-align: center;
+        padding: 16px 0;
+        width: 100px;
+        /*outline: 1px solid red;*/
     }
     .map-change-wrapper{
         position: absolute;

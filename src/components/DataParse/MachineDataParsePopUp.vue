@@ -115,8 +115,7 @@
         this.$Http['dataParse']['getDataParseInfos'](this.machineModel.id+'/parses')
           .then(res => {
             // this.serverData = res.data;
-            const content = res.data;
-            content.forEach(ele => {
+            res.forEach(ele => {
               this.dataParseInfos.push({
                 id:ele.id,
                 dataName:ele.dataName,
@@ -153,9 +152,7 @@
       delDataParseInfo:function (dataParseId) {
         this.$Http['dataParse']['delDataParseInfo'](dataParseId)
           .then(res => {
-            const feedback = res.data === ''?'删除成功':res.data;
-            res.data === '' && this.getDataParseInfos();
-            this.$toastr.Add(notice(feedback));
+            res && this.getDataParseInfos()
           })
           .catch(error => {})
       },
@@ -191,9 +188,7 @@
             // console.log(formData);
             this.$Http['dataParse']['postDataParseInfo'](formData)
               .then( res => {
-                // console.log(res.data);
-                this.$toastr.Add(notice('创建成功'));
-                this.getDataParseInfos()
+                res && this.getDataParseInfos()
               })
               .catch(error => {});
             break;
@@ -204,9 +199,7 @@
             // console.log(formData);
             this.$Http['dataParse']['editDataParseInfo'](formData)
               .then( res => {
-                console.log(res.data);
-                this.$toastr.Add(notice('修改成功'));
-                this.getDataParseInfos()
+                res && this.getDataParseInfos()
               })
               .catch(error => {});
             break;

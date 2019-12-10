@@ -33,9 +33,7 @@
         this.companyNamesDropdown = [];
         this.$Http['deviceMonitor']['getCollection']()
           .then(res => {
-            const data = res.data;
-            // console.log(data);
-            const { statistical,devices } = data;
+            const { statistical,devices } = res;
             // console.log(statistical);
             // console.log(devices);
             this.statisticalData = {
@@ -53,7 +51,8 @@
                 modelName:ele.model.modelName,
                 companyName:ele.company.name,
                 infoWindowData:{
-                  status:ele.dataDevices.length === 0 ? '': ele.dataDevices[0].status,
+                  isAlert:ele.status,
+                  status:ele.dataDevices.length === 0 ? '': ele.dataDevices[0].status,//设备的文字提示信息
                   csNumber:ele.csNumber,
                   beidouId: ele.beidouId,
                   rotateSpeed:ele.dataDevices.length === 0 ? '': ele.dataDevices[0].speed,
@@ -74,10 +73,11 @@
                 this.companyNamesDropdown.push(ele.company.name)
               }
             });
-
-            console.log(this.mapDeviceInfos);
+            // console.log(this.mapDeviceInfos);
             // console.log(this.modelNamesDropdown);
             // console.log(this.companyNamesDropdown);
+            // this.mapDeviceInfos.map(value => {console.log(value.coordinate.lng,value.coordinate.lat)})
+            // this.mapDeviceInfos.map(value => {console.log(value.isAlert)})
           })
       }
     },

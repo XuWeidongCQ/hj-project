@@ -80,8 +80,8 @@
         this.alarmInfos = [];
         this.$Http['alarmCenter']['getAlarmInfos']('',{params:{start:page}})
           .then(res => {
-            this.serverData = res.data;
-            const {content} = res.data;
+            this.serverData = res;
+            const {content} = res;
             content.forEach(ele => {
               this.alarmInfos.push({
                 id:ele.id,
@@ -98,9 +98,7 @@
       delAlarmInfo: function (alarmInfoId) {
         this.$Http['alarmCenter']['delAlarmInfo'](alarmInfoId)
           .then( res => {
-            const feedback = res.data === ''?'删除成功':res.data;
-            res.data === '' && this.getAlarmInfos();
-            this.$toastr.Add(notice(feedback));
+            res && this.getAlarmInfos()
           })
       },
       //3.分页器跳转

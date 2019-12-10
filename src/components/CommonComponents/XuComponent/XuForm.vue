@@ -78,7 +78,7 @@
 
 <script>
   import XuModal from "./XuModal";
-  import {notice} from "@/plugins/toastrConfig";
+  import {XuAlert} from "@/components/CommonComponents/XuComponent/XuAlert/XuAlert";
 
   export default {
     name: "XuForm",
@@ -122,7 +122,7 @@
         this.renderData.forEach(ele => {formData[ele.field] = ele.value});
         //表单中是否有空值
         for (const key in formData){
-          if (formData[key] === ''){
+          if (!this.applyFormRules(key) && formData[key] === ''){
             hasFormEmpty = true;
             break;
           }
@@ -131,22 +131,11 @@
           this.$emit('submit',formData);
           this.$emit('close');
         } else {
-          this.$toastr.Add(notice('请填完所有表单项','info'));
+          XuAlert('请完成所有内容再提交~','error')
         }
 
       },
-  //     switch (this.renderData[j].field) {
-  // case fieldLimited:
-  //     valueLimitedIndex = j;
-  //   break;
-  // case fieldToLimit:
-  //     if (String(this.renderData[j].value) === fieldToLimitValue) {
-  //       this.renderData[valueLimitedIndex].value = '';
-  //       result = true;
-  //     }
-  //   break;
-  // }
-      //3.应用表单规则
+      //3.应用表单规则--该字段被禁用返回true
       applyFormRules:function (field) {
         for (let i=0;i<this.rules.length;i++){
           let fieldLimited = this.rules[i].field;

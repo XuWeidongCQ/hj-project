@@ -2,6 +2,7 @@
 import axios from 'axios'
 import API from "@/service/api";
 import { XuToastr } from "@/components/CommonComponents/XuComponent/XuToastr/XuToastr";
+import { XuAlert } from "@/components/CommonComponents/XuComponent/XuAlert/XuAlert";
 
 
 //需要登录才能访问的接口
@@ -47,19 +48,45 @@ axiosInst.interceptors.response.use(res=>{
   const {method:reqMethod,data:reqData,params:reqParams} = reqConfig;
   // console.log(`请求方法为${reqMethod}`,`请求数据为${reqData}`,'请求参数为',reqParams);
 
-  // switch (reqMethod) {
-  //   case "post":
-  //     if (resData){
-  //       const {code,message} = resData;
-  //
-  //     }
-  // }
-  if (resData.content){
-    // console.log(resData.content)
-  } else {
-    // console.log(resData);
+  switch (reqMethod) {
+    //1.获取数据，不进行统一处理
+    case "get":
+      return resData;
+    //2.   提交数据，对反馈信息进行统一处理
+    //2.1  提交成功返回提交的信息
+    //2.2  提交成功返回{code(=0成功，=1失败) message data}
+    case "post":
+      // console.log(resData);
+      const {code,message} = resData;
+      if (code){
+        if (code === 0){
+          XuAlert('提交成功','success');
+          return true
+        } else {
+          XuAlert(message,'error');
+          return false
+        }
+      } else {
+        XuAlert('提交成功','success');
+        return true
+      }
+
+    //3.删除数据，成功删除返回空字符串，否则返回提示字符串
+    case "delete":
+      if (resData === ''){
+        XuAlert('删除成功','success');
+        return true
+      } else {
+        XuAlert(resData,'error');
+        return false
+      }
+    //4.修改数据,目前没有做任何限制
+    case "put":
+      XuAlert('修改成功','success');
+      return true;
+    default:
+      return res
   }
-  return res //必须返回，不然响应会被阻断
 },error => {
   console.log(error);
   return Promise.reject(error)

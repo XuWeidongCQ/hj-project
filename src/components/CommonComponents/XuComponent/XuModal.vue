@@ -75,7 +75,7 @@
         border: 1px solid #cccccc;
         position: relative;
         background-color: #ffffff;
-        margin-top: 50px;
+        margin-top: 250px;
     }
     .xu-modal-header {
         border-top-left-radius: 5px;

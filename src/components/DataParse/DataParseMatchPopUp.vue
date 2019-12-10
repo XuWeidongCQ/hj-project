@@ -83,9 +83,7 @@
         this.dataMatchInfos = [];
         this.$Http['dataParse']['getMachineConfigInfos'](this.dataParse.id+'/matchs')
           .then(res => {
-            // console.log(res.data);
-            const content = res.data;
-            content.forEach(ele => {
+            res.forEach(ele => {
               const {id,dataName,dataValue,infoMatch} = ele;
               this.dataMatchInfos.push({id,dataName,dataValue,infoMatch})
             });
@@ -106,9 +104,7 @@
       delDataMatchInfo:function (id) {
         this.$Http['dataParse']['delMachineConfigInfo'](id)
           .then(res => {
-            const feedback = res.data === ''?'删除成功':res.data;
-            res.data === '' && this.getMachineConfigInfos();
-            this.$toastr.Add(notice(feedback));
+            res && this.getMachineConfigInfos()
           })
           .catch(error => {})
       },
@@ -132,8 +128,7 @@
             console.log(formData);
             this.$Http['dataParse']['postMachineConfigInfo'](formData)
               .then( res => {
-                this.$toastr.Add(notice('创建成功'));
-                this.getMachineConfigInfos()
+                res && this.getMachineConfigInfos()
               })
               .catch(error => {});
             break;
@@ -145,9 +140,7 @@
             // console.log(formData);
             this.$Http['dataParse']['editMachineConfigInfo'](formData)
               .then( res => {
-                // console.log(res.data);
-                this.$toastr.Add(notice('修改成功'));
-                this.getMachineConfigInfos()
+                res && this.getMachineConfigInfos()
               })
               .catch(error => {});
             break;

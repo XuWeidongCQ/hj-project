@@ -61,7 +61,6 @@
   import XuForm from "@/components/CommonComponents/XuComponent/XuForm";
   import XuPageNav from "@/components/CommonComponents/XuComponent/XuPageNav";
   import DeviceTablePopUp from "@/components/BackendManage/DeviceTablePopUp";
-  import {notice} from "@/plugins/toastrConfig";
 
   export default {
     name: "CompanyManage",
@@ -95,9 +94,9 @@
         this.companyInfos = [];
         this.$Http['backendManage']['getCompanyInfos']('',{params:{start:page}})
           .then( res => {
-            this.serverData = res.data;
+            this.serverData = res;
             // console.log(this.serverData);
-            const { content } = res.data;
+            const { content } = res;
             content.forEach(ele => {
               this.companyInfos.push({id:ele.id,name:ele.name,address:ele.address})
             });
@@ -118,9 +117,7 @@
       deleteCompanyInfo:function (companyId) {
         this.$Http['backendManage']['delCompanyInfo'](companyId)
           .then( res => {
-            const feedback = res.data === ''?'删除成功':res.data;
-            res.data === '' && this.getCompanyInfos();
-            this.$toastr.Add(notice(feedback));
+              res && this.getCompanyInfos();
           })
           .catch(error => {});
       },
@@ -151,14 +148,7 @@
           case 0:
             this.$Http['backendManage']['postCompanyInfo'](formData)
               .then( res => {
-                const {code,message} = res.data;
-                if (code === 0) {
-                  this.$toastr.Add(notice('创建成功'));
-                  this.getCompanyInfos()
-                } else {
-                  this.$toastr.Add(notice(message,'warning'));
-                }
-
+                res && this.getCompanyInfos()
               })
               .catch(error => {});
             break;
@@ -167,9 +157,7 @@
             formData['id'] = this.selectedCompany.id;
             this.$Http['backendManage']['editCompanyInfo'](formData)
               .then( res => {
-                console.log(res.data);
-                this.$toastr.Add(notice('修改成功'));
-                this.getCompanyInfos()
+                res && this.getCompanyInfos()
               })
               .catch(error => {});
             break;
