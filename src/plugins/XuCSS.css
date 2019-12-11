@@ -318,11 +318,13 @@ body {
 /*5 表格样式*/
 .xu-table {
     border-collapse: collapse;
+    font-size: 14px;
     width: 100%;
 }
 .xu-table th {
     border-top: 1px solid #ebeef5;
     text-align: start;
+    font-size: 14px;
     padding: 8px 4px;
 }
 .xu-table td {
@@ -330,6 +332,7 @@ body {
     border-bottom: 1px solid #ebeef5;
     padding: 8px 4px;
 }
+
 /*5.1 带边框的表格样式*/
 .xu-table-border th, .xu-table-border td{
     border: 1px solid #ebeef5;
@@ -341,12 +344,11 @@ body {
 /*5.3 小表格*/
 .xu-table-sm th, .xu-table-sm td {
     padding: 4px 2px;
-    font-size: 14px;
 }
 /*5.4 大表格*/
 .xu-table-lg th,.xu-table-lg td {
     padding: 12px 6px;
-    font-size: 16px;
+    /*font-size: 16px;*/
 }
 /*5.5 悬停表格*/
 .xu-table-hover tbody tr:hover {

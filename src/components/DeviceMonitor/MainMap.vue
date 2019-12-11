@@ -16,12 +16,14 @@
                            <label class="xu-label-text">
                                <span>机型名称：</span>
                                <select class="xu-input mr-integer" v-model="searchData.modelName">
+                                   <option>不限</option>
                                    <option v-for="option in modelNamesDropdown">{{ option }}</option>
                                </select>
                            </label>
                            <label class="xu-label-text">
                                <span>公司名称：</span>
                                <select class="xu-input" v-model="searchData.companyName">
+                                   <option>不限</option>
                                    <option v-for="option in companyNamesDropdown">{{ option }}</option>
                                </select>
                            </label>
