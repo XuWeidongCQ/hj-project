@@ -1,3 +1,4 @@
+<!--报警中心路由界面-->
 <template>
     <div class="vue-views-wrapper">
         <div class="xubox">

@@ -4,7 +4,6 @@ import AlertComp from "./AlertComp";
 
 export const XuAlert = function (content,infoStyle='success') {
   const constructor = Vue.extend(AlertComp);
-  let timer = null;
   let inst = new constructor({
     el:document.createElement('div'),
     data(){

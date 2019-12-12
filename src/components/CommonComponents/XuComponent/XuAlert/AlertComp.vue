@@ -20,7 +20,7 @@
         top: 20px;
         left: 0;
         right: 0;
-        min-width: 300px;
+        width: 450px;
         margin: auto;
         z-index: 1100;
     }

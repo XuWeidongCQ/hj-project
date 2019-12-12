@@ -47,7 +47,8 @@ axiosInst.interceptors.response.use(res=>{
   const {config:reqConfig,data:resData,status:resStatus} = res;
   const {method:reqMethod,data:reqData,params:reqParams} = reqConfig;
   // console.log(`请求方法为${reqMethod}`,`请求数据为${reqData}`,'请求参数为',reqParams);
-
+  // console.log(reqConfig);
+  const {code,message} = resData;
   switch (reqMethod) {
     //1.获取数据，不进行统一处理
     case "get":
@@ -57,7 +58,6 @@ axiosInst.interceptors.response.use(res=>{
     //2.2  提交成功返回{code(=0成功，=1失败) message data}
     case "post":
       // console.log(resData);
-      const {code,message} = resData;
       if (code){
         if (code === 0){
           XuAlert('提交成功','success');
@@ -66,9 +66,9 @@ axiosInst.interceptors.response.use(res=>{
           XuAlert(message,'error');
           return false
         }
-      } else {
-        XuAlert('提交成功','success');
-        return true
+      } else {//返回信息没有code的时候
+        XuAlert('搜索完毕','success');
+        return resData
       }
 
     //3.删除数据，成功删除返回空字符串，否则返回提示字符串
@@ -82,8 +82,14 @@ axiosInst.interceptors.response.use(res=>{
       }
     //4.修改数据,目前没有做任何限制
     case "put":
-      XuAlert('修改成功','success');
-      return true;
+      if (code === 0){
+        XuAlert('修改成功','success');
+        return true;
+      } else {
+        XuAlert(message,'error');
+        return false;
+      }
+
     default:
       return res
   }

@@ -1,3 +1,4 @@
+<!--设备管理路由界面-->
 <template>
     <div class="vue-views-wrapper">
         <chart-statics></chart-statics>

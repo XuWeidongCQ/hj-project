@@ -5,10 +5,10 @@
                <div class="info-filter-wrapper clear">
                    <div class="left xu-float-left">
                        <div class="mb-integer">
-                           <input type="text" class="xu-input" placeholder="请输入控制系统编号/出厂日期20190812">
+                           <input type="text" class="xu-input" placeholder="请输入控制系统编号/出厂日期20190812" v-model="searchData.csNumberOrFactoryDate">
                            <label class="xu-label-choose">
-                               <input type="radio" class="xu-choose xu-radio">
-                               <span>在线</span>
+                               <input type="checkbox" class="xu-choose xu-checkbox" v-model="searchData.status" :value="2">
+                               <span>报警</span>
                            </label>
 
                        </div>
@@ -30,7 +30,7 @@
                        </div>
                    </div>
                    <div class="right xu-float-right">
-                       <button class="xu-btn xu-btn-lg xu-btn-primary">查找</button>
+                       <button class="xu-btn xu-btn-lg xu-btn-primary" @click="searchDevices">查找</button>
                    </div>
                </div>
                <baidu-map class="map-wrapper"
@@ -49,7 +49,7 @@
                                   :icon="icon.iconNormal"
                                   @mouseover="showInfoWindow($event,marker.infoWindowData)"
                                   @mouseout="closeInfoWindow"
-                                  @click="">
+                                  @click="showSingleModal(marker.id)">
 
                        </bm-marker>
                        <bm-marker v-else
@@ -57,7 +57,7 @@
                                   :icon="icon.iconAlert"
                                   @mouseover="showInfoWindow($event,marker.infoWindowData)"
                                   @mouseout="closeInfoWindow"
-                                  @click="">
+                                  @click="showSingleModal(marker.id)">
 
                        </bm-marker>
                    </div>
@@ -116,7 +116,7 @@
           csNumberOrFactoryDate:'',
           modelName:'不限',
           companyName:'不限',
-          status:''
+          status:[]
         },
         mapInitZoom:6,//缩放等级只能是3到19
         mapCenter:'重庆',
@@ -153,12 +153,9 @@
         level === 3?this.isWorldMap = true:this.isWorldMap = false;
       },
       //2.显示单点监控弹窗
-      showSingleModal:function(ECUNumber,engineNumber){
-        this.isSingleMonitorVisible = true;
-        this.propsToSingleMonitorModal = {
-          ECUNumber:ECUNumber,
-          engineNumber:engineNumber
-        };
+      showSingleModal:function(deviceId){
+        // this.isSingleMonitorVisible = true;
+        console.log(deviceId)
       },
       //3.关闭单点监控弹窗
       closeSingleModal:function(){
@@ -183,7 +180,16 @@
           this.isInfoWindowVisible = false
         },150);
       },
-
+      //6.设备搜索
+      searchDevices: function () {
+        const result = {
+          csNumberOrFactoryDate: this.searchData.csNumberOrFactoryDate === '' ? null : this.searchData.csNumberOrFactoryDate,
+          modelName: this.searchData.modelName === '不限' ? null :this.searchData.modelName,
+          companyName: this.searchData.companyName === '不限' ? null :this.searchData.companyName,
+          status: this.searchData.status.length === 0 ? null : this.searchData.status[0]
+        };
+        this.$emit('searchInputDone',result);
+      },
     },
   }
 </script>

@@ -6,6 +6,19 @@ const API = {
     getCollection:{
       method:'get',
       url:'/forehome'
+    },
+    //2 搜索功能
+    searchDevices:{
+      method:'post',
+      url:'/foresearch'
+    }
+  },
+  //单点监控部分
+  singleMonitor:{
+    //1 获取整体所有数据
+    getSingleDeviceCollectionInfos:{
+      method:'get',
+      url:'/forSingleDevice/' // '/forSingleDevice/{did}'
     }
   },
   //后台管理部分

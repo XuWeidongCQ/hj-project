@@ -1,3 +1,4 @@
+<!--数据解析配置路由界面-->
 <template>
     <div class="vue-views-wrapper">
         <machine-model-manage></machine-model-manage>

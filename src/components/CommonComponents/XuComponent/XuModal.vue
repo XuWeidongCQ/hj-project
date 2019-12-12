@@ -72,7 +72,7 @@
     }
     .xu-modal {
         border-radius: 5px;
-        border: 1px solid #cccccc;
+        /*border: 1px solid #cccccc;*/
         position: relative;
         background-color: #ffffff;
         margin-top: 250px;

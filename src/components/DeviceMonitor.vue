@@ -1,9 +1,12 @@
+
+<!--实时监控主路由界面-->
 <template>
     <div class="vue-views-wrapper">
         <e-c-u-statics-info :statistical-data="statisticalData"></e-c-u-statics-info>
         <main-map :map-device-infos="mapDeviceInfos"
                   :company-names-dropdown="companyNamesDropdown"
-                  :model-names-dropdown="modelNamesDropdown"></main-map>
+                  :model-names-dropdown="modelNamesDropdown"
+                  @searchInputDone="getSearchResults($event)"></main-map>
     </div>
 </template>
 
@@ -73,11 +76,51 @@
                 this.companyNamesDropdown.push(ele.company.name)
               }
             });
-            // console.log(this.mapDeviceInfos);
+            console.log(this.mapDeviceInfos);
             // console.log(this.modelNamesDropdown);
             // console.log(this.companyNamesDropdown);
             // this.mapDeviceInfos.map(value => {console.log(value.coordinate.lng,value.coordinate.lat)})
             // this.mapDeviceInfos.map(value => {console.log(value.isAlert)})
+          })
+      },
+      //2 搜索事件
+      getSearchResults:function (searchInfo) {
+        // console.log(searchInfo)
+        this.mapDeviceInfos = [];
+        this.$Http['deviceMonitor']['searchDevices'](searchInfo)
+          .then(res => {
+            const { statistical,devices } = res;
+            this.statisticalData = {
+              totalNum:statistical.totalNum,
+              onlineNum:statistical.onlineNum,
+              normalNum:statistical.normalNum,
+              alarmNum:statistical.alarmNum
+            };
+            // console.log(statistical);
+            // console.log(devices);
+            devices.forEach(ele => {
+              //处理地图显示数据
+              this.mapDeviceInfos.push({
+                id:ele.id,
+                isAlert:ele.status,//2--报警,1--正常,0--报废(不会出现，报废离线)
+                modelName:ele.model.modelName,
+                companyName:ele.company.name,
+                infoWindowData:{
+                  isAlert:ele.status,
+                  status:ele.dataDevices === null ? '': ele.dataDevices[0].status,//设备的文字提示信息
+                  csNumber:ele.csNumber,
+                  beidouId: ele.beidouId,
+                  rotateSpeed:ele.dataDevices === null ? '': ele.dataDevices[0].speed,
+                  greasePressure:ele.dataDevices === null ? '': ele.dataDevices[0].greasePressure,
+                  coolingWater:ele.dataDevices === null ? '': ele.dataDevices[0].waterTemp,
+                },
+                coordinate:{
+                  lng:ele.dataDevices === null ? '': ele.dataDevices[0].longitude,
+                  lat:ele.dataDevices === null ? '': ele.dataDevices[0].latitude
+                },
+              });
+            });
+            // console.log(this.mapDeviceInfos);
           })
       }
     },

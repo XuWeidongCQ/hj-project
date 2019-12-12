@@ -4,7 +4,7 @@
                   :header-shown="true"
                   :footer-shown="true"
                   @close="close"
-                  :header-style="{backgroundColor:'#fcfcfc'}"
+                  :header-style="{backgroundColor:'#00a8b3'}"
                   v-if="isPopUp">
             <span slot="header">{{ formTitle }}</span>
             <div slot="content" class="xu-text-level3">
