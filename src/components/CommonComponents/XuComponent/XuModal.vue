@@ -87,7 +87,6 @@
         height: 20px;
         line-height: 20px;
         font-size: 18px;
-        color: #000000;
         display: inline-block;
     }
     .close-icon {

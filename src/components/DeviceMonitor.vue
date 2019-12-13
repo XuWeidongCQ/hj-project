@@ -76,7 +76,7 @@
                 this.companyNamesDropdown.push(ele.company.name)
               }
             });
-            console.log(this.mapDeviceInfos);
+            // console.log(this.mapDeviceInfos);
             // console.log(this.modelNamesDropdown);
             // console.log(this.companyNamesDropdown);
             // this.mapDeviceInfos.map(value => {console.log(value.coordinate.lng,value.coordinate.lat)})

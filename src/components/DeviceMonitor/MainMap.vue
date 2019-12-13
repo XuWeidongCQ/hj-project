@@ -49,7 +49,7 @@
                                   :icon="icon.iconNormal"
                                   @mouseover="showInfoWindow($event,marker.infoWindowData)"
                                   @mouseout="closeInfoWindow"
-                                  @click="showSingleModal(marker.id)">
+                                  @click="showSingleModal(marker)">
 
                        </bm-marker>
                        <bm-marker v-else
@@ -57,7 +57,7 @@
                                   :icon="icon.iconAlert"
                                   @mouseover="showInfoWindow($event,marker.infoWindowData)"
                                   @mouseout="closeInfoWindow"
-                                  @click="showSingleModal(marker.id)">
+                                  @click="showSingleModal(marker)">
 
                        </bm-marker>
                    </div>
@@ -73,7 +73,7 @@
        <!--单点监控-->
        <single-monitor-modal @close="closeSingleModal"
                              v-if="isSingleMonitorVisible"
-                             :point-info="propsToSingleMonitorModal">
+                             :device-info="propsToSingleMonitorModal">
        </single-monitor-modal>
     </div>
 </template>
@@ -153,9 +153,13 @@
         level === 3?this.isWorldMap = true:this.isWorldMap = false;
       },
       //2.显示单点监控弹窗
-      showSingleModal:function(deviceId){
-        // this.isSingleMonitorVisible = true;
-        console.log(deviceId)
+      showSingleModal:function(marker){
+        this.propsToSingleMonitorModal = {
+          id:marker.id,
+          modelName:marker.modelName,
+          companyName:marker.companyName
+        };
+        this.isSingleMonitorVisible = true;
       },
       //3.关闭单点监控弹窗
       closeSingleModal:function(){
