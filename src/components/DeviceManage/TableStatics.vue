@@ -1,5 +1,8 @@
 <template>
     <div class="xubox xubox-content">
+        <xu-select :options="[123,123,5676,334]" v-model="test">
+
+        </xu-select>
         <div class="table-title">
             <div class="search-field-container">
 <!--                <label for="searchField">搜索：</label>-->
@@ -28,8 +31,8 @@
             <tbody>
             <tr v-for="tbody in tbodyContents">
                 <td>
-                    <span v-if="tbody.status === 1" class="badge badge-success">{{ tbody.status | correctECUStatus }}</span>
-                    <span class="badge badge-danger" v-else>{{ tbody.status | correctECUStatus }}</span>
+                    <span v-if="tbody.status === 1" class="badge badge-success">{{ tbody.status  }}</span>
+                    <span class="badge badge-danger" v-else>{{ tbody.status  }}</span>
                 </td>
                 <td>{{tbody.ECUNumber}}</td>
                 <td>{{tbody.engineNumber}}</td>
@@ -67,11 +70,13 @@
 
 <script>
   import DeviceInfoInputModal from "@/components/CommonComponents/DeviceInfoInputPopUp";
-  import SingleMonitorModal from "@/components/CommonComponents/SingleMonitorPopUp";
+  import SingleMonitorModal from "@/components/+SingleMonitor/SingleMonitorPopUp";
+  import XuSelect from "@/components/CommonComponents/XuComponent/XuSelect";
   export default {
     name: "TableStatics",
     data(){
       return {
+        test:'99',
         theadContents:['状态','设备编号','机型编号','出厂日期','用户名','用户地址','操作'],
         tbodyContents:[
           {status:0,ECUNumber:'122019080323',engineNumber:'32ab',manufactureDate:'2019-8-27',userName:'重庆某船厂',userAddress:'382550'},
@@ -90,6 +95,7 @@
       }
     },
     components:{
+      XuSelect,
       DeviceInfoInputModal,
       SingleMonitorModal
     },

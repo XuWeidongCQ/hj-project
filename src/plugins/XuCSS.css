@@ -169,6 +169,14 @@ body {
 .xu-btn-sm:focus{
     outline: none;
 }
+.xu-btn-basic {
+    background-color: #ffffff;
+    color: #555555;
+    border: 1px solid #cccccc;
+}
+.xu-btn-basic:hover {
+
+}
 .xu-btn-primary {
     background-color: #007bff;
     color: #ffffff;
@@ -458,6 +466,14 @@ body {
     margin: 0 0.3em;
     cursor: pointer;
     line-height: 1.6em;
+}
+.xu-indicator-basic {
+    background-color: #ffffff;
+    color: #555555;
+    border: 1px solid #cccccc;
+}
+.xu-indicator-basic:hover {
+    color: #ffffff;
 }
 .xu-indicator-add {
      background-color: #007bff;

@@ -80,7 +80,7 @@
 
 <script>
   import { BaiduMap,BmScale,BmNavigation,BmMarker } from 'vue-baidu-map'
-  import SingleMonitorModal from "@/components/CommonComponents/SingleMonitorPopUp";
+  import SingleMonitorModal from "@/components/+SingleMonitor/SingleMonitorPopUp";
   import PointInfoWindow from "./PointInfoWindow";
 
   export default {
