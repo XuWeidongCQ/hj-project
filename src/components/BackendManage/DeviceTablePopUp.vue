@@ -141,10 +141,6 @@
         return `${hours}h${minutes}min`
       }
     },
-    // computed:{
-    //   //1 从公司所有设备中提取中机型信息
-    //   devicesInfos:
-    // },
     methods:{
       //0 关闭事件
       close:function(){

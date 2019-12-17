@@ -19,7 +19,17 @@ const API = {
     getSingleDeviceCollectionInfos:{
       method:'get',
       url:'/forSingleDevice/' // '/forSingleDevice/{did}'
-    }
+    },
+    //2 获取某一台设备的历史维修记录
+    getOneDeviceRepairInfos:{
+      method:'get',
+      url:'/devices/' // '/devices/{device_id}/repairs'
+    },
+    //3 获取一台设备的所有报警记录
+    getDeviceAlarmInfos:{
+      method:'get',
+      url:'/devices/' // '/devices/{device_id}/alarms'
+    },
   },
   //后台管理部分
   backendManage:{

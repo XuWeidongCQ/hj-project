@@ -43,10 +43,10 @@
         type:Boolean,
         default:false
       },
-      //接收数据4：头部样式
+      //接收数据4：弹框头部样式（用来改变弹窗在页面的位置）
       headerStyle:{
       },
-      //接收数据5：整体弹窗框样式
+      //接收数据5：整体弹窗框样式（改变弹框头部的样式，比如背景）
       modelStyle:{}
     },
     methods:{
@@ -72,7 +72,6 @@
     }
     .xu-modal {
         border-radius: 5px;
-        /*border: 1px solid #cccccc;*/
         position: relative;
         background-color: #ffffff;
         margin-top: 250px;
@@ -94,7 +93,7 @@
         height: 20px;
         line-height: 20px;
         font-size: 20px;
-        color: #a4abbd;
+        color: #c5ccde;
         margin-left: 30px;
         cursor: pointer;
     }

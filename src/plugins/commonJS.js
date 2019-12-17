@@ -41,7 +41,7 @@ export default {
       return -1
     }
   },
-  //产生时间的函数
+  //产生时间的函数(这个不能用来计算时间间隔)
   getDate:function () {
     let now;
     if (arguments[0]){

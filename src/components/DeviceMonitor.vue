@@ -90,14 +90,15 @@
         this.$Http['deviceMonitor']['searchDevices'](searchInfo)
           .then(res => {
             const { statistical,devices } = res;
+            // console.log(statistical);
+            // console.log(devices);
             this.statisticalData = {
               totalNum:statistical.totalNum,
               onlineNum:statistical.onlineNum,
               normalNum:statistical.normalNum,
               alarmNum:statistical.alarmNum
             };
-            // console.log(statistical);
-            // console.log(devices);
+
             devices.forEach(ele => {
               //处理地图显示数据
               this.mapDeviceInfos.push({

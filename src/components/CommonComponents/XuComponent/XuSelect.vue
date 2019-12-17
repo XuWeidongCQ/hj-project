@@ -1,15 +1,15 @@
 <template>
-    <div class="xu-select-wrapper" @click.capture="test">
-        <label class="span-area">
+    <div class="xu-select-wrapper" :style="styleObj">
+        <label :class="{'span-shrink':!isSpread,'span-spread':isSpread}" @click="onclick" class="span-area">
             <input type="text" class="xu-select-value"
                    :value="selectValue"
-                   :class="{'active':isActive}"
-                   @click="onclick"
                    @blur="onblur"
                    readonly>
         </label>
-        <ul class="xu-select-option-wrapper scrollBar-style" v-show="isSpread">
-            <li v-for="option in options" class="xu-select-option" @click="select(option)">{{ option }}</li>
+        <ul class="xu-select-option-wrapper scrollBar-style slideInDown" v-if="isSpread">
+            <!--这里只能使用mousedown事件，使用click事件会导致先执行blur事件而无法选中元素-->
+            <li v-for="option in prefixOptions" class="xu-select-option" @mousedown="select(option)">{{ option }}</li>
+            <li v-for="option in options" class="xu-select-option" @mousedown="select(option)">{{ option }}</li>
         </ul>
 
     </div>
@@ -18,42 +18,44 @@
 <script>
   export default {
     name: "XuSelect",
-    props:['value','options'],
+    props:{
+      //1 使用v-model必须使用的
+      value:{
+        type:String
+      },
+      //2 接收可选项
+      options:{
+        type:Array,
+        default:() => []
+      },
+      //3 可选项的前面添加的东西
+      prefixOptions:{
+        type:Array,
+        default:() => []
+      },
+      //4 样式
+      styleObj:{
+        type:Object
+      }
+    },
+    // props:['value','options','prefixOptions'],
     data(){
       return {
-        isTest:false,
         isSpread:false,
-        isSelect:true,
-        isActive:false,
-        selectValue:this.value
+        selectValue:this.value,
       }
     },
     methods:{
-      test:function() {
-        console.log('outer');
-        // this.isSpread = true;
-        this.isTest = true;
+      onclick:function() {
+        this.isSpread = !this.isSpread;
       },
       select:function (option) {
-        this.isSelect = true;
         this.isSpread = false;
-        this.isTest = false;
         this.selectValue = option;
         this.$emit('input',option)
       },
-      onclick:function() {
-        console.log('click-input');
-        this.isTest && (this.isSpread = !this.isSpread);
-        // this.isSpread = !this.isSpread;
-        this.isActive = true
-      },
       onblur:function () {
-        // !this.isTest && (this.isSpread = false);
-        //还原
         this.isSpread = false;
-        this.isSelect = false;
-        this.isActive = false;
-        this.isTest = false;
       }
     }
   }
@@ -63,11 +65,46 @@
     .xu-select-wrapper {
         position: relative;
         display: inline-block;
+        /*width: 400px;*/
+    }
+    .xu-select-wrapper .span-area {
+        width: 100%;
+    }
+    .xu-select-wrapper .span-shrink::before {
+        content: '\25BC';
+        position: absolute;
+        padding: 5px 0 6px 0;
+        /*line-height: 1;*/
+        font-size: 1em;
+        top: 0;
+        right: 8px;
+        bottom: 8px;
+        cursor: pointer;
+        color: #d4d7de;
+        /*border: 1px solid black;*/
+        pointer-events: none;/*不让伪元素捕获点击事件，使得事件穿透到下面*/
+        transition: transform .3s;
+    }
+    .xu-select-wrapper .span-spread::before {
+        content: '\25BC';
+        position: absolute;
+        padding: 5px 0 6px 0;
+        /*line-height: 1;*/
+        font-size: 1em;
+        top: 0;
+        right: 8px;
+        bottom: 8px;
+        cursor: pointer;
+        color: #d4d7de;
+        pointer-events: none;
+        /*border: 1px solid black;*/
+        transform: rotate(180deg);
+        transition: transform .3s;
     }
     .xu-select-wrapper .xu-select-value {
         display: block;
         width: 100%;
-        padding: 8px 25px 6px 10px;
+        padding: 6px 25px 6px 10px;
         border: 1px solid #dcdfe6;
         border-radius: 4px;
         font-size: 1em;
@@ -76,17 +113,13 @@
     }
     .xu-select-wrapper .xu-select-value:focus {
         outline: none;
-    }
-    .active {
         border: 1px solid #48a8ff !important;
         border-radius: 4px;
-        /*transition: all 0.8ms ease-in;*/
     }
     .xu-select-wrapper .xu-select-option-wrapper {
         position: absolute;
         left: 0;
         right: 0;
-        /*margin-top: 10px;*/
         padding: 5px 0;
         border-radius: 4px;
         border: 1px solid #dcdfe6;
@@ -98,6 +131,9 @@
         padding: 0 25px 5px 6px;
         height: 1.8em;
         line-height: 1.8em;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
     }
     .xu-select-wrapper .xu-select-option:hover {
         cursor: pointer;
@@ -123,5 +159,26 @@
     }
     .scrollBar-style::-webkit-scrollbar-thumb:hover {
         background-color: #808080;
+    }
+    .slideInDown {
+        transform-origin: center top;
+        animation: .15s ease-in slideInDown;
+    }
+    @keyframes slideInDown {
+        0% {
+            transform: scaleY(0);
+        }
+        25% {
+            transform: scaleY(0.25);
+        }
+        50% {
+            transform: scaleY(0.5);
+        }
+        75% {
+            transform: scaleY(0.75);
+        }
+        100% {
+            transform: scaleY(1);
+        }
     }
 </style>

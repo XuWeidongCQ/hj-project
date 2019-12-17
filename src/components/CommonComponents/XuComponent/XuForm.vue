@@ -4,7 +4,7 @@
                   :header-shown="true"
                   :footer-shown="true"
                   @close="close"
-                  :header-style="{backgroundColor:'#00a8b3'}"
+                  :header-style="{backgroundColor:'#00a8b3',color:'#ffffff'}"
                   v-if="isPopUp">
             <span slot="header">{{ formTitle }}</span>
             <div slot="content" class="xu-text-level3">
@@ -64,7 +64,7 @@
                 </div>
             </div>
             <div slot="footer">
-                <div class="xu-float-right clear">
+                <div class="xu-text-center">
                     <button class="xu-btn xu-btn-primary mr-integer" @click="submit">确认</button>
                     <button class="xu-btn xu-btn-cancel mb-integer" @click="close">取消</button>
                 </div>

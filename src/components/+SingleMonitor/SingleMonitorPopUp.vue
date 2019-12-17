@@ -5,7 +5,7 @@
                   :model-style="{'marginTop':'25px'}"
                   :header-style="{'backgroundColor':'#48a8ff','color':'#fcfcfc'}"
                   @close="close">
-            <div slot="header">#{{deviceInfo.id}} 单点监控模式</div>
+            <div slot="header">#{{deviceInfo.id}} 单点监控模式(测试模式,数据始终为ID为1的设备的数据)</div>
             <div slot="content">
                 <div class="box-title">
                     <span>客户公司：</span><span class="mr-4">{{ deviceInfo.companyName }}</span>
@@ -40,15 +40,15 @@
                         <!--运行轨迹图-->
                         <div class="xu-col-5">
                             <baidu-map class="map-container"
-                                       :center="track.coordinates[0]"
+                                       :center="trackInfos[0]"
                                        :scroll-wheel-zoom="true"
                                        :zoom="7">
-                                <bm-polyline :path="track.coordinates"
+                                <bm-polyline :path="trackInfos"
                                              :stroke-weight="2"
                                              stroke-color="red"></bm-polyline>
                                 <!--使用v-if是因为position绑定的是异步数据，初次渲染的时候还没有数据，会报错-->
-                                <bm-label content="开始" :position="track.coordinates[0]" v-if="track.coordinates[0]"></bm-label>
-                                <bm-label content="结束" :position="track.coordinates[track.coordinates.length-1]" v-if="track.coordinates[0]"></bm-label>
+                                <bm-label content="开始" :position="trackInfos[0]" v-if="trackInfos[0]"></bm-label>
+                                <bm-label content="结束" :position="trackInfos[trackInfos.length-1]" v-if="trackInfos[0]"></bm-label>
                                 <bm-scale anchor="BMAP_ANCHOR_TOP_LEFT" :offset="{top:'5px',left:'5px'}"></bm-scale>
                                 <bm-navigation anchor="BMAP_ANCHOR_TOP_RIGHT"></bm-navigation>
                             </baidu-map>
@@ -57,16 +57,13 @@
                     <!--统计指标-->
                     <div class="statics-info-wrapper mb-integer">
                         <div class="statics-item bg-light border">
-                            <span>在线率:</span><span>98%</span>
+                            <span>累计在线时间：</span><span>{{ devStatisticsInfos.totalOnlineTime | msFilter }}</span>
                         </div>
                         <div class="statics-item bg-light border">
-                            <span>累计在线时间:</span><span>1450s</span>
+                            <span>累计正常时间：</span><span>{{ devStatisticsInfos.totalNormalTime | msFilter }}</span>
                         </div>
                         <div class="statics-item bg-light border">
-                            <span>累计正常时间:</span><span>1450s</span>
-                        </div>
-                        <div class="statics-item bg-light border">
-                            <span>累计报警时间:</span><span>98s</span>
+                            <span>累计报警时间：</span><span>{{ devStatisticsInfos.totalAlarmTime | msFilter }}</span>
                         </div>
                     </div>
                     <div class="table-container clearfix">
@@ -78,6 +75,7 @@
                                 <input type="datetime-local" name="endTime" class="xu-input">
                             </label>
                             <button class="xu-btn xu-btn-info ml-integer"><span class="fa fa-file-excel-o"></span>&nbsp;导出Excel</button>
+                            <button class="xu-btn xu-btn-primary xu-float-right mt-integer">添加维修记录</button>
                         </div>
                         <!--历史数据表格-->
                         <div class="history-table xu-fix-table-wrapper scrollBar-style">
@@ -98,13 +96,31 @@
                                 </tr>
                                 </tbody>
                             </table>
+                            <div v-if="historyDataInfos.length === 0" class="hint-text">暂无记录</div>
+                        </div>
+                        <!--月份在线率数据表格-->
+                        <div class="online-rate-table">
+                            <table class="xu-table xu-table-center xu-table-border xu-table-sm xu-table-hover">
+                                <thead class="bg-success xu-text-white-level0">
+                                <tr>
+                                    <th>月份</th>
+                                    <th>在线率</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr v-for="(value,key) in monthlyOnlineRateInfos">
+                                    <td>{{key}}</td>
+                                    <td>{{value | rateFilter }}</td>
+                                </tr>
+                                </tbody>
+                            </table>
                         </div>
                         <!--报警数据表格-->
                         <div class="warn-maintain-table">
                             <div class="warn-table mb-integer scrollBar-style">
                                 <table class="xu-table xu-table-center xu-table-sm xu-table-hover">
                                     <thead class="xu-text-white-level0">
-                                    <tr class="bg-warning">
+                                    <tr class="bg-danger">
                                         <th>信息</th>
                                         <th>类型</th>
                                         <th>报警时间</th>
@@ -123,14 +139,14 @@
                                     </tr>
                                     </tbody>
                                 </table>
-                                <div class="look-more-text" v-if="alarmInfos.length !== 0">查看更多</div>
+                                <div class="look-more-text" v-if="alarmInfos.length !== 0" @click="showAlarmInfosPopUp">查看更多</div>
                                 <div v-if="alarmInfos.length === 0" class="hint-text">暂无记录</div>
                             </div>
                             <!--维修记录数据表格-->
                             <div class="maintain-table scrollBar-style">
                                 <table class="xu-table xu-table-center xu-table-sm xu-table-hover">
                                     <thead class="xu-text-white-level0">
-                                    <tr class="bg-danger">
+                                    <tr class="bg-warning">
                                         <th>更换类型</th>
                                         <th>维修人</th>
                                         <th>维修时间</th>
@@ -144,7 +160,7 @@
                                     </tr>
                                     </tbody>
                                 </table>
-                                <div class="look-more-text" v-if="repairInfos.length !== 0">查看更多</div>
+                                <div class="look-more-text" v-if="repairInfos.length !== 0" @click="showRepairInfosPopUp">查看更多</div>
                                 <div v-if="repairInfos.length === 0" class="hint-text">暂无记录</div>
                             </div>
                         </div>
@@ -152,6 +168,10 @@
                 </div>
             </div>
         </xu-modal>
+        <dev-history-repair-infos-pop-up v-if="showDevHistoryRepairInfosPopUp"
+                                         @close="showDevHistoryRepairInfosPopUp = false"></dev-history-repair-infos-pop-up>
+        <dev-history-alarm-infos-pop-up v-if="showDevHistoryAlarmInfosPopUp"
+                                        @close="showDevHistoryAlarmInfosPopUp = false"></dev-history-alarm-infos-pop-up>
     </div>
 </template>
 
@@ -160,10 +180,9 @@
   import { BaiduMap,BmScale,BmNavigation,BmPolyline,BmLabel } from 'vue-baidu-map/components'
   import XuCSS from "@/plugins/XuCSS";
   import XuChart from "@/components/CommonComponents/XuComponent/XuChart";
+  import DevHistoryRepairInfosPopUp from "./DevHistoryRepairInfosPopUp";
+  import DevHistoryAlarmInfosPopUp from "@/components/+SingleMonitor/DevHistoryAlarmInfosPopUp";
 
-  let echarts = require('echarts/lib/echarts');
-  require('echarts/lib/chart/line');
-  require('echarts/lib/component/tooltip');
   export default {
     name: "SingleMonitorModal",
     components:{
@@ -173,7 +192,9 @@
       BmScale,
       BmLabel,
       BmPolyline,
-      XuChart
+      XuChart,
+      DevHistoryRepairInfosPopUp,
+      DevHistoryAlarmInfosPopUp
     },
     props:{
       deviceInfo:Object,
@@ -185,22 +206,17 @@
         repairInfos:[],//存放设备维修记录信息
         historyDataInfos:[],//存放设备历史传感器数据
         trackInfos:[],//轨迹信息
-        pointHistoryRecord:[
-          {time:'2019-9-11 10:22',status:1,rotateSpeed:1000,greasePressure:1.3,coolingWaterTemperature:30,coordinate:{lng:136,lat:10}},
-          {time:'2019-9-11 11:22',status:1,rotateSpeed:980,greasePressure:1.2,coolingWaterTemperature:35,coordinate:{lng:136,lat:10.2}},
-          {time:'2019-9-11 12:22',status:0,rotateSpeed:970,greasePressure:1.4,coolingWaterTemperature:29,coordinate:{lng:136,lat:10.4}},
-          {time:'2019-9-11 13:22',status:1,rotateSpeed:1120,greasePressure:1.6,coolingWaterTemperature:38,coordinate:{lng:136,lat:10.6}},
-          {time:'2019-9-11 14:22',status:0,rotateSpeed:1234,greasePressure:1.3,coolingWaterTemperature:45,coordinate:{lng:136,lat:10.7}},
-          {time:'2019-9-11 15:22',status:1,rotateSpeed:1090,greasePressure:1.7,coolingWaterTemperature:30,coordinate:{lng:136,lat:10.9}},
-          {time:'2019-9-11 16:22',status:1,rotateSpeed:1256,greasePressure:1.9,coolingWaterTemperature:37,coordinate:{lng:136.5,lat:10}},
-          {time:'2019-9-11 17:22',status:1,rotateSpeed:1050,greasePressure:1.1,coolingWaterTemperature:42,coordinate:{lng:136.6,lat:10.4}},
-          {time:'2019-9-11 18:22',status:1,rotateSpeed:946,greasePressure:1.4,coolingWaterTemperature:39,coordinate:{lng:136.4,lat:10.8}},
-          {time:'2019-9-11 19:22',status:1,rotateSpeed:989,greasePressure:1.3,coolingWaterTemperature:30,coordinate:{lng:136.9,lat:10.9}},
-          {time:'2019-9-11 20:22',status:1,rotateSpeed:1045,greasePressure:1.2,coolingWaterTemperature:33,coordinate:{lng:137,lat:11.5}},
-        ]
+        monthlyOnlineRateInfos:{},//月份在线率信息
+        devStatisticsInfos:{},//月份在线率信息
+        showDevHistoryRepairInfosPopUp:false,//是否显示设备历史维修记录弹窗
+        showDevHistoryAlarmInfosPopUp:false//是否显示设备历史报警记录弹窗
+        // pointHistoryRecord:[
+        //   {time:'2019-9-11 10:22',status:1,rotateSpeed:1000,greasePressure:1.3,coolingWaterTemperature:30,coordinate:{lng:136,lat:10}},
+        // ]
       }
     },
     computed:{
+      //1.提取历史传感器数据
       deviceHistoryRecord:function () {
         let rotateSpeed = [],
             greasePressure = [],
@@ -221,15 +237,6 @@
           time:time,
         }
       },
-      track:function () {
-        let coordinates = [];
-        for (let i=0;i<this.trackInfos.length;i++){
-          coordinates.push({lat:this.trackInfos[i].latitude,lng:this.trackInfos[i].longitude})
-        }
-        return {
-          coordinates:coordinates,
-        }
-      }
     },
     methods:{
       //1.关闭单点监控界面
@@ -238,10 +245,11 @@
       },
       //2.获取整个界面的所需数据
       getSingleDeviceCollectionInfos:function(){
-        this.$Http['singleMonitor']['getSingleDeviceCollectionInfos'](this.deviceInfo.id)
+        this.$Http['singleMonitor']['getSingleDeviceCollectionInfos'](1)//注意这里测试才传入1的
           .then(res => {
-            const {alarms,datas:data,device,repairs} = res;
-            //处理维修信息
+            const {alarms,datas:data,DeviceTime,repairs,monthOnlineRate:rate,locationChange:location} = res;
+            //1.处理维修信息
+            // console.log(res);
             repairs && repairs.forEach(ele => {
               this.repairInfos.push({
                 replacementType: ele.replacementType,
@@ -250,7 +258,7 @@
                 repairDate:ele.repairDate
               })
             });
-            //处理报警信息
+            //2.处理报警信息
             alarms && alarms.forEach(ele => {
               this.alarmInfos.push({
                 alarmInfo: ele.alarmInfo,
@@ -258,7 +266,7 @@
                 alarmTime:ele.createTime
               })
             });
-            //处理设备历史传感器数据-处理轨迹数据[要改]
+            //3.处理设备历史传感器数据
             data && data.forEach(ele => {
               this.historyDataInfos.push({
                 rotateSpeed:ele.speed,
@@ -266,15 +274,29 @@
                 coolingWaterTemperature:ele.waterTemp,
                 time:ele.createTime
               });
+            });
+            //4.处理轨迹信息
+            location && location.forEach(ele => {
               this.trackInfos.push({
-                latitude:ele.latitude,
-                longitude:ele.longitude
+                lat:ele.latitude,
+                lng:ele.longitude
               })
             });
-            //
-          })
+            //5.处理在线率信息
+            this.monthlyOnlineRateInfos = rate;
+            //6.处理设备统计信息
+            this.devStatisticsInfos = DeviceTime
+          });
+        // console.log(this.trackInfos)
       },
-
+      //3.显示一台设备的维修记录表格
+      showRepairInfosPopUp: function () {
+        this.showDevHistoryRepairInfosPopUp = true;
+      },
+      //4.显示一台设备的报警记录表格
+      showAlarmInfosPopUp: function () {
+        this.showDevHistoryAlarmInfosPopUp = true;
+      }
     },
     filters:{
       alarmTypeFilter:function (value) {
@@ -284,6 +306,20 @@
           case 1:
             return '设备故障'
         }
+      },
+      msFilter:function (value) {
+        const day = Math.floor(value / 86400000);
+        const hour = Math.floor(value % 86400000 / 3600000 );
+        const min = Math.floor(value % 86400000 % 3600000 / 60000 );
+        let result = '';
+        day ? result = result + day + '天':result = result + '';
+        hour ? result = result + hour + '时':result = result + '';
+        min ? result = result + min + '分':result = result + '';
+        return result
+      },
+      rateFilter:function (value) {
+        const regValue = value*100;
+        return regValue.toFixed(2) + '%'
       }
     },
     created(){
@@ -295,9 +331,6 @@
     },
     //异步数据更新后执行
     updated(){
-      // console.log(this.deviceHistoryRecord.coordinates);
-      // console.log(this.deviceHistoryRecord.startPoint);
-      // console.log(this.deviceHistoryRecord.endPoint);
       XuCSS.fixTableThead()
     }
   }
@@ -308,9 +341,6 @@
         background-color: transparent;
         width: 1200px;
         font-size: 16px;
-    }
-    .chart-container {
-        height: 100px;
     }
     .map-container {
         border: 1px solid black;
@@ -326,13 +356,20 @@
     .statics-item {
         padding: 15px 20px;
         border-radius: 5px;
-        width: 250px;
+        width: 350px;
         text-align: center;
     }
     .history-table {
-        width: 650px;
+        width: 450px;
         height: 350px;
         float: left;
+    }
+    .online-rate-table {
+        margin-left: 25px;
+        float: left;
+        height: 350px;
+        width: 200px;
+        border: 1px solid #dcdfe6;
     }
     .table-title {
         padding: 10px 0;
@@ -340,7 +377,7 @@
     .warn-maintain-table {
         float: right;
         height: 350px;
-        width: 530px;
+        width: 500px;
     }
     .warn-table {
         height: 170px;

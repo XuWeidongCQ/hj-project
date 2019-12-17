@@ -15,17 +15,16 @@
                        <div>
                            <label class="xu-label-text">
                                <span>机型名称：</span>
-                               <select class="xu-input mr-integer" v-model="searchData.modelName">
-                                   <option>不限</option>
-                                   <option v-for="option in modelNamesDropdown">{{ option }}</option>
-                               </select>
+                               <xu-select v-model="searchData.modelName"
+                                          :options="modelNamesDropdown"
+                                          :prefix-options="['不限']"></xu-select>
                            </label>
                            <label class="xu-label-text">
-                               <span>公司名称：</span>
-                               <select class="xu-input" v-model="searchData.companyName">
-                                   <option>不限</option>
-                                   <option v-for="option in companyNamesDropdown">{{ option }}</option>
-                               </select>
+                               <span class="ml-integer">公司名称：</span>
+                               <xu-select v-model="searchData.companyName"
+                                          :style-obj="{width:'220px'}"
+                                          :options="companyNamesDropdown"
+                                          :prefix-options="['不限']"></xu-select>
                            </label>
                        </div>
                    </div>
@@ -82,6 +81,7 @@
   import { BaiduMap,BmScale,BmNavigation,BmMarker } from 'vue-baidu-map'
   import SingleMonitorModal from "@/components/+SingleMonitor/SingleMonitorPopUp";
   import PointInfoWindow from "./PointInfoWindow";
+  import XuSelect from "@/components/CommonComponents/XuComponent/XuSelect";
 
   export default {
     name: "MainMap",
@@ -91,7 +91,8 @@
       BaiduMap,
       BmMarker,
       BmScale,
-      BmNavigation
+      BmNavigation,
+      XuSelect
     },
     props:{
       //1.用来地图上显示的设备
@@ -213,7 +214,7 @@
         right: 20px;
         top: 5px;
         border-radius: 3px;
-        padding: 20px 10px;
+        padding: 20px 10px 15px;
         background-color: #ffffff;
         z-index: 100;
         font-size: 14px;

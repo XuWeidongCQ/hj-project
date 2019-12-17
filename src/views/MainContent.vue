@@ -154,7 +154,7 @@
     .login-duration-wrapper{
         margin-left: -15px;
         margin-right: -15px;
-        background-color: #e9e9e9;
+        background-color: #ffffff;
         padding: 5px 15px;
         font-size: 14px;
         font-weight: 100;
