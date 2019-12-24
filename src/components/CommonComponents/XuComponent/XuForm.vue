@@ -95,6 +95,7 @@
         type: String
       },
       //接收数据3：要渲染的表单数据【重要】
+      //格式：{content:'是否匹配：',value:'true',field:'match',additionalInfo:{type:'radio',optional:['true','false']}},
       renderData:{
         default:[{content:'默认',value:'',field:''}],
         type:Array

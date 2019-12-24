@@ -14,7 +14,7 @@
             </div>
             <div class="col-3">
                 <div class="statics-info-container dev-online">
-                        <span class="statics-icon"><span class="fa fa-desktop"></span></span>
+                        <span class="statics-icon"><span class="fa fa-laptop"></span></span>
                         <span class="statics-info">
                             <span class="statics-number">
                                 {{statisticalData.onlineNum }}

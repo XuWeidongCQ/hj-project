@@ -7,7 +7,6 @@ import $ from 'jquery'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import 'bootstrap/dist/js/bootstrap.min.js'
 import 'font-awesome/css/font-awesome.min.css'
-import BaiduMap from 'vue-baidu-map'
 import VueToastr from "vue-toastr";
 
 //自己写的插件
@@ -26,7 +25,7 @@ import Http from "@/service/Http";
 Vue.config.productionTip = false;
 Vue.prototype.extendJS = commonJS;
 Vue.prototype.$Http = Http;
-Vue.use(VueToastr,{});
+// Vue.use(VueToastr,{});
 
 
 new Vue({

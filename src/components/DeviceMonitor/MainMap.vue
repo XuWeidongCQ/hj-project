@@ -13,19 +13,15 @@
 
                        </div>
                        <div>
-                           <label class="xu-label-text">
-                               <span>机型名称：</span>
-                               <xu-select v-model="searchData.modelName"
-                                          :options="modelNamesDropdown"
-                                          :prefix-options="['不限']"></xu-select>
-                           </label>
-                           <label class="xu-label-text">
-                               <span class="ml-integer">公司名称：</span>
-                               <xu-select v-model="searchData.companyName"
-                                          :style-obj="{width:'220px'}"
-                                          :options="companyNamesDropdown"
-                                          :prefix-options="['不限']"></xu-select>
-                           </label>
+                           <span>机型名称：</span>
+                           <xu-select v-model="searchData.modelName"
+                                      :options="modelNamesDropdown"
+                                      :prefix-options="['不限']"></xu-select>
+                           <span class="ml-integer">公司名称：</span>
+                           <xu-select v-model="searchData.companyName"
+                                      :style-obj="{width:'220px'}"
+                                      :options="companyNamesDropdown"
+                                      :prefix-options="['不限']"></xu-select>
                        </div>
                    </div>
                    <div class="right xu-float-right">
@@ -79,7 +75,7 @@
 
 <script>
   import { BaiduMap,BmScale,BmNavigation,BmMarker } from 'vue-baidu-map'
-  import SingleMonitorModal from "@/components/+SingleMonitor/SingleMonitorPopUp";
+  import SingleMonitorModal from "@/components/SharePopUp/SingleMonitor/SingleMonitorPopUp";
   import PointInfoWindow from "./PointInfoWindow";
   import XuSelect from "@/components/CommonComponents/XuComponent/XuSelect";
 

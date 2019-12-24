@@ -48,7 +48,7 @@
   export default {
     name: "DevHistoryAlarmInfosPopUp",
     components:{XuModal,XuPageNav},
-    props:{},
+    props:['deviceId'],
     data(){
       return {
         historyDataInfos: [],//存放设备历史报警记录
@@ -63,7 +63,7 @@
       //2 获取某一个设备的报警记录
       getDeviceAlarmInfos:function (page=0) {
         this.historyDataInfos = [];
-        this.$Http['singleMonitor']['getDeviceAlarmInfos']('1/alarms',{params:{start:page}})//测试为id=1的设备的历史维修记录
+        this.$Http['singleMonitor']['getDeviceAlarmInfos'](this.deviceId+'/alarms',{params:{start:page}})//测试为id=1的设备的历史维修记录，正式为this.deviceId
           .then(res => {
             this.serverData = res;
             res.content.forEach(ele => {

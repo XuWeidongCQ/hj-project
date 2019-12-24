@@ -331,12 +331,13 @@ body {
 }
 .xu-table th {
     border-top: 1px solid #ebeef5;
+    border-bottom: 1px solid #ebeef5;
     text-align: start;
     font-size: 14px;
     padding: 8px 4px;
 }
 .xu-table td {
-    border-top: 1px solid #ebeef5;
+    /*border-top: 1px solid #ebeef5;*/
     border-bottom: 1px solid #ebeef5;
     padding: 8px 4px;
 }
@@ -420,18 +421,18 @@ body {
 .scrollBar-style{
     overflow: auto;
     -ms-scrollbar-face-color: #e3e3e3;/*IE滚动部分的颜色*/
-    -ms-scrollbar-track-color: #bcbcbc;/*IE滚动槽部分的颜色*/
+    -ms-scrollbar-track-color: transparent;/*IE滚动槽部分的颜色*/
 }
     /*webkit样式*/
 .scrollBar-style::-webkit-scrollbar {/*滚动槽部分的样式*/
-    width: 8px;
-    border-radius: 4px;
-    background-color: #e6e6e6;
+    width: 3px;
+    border-radius: 1px;
+    background-color: transparent;
 }
 
 .scrollBar-style::-webkit-scrollbar-thumb{/*滚动部分的样式*/
     background-color: #9a9a9a;
-    border-radius: 3px;
+    border-radius: 1px;
 }
 .scrollBar-style::-webkit-scrollbar-thumb:hover {
     background-color: #808080;

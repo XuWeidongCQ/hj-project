@@ -22,17 +22,17 @@
                 </li>
                 <li>
                     <router-link tag="a" to="/backend-manage" active-class="active" exact>
-                        <span><span class="fa fa-cogs"></span>后台管理</span>
+                        <span><span class="fa fa-address-book-o"></span>后台管理</span>
                     </router-link>
                 </li>
                 <li>
                     <router-link tag="a" to="/repair-center" active-class="active" exact>
-                        <span><span class="fa fa-cogs"></span>维修中心</span>
+                        <span><span class="fa fa-briefcase"></span>维修中心</span>
                     </router-link>
                 </li>
                 <li>
                     <router-link tag="a" to="/alarm-center" active-class="active" exact>
-                        <span><span class="fa fa-cogs"></span>报警中心</span>
+                        <span><span class="fa fa-bell"></span>报警中心</span>
                     </router-link>
                 </li>
                 <li class="nav-footer"><router-link to="/"><span><span class="fa fa-sign-out"></span>退出</span></router-link></li>

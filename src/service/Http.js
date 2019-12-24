@@ -71,21 +71,6 @@ axiosInst.interceptors.response.use(res=>{
         default:
           return resData;
       }
-      // if (code){
-      //   switch (code) {
-      //
-      //   }
-      //   if (code === 0){
-      //     XuAlert('提交成功','success');
-      //     return true
-      //   } else {
-      //     XuAlert(message,'error');
-      //     return false
-      //   }
-      // } else {//返回信息没有code的时候
-      //   XuAlert('搜索完毕','success');
-      //   return resData
-      // }
 
     //3.删除数据，成功删除返回空字符串，否则返回提示字符串
     case "delete":
@@ -108,13 +93,6 @@ axiosInst.interceptors.response.use(res=>{
         default:
           return resData;
       }
-      // if (code === 0){
-      //   XuAlert('修改成功','success');
-      //   return true;
-      // } else {
-      //   XuAlert(message,'error');
-      //   return false;
-      // }
 
     default:
       return res

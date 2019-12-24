@@ -52,7 +52,7 @@
   export default {
     name: "DevHistoryRepairInfosPopUp",
     components: {XuModal,XuPageNav},
-    props:{},
+    props:['deviceId'],
     data(){
       return {
         historyDataInfos: [],//存放设备历史维修记录
@@ -67,7 +67,7 @@
       //2 获取某一个设备的维修记录
       getOneDeviceRepairInfos:function (page=0) {
         this.historyDataInfos = [];
-        this.$Http['singleMonitor']['getOneDeviceRepairInfos']('1/repairs',{params:{start:page}})//测试为id=1的设备的历史维修记录
+        this.$Http['singleMonitor']['getOneDeviceRepairInfos'](this.deviceId+'/repairs',{params:{start:page}})//测试为id=1的设备的历史维修记录
           .then(res => {
             this.serverData = res;
             res.content.forEach(ele => {

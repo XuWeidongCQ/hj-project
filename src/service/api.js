@@ -30,6 +30,11 @@ const API = {
       method:'get',
       url:'/devices/' // '/devices/{device_id}/alarms'
     },
+    //4 创建一条维修记录
+    postRepairInfo:{
+      method:'post',
+      url:'/repairs'
+    },
   },
   //后台管理部分
   backendManage:{

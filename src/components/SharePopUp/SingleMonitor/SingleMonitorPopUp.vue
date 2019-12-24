@@ -75,7 +75,7 @@
                                 <input type="datetime-local" name="endTime" class="xu-input">
                             </label>
                             <button class="xu-btn xu-btn-info ml-integer"><span class="fa fa-file-excel-o"></span>&nbsp;导出Excel</button>
-                            <button class="xu-btn xu-btn-primary xu-float-right mt-integer">添加维修记录</button>
+                            <button class="xu-btn xu-btn-primary xu-float-right mt-integer" @click="showForm">添加维修记录</button>
                         </div>
                         <!--历史数据表格-->
                         <div class="history-table xu-fix-table-wrapper scrollBar-style">
@@ -109,7 +109,7 @@
                                 </thead>
                                 <tbody>
                                 <tr v-for="(value,key) in monthlyOnlineRateInfos">
-                                    <td>{{key}}</td>
+                                    <td>{{key | monthFilter}}</td>
                                     <td>{{value | rateFilter }}</td>
                                 </tr>
                                 </tbody>
@@ -147,14 +147,14 @@
                                 <table class="xu-table xu-table-center xu-table-sm xu-table-hover">
                                     <thead class="xu-text-white-level0">
                                     <tr class="bg-warning">
-                                        <th>更换类型</th>
+                                        <th>维修零件名称</th>
                                         <th>维修人</th>
                                         <th>维修时间</th>
                                     </tr>
                                     </thead>
                                     <tbody>
                                     <tr v-for="(repair,index) in repairInfos" :key="index">
-                                        <td>{{ repair.replacementType }}</td>
+                                        <td>{{ repair.partsName }}</td>
                                         <td>{{ repair.repairman }}</td>
                                         <td>{{ repair.repairDate }}</td>
                                     </tr>
@@ -169,9 +169,20 @@
             </div>
         </xu-modal>
         <dev-history-repair-infos-pop-up v-if="showDevHistoryRepairInfosPopUp"
-                                         @close="showDevHistoryRepairInfosPopUp = false"></dev-history-repair-infos-pop-up>
+                                         :device-id="deviceInfo.id"
+                                         @close="showDevHistoryRepairInfosPopUp = false">
+        </dev-history-repair-infos-pop-up>
         <dev-history-alarm-infos-pop-up v-if="showDevHistoryAlarmInfosPopUp"
-                                        @close="showDevHistoryAlarmInfosPopUp = false"></dev-history-alarm-infos-pop-up>
+                                        :device-id="deviceInfo.id"
+                                        @close="showDevHistoryAlarmInfosPopUp = false">
+        </dev-history-alarm-infos-pop-up>
+        <xu-form v-if="isFormShown"
+                 :is-pop-up="true"
+                 :form-title="formTitle"
+                 :render-data="formRenderData"
+                 @submit="submit($event)"
+                 @close="isFormShown = false">
+        </xu-form>
     </div>
 </template>
 
@@ -181,11 +192,13 @@
   import XuCSS from "@/plugins/XuCSS";
   import XuChart from "@/components/CommonComponents/XuComponent/XuChart";
   import DevHistoryRepairInfosPopUp from "./DevHistoryRepairInfosPopUp";
-  import DevHistoryAlarmInfosPopUp from "@/components/+SingleMonitor/DevHistoryAlarmInfosPopUp";
+  import DevHistoryAlarmInfosPopUp from "@/components/SharePopUp/SingleMonitor/DevHistoryAlarmInfosPopUp";
+  import XuForm from "@/components/CommonComponents/XuComponent/XuForm";
 
   export default {
     name: "SingleMonitorModal",
     components:{
+      XuForm,
       XuModal,
       BaiduMap,
       BmNavigation,
@@ -209,10 +222,10 @@
         monthlyOnlineRateInfos:{},//月份在线率信息
         devStatisticsInfos:{},//月份在线率信息
         showDevHistoryRepairInfosPopUp:false,//是否显示设备历史维修记录弹窗
-        showDevHistoryAlarmInfosPopUp:false//是否显示设备历史报警记录弹窗
-        // pointHistoryRecord:[
-        //   {time:'2019-9-11 10:22',status:1,rotateSpeed:1000,greasePressure:1.3,coolingWaterTemperature:30,coordinate:{lng:136,lat:10}},
-        // ]
+        showDevHistoryAlarmInfosPopUp:false,//是否显示设备历史报警记录弹窗
+        isFormShown:false,//是否显示信息窗口
+        formRenderData:[],//用于表单渲染的数据
+        formTitle:'',//信息窗口标题
       }
     },
     computed:{
@@ -245,16 +258,17 @@
       },
       //2.获取整个界面的所需数据
       getSingleDeviceCollectionInfos:function(){
-        this.$Http['singleMonitor']['getSingleDeviceCollectionInfos'](1)//注意这里测试才传入1的
+        this.$Http['singleMonitor']['getSingleDeviceCollectionInfos'](this.deviceInfo.id)//注意这里测试才传入1的,正式为this.deviceInfo.id
           .then(res => {
             const {alarms,datas:data,DeviceTime,repairs,monthOnlineRate:rate,locationChange:location} = res;
             //1.处理维修信息
             // console.log(res);
+            // console.log(repairs);
             repairs && repairs.forEach(ele => {
               this.repairInfos.push({
-                replacementType: ele.replacementType,
+                partsName:ele.partsName,
+                // replacementType: ele.replacementType,
                 repairman:ele.repairman,
-                remark: ele.remark,
                 repairDate:ele.repairDate
               })
             });
@@ -296,9 +310,39 @@
       //4.显示一台设备的报警记录表格
       showAlarmInfosPopUp: function () {
         this.showDevHistoryAlarmInfosPopUp = true;
-      }
+      },
+      //5.显示添加设备报警记录表单
+      showForm:function () {
+        this.formTitle = '添加维修记录';
+        this.formRenderData = [
+          {content:'零件名称：',value:'',field:'partsName'},
+          {content:'零件数量：',value:'',field:'partsNumber',additionalInfo:{type:'number'}},
+          {content:'类型：',value:'',field:'replacementType'},
+          {content:'维修人：',value:'',field:'repairman'},
+          {content:'维修时间：',value:'',field:'repairDate',additionalInfo:{type:'date'}},
+          {content:'备注：',value:'',field:'remark',additionalInfo:{type:'textarea'}},
+        ];
+        this.isFormShown = true;
+      },
+      //*.信息窗口的提交按钮事件
+      submit:function (formData) {
+        formData['device'] = {id:this.deviceInfo.id};//正式为this.deviceInfo.id
+        // console.log(formData);
+        this.$Http['singleMonitor']['postRepairInfo'](formData)
+          .then( res => {
+            if (res){
+              this.repairInfos.unshift({
+                partsName: formData.partsName,
+                repairman: formData.repairman,
+                repairDate: formData.repairDate});
+              this.repairInfos.pop();
+            }
+          })
+          .catch(error => {});
+      },
     },
     filters:{
+      //1.报警类型过滤
       alarmTypeFilter:function (value) {
         switch (value) {
           case 0:
@@ -307,19 +351,27 @@
             return '设备故障'
         }
       },
+      //2.设备在线时长、报警时长过滤
       msFilter:function (value) {
         const day = Math.floor(value / 86400000);
         const hour = Math.floor(value % 86400000 / 3600000 );
         const min = Math.floor(value % 86400000 % 3600000 / 60000 );
         let result = '';
         day ? result = result + day + '天':result = result + '';
-        hour ? result = result + hour + '时':result = result + '';
-        min ? result = result + min + '分':result = result + '';
+        hour ? result = result + hour + '小时':result = result + '';
+        min ? result = result + min + '分钟':result = result + '';
         return result
       },
+      //3.设备在线率过滤
       rateFilter:function (value) {
         const regValue = value*100;
         return regValue.toFixed(2) + '%'
+      },
+      //4.设备在线率月份过滤
+      monthFilter:function (value) {
+        const reg = /-(\d+)-/;
+        const month = value.match(reg)[1] ? value.match(reg)[1] : '00';
+        return month + '月'
       }
     },
     created(){

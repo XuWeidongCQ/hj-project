@@ -1,8 +1,5 @@
 <template>
     <div class="xubox xubox-content">
-        <xu-select :options="[123,123,5676,334]" v-model="test">
-
-        </xu-select>
         <div class="table-title">
             <div class="search-field-container">
 <!--                <label for="searchField">搜索：</label>-->
@@ -57,9 +54,7 @@
             </ul>
         </div>
         <!--设备编辑模态框-->
-        <device-info-input-modal v-show="isModalVisible"
-                                 @close="closeDeviceInfoInputModal">
-        </device-info-input-modal>
+
         <!--单点监控模态框-->
         <single-monitor-modal v-if="isSingleMonitorVisible"
                               :point-info="propsToSingleMonitorModal"
@@ -69,9 +64,7 @@
 </template>
 
 <script>
-  import DeviceInfoInputModal from "@/components/CommonComponents/DeviceInfoInputPopUp";
-  import SingleMonitorModal from "@/components/+SingleMonitor/SingleMonitorPopUp";
-  import XuSelect from "@/components/CommonComponents/XuComponent/XuSelect";
+  import SingleMonitorModal from "@/components/SharePopUp/SingleMonitor/SingleMonitorPopUp";
   export default {
     name: "TableStatics",
     data(){
@@ -95,8 +88,6 @@
       }
     },
     components:{
-      XuSelect,
-      DeviceInfoInputModal,
       SingleMonitorModal
     },
     methods:{

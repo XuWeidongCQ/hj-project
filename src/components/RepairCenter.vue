@@ -67,7 +67,6 @@
 <script>
   import XuForm from "@/components/CommonComponents/XuComponent/XuForm";
   import XuPageNav from "@/components/CommonComponents/XuComponent/XuPageNav";
-  import {notice} from "@/plugins/toastrConfig";
 
   export default {
     name: "RepairCenter",
