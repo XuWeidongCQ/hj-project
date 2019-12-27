@@ -1,6 +1,7 @@
 <template>
     <div class="xubox xubox-content">
         <div class="table-title">
+            <xu-switch v-model="test"></xu-switch>
             <div class="search-field-container">
 <!--                <label for="searchField">搜索：</label>-->
                 <select id="searchField" name="searchField" class="searchField">
@@ -65,11 +66,12 @@
 
 <script>
   import SingleMonitorModal from "@/components/SharePopUp/SingleMonitor/SingleMonitorPopUp";
+  import XuSwitch from "@/components/CommonComponents/XuComponent/XuSwitch";
   export default {
     name: "TableStatics",
     data(){
       return {
-        test:'99',
+        test:'off',
         theadContents:['状态','设备编号','机型编号','出厂日期','用户名','用户地址','操作'],
         tbodyContents:[
           {status:0,ECUNumber:'122019080323',engineNumber:'32ab',manufactureDate:'2019-8-27',userName:'重庆某船厂',userAddress:'382550'},
@@ -88,9 +90,13 @@
       }
     },
     components:{
-      SingleMonitorModal
+      SingleMonitorModal,
+      XuSwitch
     },
     methods:{
+      testFn:function(value){
+        console.log(value)
+      },
       showDeviceInfoInputModal:function () {
         this.isModalVisible = true
       },

@@ -25,8 +25,8 @@
                         </div>
                         <router-link to="/device-monitor" tag="button" class="btn btn-block btn-info">登录</router-link>
                         <a href="#"><small>忘记密码？</small></a>
-                        <p class="text-muted text-center"><small>还没有账号？</small></p>
-                        <a class="btn btn-block btn-link" href="#">创建一个账户</a>
+<!--                        <p class="text-muted text-center"><small>还没有账号？</small></p>-->
+<!--                        <a class="btn btn-block btn-link" href="#">创建一个账户</a>-->
                     </form>
                 </div>
             <hr>

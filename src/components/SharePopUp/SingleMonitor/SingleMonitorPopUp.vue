@@ -297,8 +297,10 @@
               })
             });
             //5.处理在线率信息
+            // console.log(rate);
             this.monthlyOnlineRateInfos = rate;
             //6.处理设备统计信息
+            // console.log(DeviceTime);
             this.devStatisticsInfos = DeviceTime
           });
         // console.log(this.trackInfos)
@@ -353,14 +355,18 @@
       },
       //2.设备在线时长、报警时长过滤
       msFilter:function (value) {
-        const day = Math.floor(value / 86400000);
-        const hour = Math.floor(value % 86400000 / 3600000 );
-        const min = Math.floor(value % 86400000 % 3600000 / 60000 );
-        let result = '';
-        day ? result = result + day + '天':result = result + '';
-        hour ? result = result + hour + '小时':result = result + '';
-        min ? result = result + min + '分钟':result = result + '';
-        return result
+        if (value <= 0){
+          return '无'
+        } else {
+          const day = Math.floor(value / 86400000);
+          const hour = Math.floor(value % 86400000 / 3600000 );
+          const min = Math.floor(value % 86400000 % 3600000 / 60000 );
+          let result = '';
+          day ? result = result + day + '天':result = result + '';
+          hour ? result = result + hour + '小时':result = result + '';
+          min ? result = result + min + '分钟':result = result + '';
+          return result
+        }
       },
       //3.设备在线率过滤
       rateFilter:function (value) {

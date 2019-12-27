@@ -95,13 +95,20 @@
         type: String
       },
       //接收数据3：要渲染的表单数据【重要】
-      //格式：{content:'是否匹配：',value:'true',field:'match',additionalInfo:{type:'radio',optional:['true','false']}},
+      //格式：[{content:'是否匹配：',value:'true',field:'match',additionalInfo:{type:'radio',optional:['true','false']}}]
       renderData:{
         default:[{content:'默认',value:'',field:''}],
         type:Array
       },
       //接收数据4：表单禁用启用规则
+      //格式：[{field:'minValue',limitBy:{field:'match',value:'true',rule:'disable'}}]
       rules:{
+        default:() => [],
+        type:Array
+      },
+      //接收数据5：表单验证规则
+      //格式：[{content:'公司名称：',field:'name',isPassAuth:function (value) {return value === 'a';},failAuthMsg:'公司名称不符合要求'}]
+      authRules:{
         default:() => [],
         type:Array
       }
@@ -121,7 +128,7 @@
         let hasFormEmpty = false;
         const formData = {};
         this.renderData.forEach(ele => {formData[ele.field] = ele.value});
-        //表单中是否有空值
+        //1.表单中是否有空值
         for (const key in formData){
           if (!this.applyFormRules(key) && formData[key] === ''){
             hasFormEmpty = true;
@@ -129,8 +136,25 @@
           }
         }
         if (!hasFormEmpty){
-          this.$emit('submit',formData);
-          this.$emit('close');
+          //2 如果没有空值,检验是否合法
+          const rulesLen = this.authRules.length;
+          let invalid = true;
+          for(const key in formData){
+            for (let i=0;i<rulesLen;i++){
+              if (key === this.authRules[i].field && !this.authRules[i]['isPassAuth'](formData[key])){
+                invalid = false;
+                XuAlert(this.authRules[i]['failAuthMsg'],'error');
+                break;
+              }
+            }
+            if (!invalid){
+              break;
+            }
+          }
+          if (invalid){
+            this.$emit('submit',formData);
+            this.$emit('close');
+          }
         } else {
           XuAlert('请完成所有内容再提交~','error')
         }

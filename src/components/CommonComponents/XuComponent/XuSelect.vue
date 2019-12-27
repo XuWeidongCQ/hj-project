@@ -33,12 +33,12 @@
         type:Array,
         default:() => []
       },
-      //4 样式
+      //4 整体样式--控制下拉框的宽度
       styleObj:{
         type:Object
       }
     },
-    // props:['value','options','prefixOptions'],
+
     data(){
       return {
         isSpread:false,
