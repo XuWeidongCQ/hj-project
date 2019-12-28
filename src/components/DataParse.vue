@@ -6,7 +6,7 @@
 </template>
 
 <script>
-  import MachineModelManage from "@/components/DataParse/MachineModelManage";
+  import MachineModelManage from "@/components/DataParseComp/MachineModelManage";
   export default {
     name: "DataParse",
     components: {MachineModelManage},

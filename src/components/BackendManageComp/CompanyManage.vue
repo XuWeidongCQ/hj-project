@@ -60,7 +60,7 @@
 <script>
   import XuForm from "@/components/CommonComponents/XuComponent/XuForm";
   import XuPageNav from "@/components/CommonComponents/XuComponent/XuPageNav";
-  import DeviceTablePopUp from "@/components/BackendManage/DeviceTablePopUp";
+  import DeviceTablePopUp from "@/components/BackendManageComp/DeviceTablePopUp";
 
   export default {
     name: "CompanyManage",

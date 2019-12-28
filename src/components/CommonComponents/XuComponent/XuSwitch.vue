@@ -40,7 +40,7 @@
   .wrapper {
     width: 2.4em;
     height: 1.4em;
-    border-radius: 1em;
+    border-radius: 0.7em;
     position: relative;
     display: inline-block;
     padding: 0.2em;

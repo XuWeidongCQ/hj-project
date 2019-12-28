@@ -18,12 +18,12 @@ export default new Router({
       children:[
         {
           path:'',
-          name:'DeviceMonitor',
+          name:'DeviceMonitorComp',
           component:() => import('./components/DeviceMonitor.vue')
         },
         {
           path:'/device-manage',
-          name:'DeviceManage',
+          name:'DeviceManageComp',
           component:() => import('./components/DeviceManage.vue')
         },
         {

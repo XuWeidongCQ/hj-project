@@ -1,7 +1,6 @@
 <template>
     <div class="xubox xubox-content">
         <div class="table-title">
-            <xu-switch v-model="test"></xu-switch>
             <div class="search-field-container">
 <!--                <label for="searchField">搜索：</label>-->
                 <select id="searchField" name="searchField" class="searchField">
@@ -66,7 +65,7 @@
 
 <script>
   import SingleMonitorModal from "@/components/SharePopUp/SingleMonitor/SingleMonitorPopUp";
-  import XuSwitch from "@/components/CommonComponents/XuComponent/XuSwitch";
+
   export default {
     name: "TableStatics",
     data(){
@@ -91,7 +90,6 @@
     },
     components:{
       SingleMonitorModal,
-      XuSwitch
     },
     methods:{
       testFn:function(value){

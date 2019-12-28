@@ -11,8 +11,8 @@
 </template>
 
 <script>
-  import ECUStaticsInfo from "@/components/DeviceMonitor/ECUStaticsInfo";
-  import MainMap from "@/components/DeviceMonitor/MainMap";
+  import ECUStaticsInfo from "@/components/DeviceMonitorComp/ECUStaticsInfo";
+  import MainMap from "@/components/DeviceMonitorComp/MainMap";
   export default {
     name: "DeviceMonitor",
     components:{

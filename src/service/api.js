@@ -1,19 +1,6 @@
 
 const API = {
-  //实时监控部分
-  deviceMonitor:{
-    //1 获取整体所有数据
-    getCollection:{
-      method:'get',
-      url:'/forehome'
-    },
-    //2 搜索功能
-    searchDevices:{
-      method:'post',
-      url:'/foresearch'
-    }
-  },
-  //单点监控部分
+  //#、单点监控部分
   singleMonitor:{
     //1 获取整体所有数据
     getSingleDeviceCollectionInfos:{
@@ -36,7 +23,27 @@ const API = {
       url:'/repairs'
     },
   },
-  //后台管理部分
+  //一、实时监控部分
+  deviceMonitor:{
+    //1 获取整体所有数据
+    getCollection:{
+      method:'get',
+      url:'/forehome'
+    },
+    //2 搜索功能
+    searchDevices:{
+      method:'post',
+      url:'/foresearch'
+    }
+  },
+  //二、设备管理界面
+  deviceManage:{
+    getCollectionInfos:{
+      method:'get',
+      url:'/forDeviceManagement'
+    }
+  },
+  //三、后台管理部分
   backendManage:{
     //1.获取所有客户公司信息
     getCompanyInfos:{
@@ -98,7 +105,7 @@ const API = {
       url:'/devices',
     }
   },
-  //数据解析部分
+  //四、数据解析部分
   dataParse:{
     //1.获取所有机型
     getMachineModelInfos:{
@@ -182,7 +189,7 @@ const API = {
       url:'/matchs'
     },
   },
-  //维修中心部分
+  //五、维修中心部分
   repairCenter:{
     //1 获取某一设备的所有维修记录
     getOneDeviceRepairInfos:{
@@ -215,7 +222,7 @@ const API = {
       url:'/repairs'
     }
   },
-  //报警中心
+  //六、报警中心
   alarmCenter:{
     //1 获取所有设备的报警记录
     getAlarmInfos:{

@@ -27,7 +27,7 @@
                 </li>
                 <li>
                     <router-link tag="a" to="/data-parse" active-class="active" exact>
-                        <span><span class="fa fa-cogs"></span>数据解析</span>
+                        <span><span class="fa fa-cogs"/>数据解析</span>
                     </router-link>
                 </li>
                 <li>
@@ -45,7 +45,7 @@
             </div>
 
             <!--不同菜单栏的入口-->
-            <router-view></router-view>
+            <router-view/>
 
             <div class="row">
                 <div class="main-footer">

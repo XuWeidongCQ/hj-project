@@ -72,7 +72,7 @@
 <script>
   import XuModal from "@/components/CommonComponents/XuComponent/XuModal";
   import XuForm from "@/components/CommonComponents/XuComponent/XuForm";
-  import DataParseMatchPopUp from "@/components/DataParse/DataParseMatchPopUp";
+  import DataParseMatchPopUp from "@/components/DataParseComp/DataParseMatchPopUp";
   import {notice} from "@/plugins/toastrConfig";
 
   export default {

@@ -6,7 +6,7 @@
 </template>
 
 <script>
-  import CompanyManage from "@/components/BackendManage/CompanyManage";
+  import CompanyManage from "@/components/BackendManageComp/CompanyManage";
   export default {
     name: "BackendManage",
     components: {CompanyManage},

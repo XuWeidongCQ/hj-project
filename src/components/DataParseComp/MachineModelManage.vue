@@ -50,7 +50,7 @@
 
 <script>
   import XuForm from "@/components/CommonComponents/XuComponent/XuForm";
-  import MachineDataParsePopUp from "@/components/DataParse/MachineDataParsePopUp";
+  import MachineDataParsePopUp from "@/components/DataParseComp/MachineDataParsePopUp";
   import {notice} from "@/plugins/toastrConfig";
 
   export default {

@@ -21,21 +21,21 @@
                                       :y-axis="{type:'value',name:'转速/rpm',nameLocation:'middle',nameGap:40,splitLine:{show:false}}"
                                       :x-axis="{type:'category',show:false,boundaryGap: false}"
                                       :grid="{containLabel: false, left:'70px', right:'0px', top:'15px', bottom:'5px'}"
-                                      :data="{x:deviceHistoryRecord.time,y:deviceHistoryRecord.rotateSpeed}"></xu-chart>
+                                      :data="{x:deviceHistoryRecord.time,y:deviceHistoryRecord.rotateSpeed}"/>
                             <!--滑油压力曲线图-->
                             <xu-chart :type="'line'"
                                       :chart-style="{height:'100px'}"
                                       :y-axis="{type:'value',name:'滑油压力/kpa',nameLocation:'middle',nameGap:40,splitLine:{show:false}}"
                                       :x-axis="{type:'category',show:false,boundaryGap: false}"
                                       :grid="{containLabel: false, left:'70px', right:'0px', top:'15px', bottom:'5px'}"
-                                      :data="{x:deviceHistoryRecord.time,y:deviceHistoryRecord.greasePressure}"></xu-chart>
+                                      :data="{x:deviceHistoryRecord.time,y:deviceHistoryRecord.greasePressure}"/>
                             <!--冷却水曲线图-->
                             <xu-chart :type="'line'"
                                       :chart-style="{height:'100px'}"
                                       :y-axis="{type:'value',name:'冷却水温度/℃',nameLocation:'middle',nameGap:40,splitLine:{show:false}}"
                                       :x-axis="{type:'category',boundaryGap: false}"
                                       :grid="{containLabel: false, left:'70px', right:'0px', top:'5px', bottom:'25px'}"
-                                      :data="{x:deviceHistoryRecord.time,y:deviceHistoryRecord.coolingWaterTemperature}"></xu-chart>
+                                      :data="{x:deviceHistoryRecord.time,y:deviceHistoryRecord.coolingWaterTemperature}"/>
                         </div>
                         <!--运行轨迹图-->
                         <div class="xu-col-5">
@@ -376,8 +376,9 @@
       //4.设备在线率月份过滤
       monthFilter:function (value) {
         const reg = /-(\d+)-/;
+        const year = value.match(/^\d+(?=-)/)[0];
         const month = value.match(reg)[1] ? value.match(reg)[1] : '00';
-        return month + '月'
+        return year + '年' + month + '月'
       }
     },
     created(){

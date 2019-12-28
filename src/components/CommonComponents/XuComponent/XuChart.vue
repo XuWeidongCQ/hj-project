@@ -26,7 +26,7 @@
       //2.接收图例配置，默认不显示
       legend:{
         type: Object,
-        default:null
+        default:() => {return {show:false}}
       },
       //3.配置tooltip
       tooltip:{
@@ -49,14 +49,19 @@
         default:() => {return  {containLabel: true, left:'15px', right:'15px', top:'15px', bottom:'15px'}}
       },
       //7.数据(不同的图形，传递的数据格式不一样)
-      //  格式 {x:[],y:[]}
+      //  格式 {x:[],y:[],y1:[],...}
       data:{
         type:Object,
-        default:() => {}
+        default:() => {return {}}
       },
       //8.绘图区高度
       chartStyle:{
         type:Object
+      },
+      //9.曲线和饼图的系列名称
+      seriesName: {
+        type:Object,
+        default: () => {return {}}
       }
     },
     data:function(){
@@ -70,19 +75,15 @@
         let dataset = {};
         let series = [];
         let legend = {};
+        let seriesName = this.seriesName;
+        // console.log(seriesName.y);
         switch (this.type) {
+          //1.目前只有line可以有多个系列
           case 'line':
-            dataset['source'] = {
-              'x':this.data['x'],
-              'y':this.data['y']
-            };
-            series[0] = {
-              type:'line',
-              encode:{
-                x:'x',
-                y:'y'
-              }
-            };
+            dataset['source'] = this.data;
+            for(const key in this.data){
+              key !== 'x' && series.push({type:'line',encode:{x:'x',y:key},name:seriesName[key]})
+            }
             break;
           case 'bar':
             dataset['source'] = {
@@ -142,10 +143,10 @@
 
       this.chartInst = echarts.init(this.$refs.chart);
       this.chartInst.setOption(this.getChartOption());
-      // this.chartInst.setOption(this.getChartOption());
-      // window.addEventListener('resize', () => {
-      //   this.chartInst.resize()
-      // })
+      this.chartInst.setOption(this.getChartOption());
+      window.addEventListener('resize', () => {
+        this.chartInst.resize()
+      })
     },
     //当数据更新的时候开始绘图
     watch:{
