@@ -80,7 +80,7 @@
         border-top-left-radius: 5px;
         border-top-right-radius: 5px;
         padding: 10px 15px 5px 15px;
-        border-bottom: 1px solid #cccccc;
+        border-bottom: 1px solid #f2f6fc;
     }
     .modal-title-wrapper {
         height: 20px;
@@ -106,7 +106,7 @@
     .xu-modal-footer {
         border-bottom-left-radius: 5px;
         border-bottom-right-radius: 5px;
-        padding: 10px 15px 10px 15px;
-        border-top: 1px solid #cccccc;
+        padding: 5px 15px 5px 15px;
+        border-top: 1px solid #f2f6fc;
     }
 </style>

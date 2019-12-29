@@ -7,22 +7,22 @@
                 </li>
                 <li>
                     <router-link tag="a" to="/device-monitor" active-class="active" exact>
-                        <span><span class="fa fa-bullseye"></span>实时监控</span>
+                        <span><span class="fa fa-bullseye"/>实时监控</span>
                     </router-link>
                 </li>
                 <li>
                     <router-link tag="a" to="/device-manage" active-class="active" exact>
-                        <span><span class="fa fa-table"></span>设备管理</span>
+                        <span><span class="fa fa-table"/>设备管理</span>
                     </router-link>
                 </li>
                 <li>
                     <router-link tag="a" to="/repair-center" active-class="active" exact>
-                        <span><span class="fa fa-briefcase"></span>维修中心</span>
+                        <span><span class="fa fa-briefcase"/>维修中心</span>
                     </router-link>
                 </li>
                 <li>
                     <router-link tag="a" to="/alarm-center" active-class="active" exact>
-                        <span><span class="fa fa-bell"></span>报警中心</span>
+                        <span><span class="fa fa-bell"/>报警中心</span>
                     </router-link>
                 </li>
                 <li>
@@ -32,16 +32,26 @@
                 </li>
                 <li>
                     <router-link tag="a" to="/backend-manage" active-class="active" exact>
-                        <span><span class="fa fa-address-book-o"></span>后台管理</span>
+                        <span><span class="fa fa-address-book-o"/>客户管理</span>
                     </router-link>
                 </li>
-                <li class="nav-footer"><router-link to="/"><span><span class="fa fa-sign-out"></span>退出</span></router-link></li>
+                <li>
+                    <router-link tag="a" to="/role-manage" active-class="active" exact>
+                        <span><span class="fa fa-users"/>角色管理</span>
+                    </router-link>
+                </li>
+                <li>
+                    <router-link tag="a" to="/account-manage" active-class="active" exact>
+                        <span><span class="fa fa-id-card"/>账号管理</span>
+                    </router-link>
+                </li>
+                <li class="nav-footer"><router-link to="/"><span><span class="fa fa-sign-out"/>退出</span></router-link></li>
             </ul>
         </nav>
         <div id="page-wrapper" class="gray-bg">
             <div class="login-duration-wrapper text-right">
-                <span><span class="fa fa-clock-o"></span> 登录时间：{{ loginTime }}</span>
-                <span><span class="fa fa-user-circle-o"></span> 用户名</span>
+                <span><span class="fa fa-clock-o"/> 登录时间：{{ loginTime }}</span>
+                <span><span class="fa fa-user-circle-o"/> 用户名</span>
             </div>
 
             <!--不同菜单栏的入口-->

@@ -101,6 +101,7 @@
 
             devices.forEach(ele => {
               //处理地图显示数据
+              // console.log(ele.dataDevices);
               this.mapDeviceInfos.push({
                 id:ele.id,
                 isAlert:ele.status,//2--报警,1--正常,0--报废(不会出现，报废离线)
@@ -108,16 +109,16 @@
                 companyName:ele.company.name,
                 infoWindowData:{
                   isAlert:ele.status,
-                  status:ele.dataDevices === null ? '': ele.dataDevices[0].status,//设备的文字提示信息
+                  status:ele.dataDevices.length === 0? '': ele.dataDevices[0].status,//设备的文字提示信息
                   csNumber:ele.csNumber,
                   beidouId: ele.beidouId,
-                  rotateSpeed:ele.dataDevices === null ? '': ele.dataDevices[0].speed,
-                  greasePressure:ele.dataDevices === null ? '': ele.dataDevices[0].greasePressure,
-                  coolingWater:ele.dataDevices === null ? '': ele.dataDevices[0].waterTemp,
+                  rotateSpeed:ele.dataDevices.length === 0 ? '': ele.dataDevices[0].speed,
+                  greasePressure:ele.dataDevices.length === 0 ? '': ele.dataDevices[0].greasePressure,
+                  coolingWater:ele.dataDevices.length === 0 ? '': ele.dataDevices[0].waterTemp,
                 },
                 coordinate:{
-                  lng:ele.dataDevices === null ? '': ele.dataDevices[0].longitude,
-                  lat:ele.dataDevices === null ? '': ele.dataDevices[0].latitude
+                  lng:ele.dataDevices.length === 0 ? '': ele.dataDevices[0].longitude,
+                  lat:ele.dataDevices.length === 0 ? '': ele.dataDevices[0].latitude
                 },
               });
             });

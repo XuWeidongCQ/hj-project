@@ -244,6 +244,27 @@ const API = {
       method:'delete',
       url:'/alarms/' // '/alarms/{id}'
     }
+  },
+  //七、角色管理部分
+  roleManage:{
+    //1.获取整体所有数据
+    getRoleCollectionInfos:{
+      method:'get',
+      url:'/roles'
+    }
+  },
+  //八、账号管理部分
+  accountManage:{
+    //1.获取整体数据
+    getAccountCollectionInfos:{
+      method:'get',
+      url:'/users'
+    },
+    //2.新建一个账号
+    postAccountInfo:{
+      method:'post',
+      url:'/users'
+    }
   }
 };
 

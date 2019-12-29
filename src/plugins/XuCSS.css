@@ -123,16 +123,16 @@ body {
 /*2 容器样式*/
 .xubox {
     border-radius: 5px;
-    border: 1px solid #fcfcfc;
+    border: 1px solid #dcdfe6;
     position: relative;
-    background-color: #ffffff;
+    background-color: #fefefe;
 }
 
 .xubox-title {
     font-size: 18px;
     color: #4d5875;
     padding: 5px 15px 5px 15px;
-    border-bottom: 1px solid #cccccc;
+    border-bottom: 1px solid #ebeef5;
 }
 .xubox-content {
     padding: 5px 15px 5px 15px;
@@ -140,7 +140,7 @@ body {
 }
 .xubox-foot {
     padding: 0 15px;
-    border-top: 1px solid #cccccc;
+    border-top: 1px solid #ebeef5;
 }
 
 /*3 按钮样式*/
@@ -526,6 +526,11 @@ body {
 }
 .fadeIn {
     animation: 300ms fadeIn;
+}
+
+/*10.背景颜色*/
+.xu-bg-white {
+    background-color: #ffffff !important;
 }
 
 /*#.辅助功能*/

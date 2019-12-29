@@ -40,15 +40,17 @@
                         <!--运行轨迹图-->
                         <div class="xu-col-5">
                             <baidu-map class="map-container"
+                                       ak="HMsRLrPGidU6hIisM4HYgx0APRKhpm6p"
                                        :center="trackInfos[0]"
                                        :scroll-wheel-zoom="true"
+                                       v-if="trackInfos[0]"
                                        :zoom="7">
                                 <bm-polyline :path="trackInfos"
                                              :stroke-weight="2"
                                              stroke-color="red"></bm-polyline>
                                 <!--使用v-if是因为position绑定的是异步数据，初次渲染的时候还没有数据，会报错-->
-                                <bm-label content="开始" :position="trackInfos[0]" v-if="trackInfos[0]"></bm-label>
-                                <bm-label content="结束" :position="trackInfos[trackInfos.length-1]" v-if="trackInfos[0]"></bm-label>
+                                <bm-label content="开始" :position="trackInfos[0]"></bm-label>
+                                <bm-label content="结束" :position="trackInfos[trackInfos.length-1]"></bm-label>
                                 <bm-scale anchor="BMAP_ANCHOR_TOP_LEFT" :offset="{top:'5px',left:'5px'}"></bm-scale>
                                 <bm-navigation anchor="BMAP_ANCHOR_TOP_RIGHT"></bm-navigation>
                             </baidu-map>
@@ -188,7 +190,7 @@
 
 <script>
   import XuModal from "@/components/CommonComponents/XuComponent/XuModal";
-  import { BaiduMap,BmScale,BmNavigation,BmPolyline,BmLabel } from 'vue-baidu-map/components'
+  import { BaiduMap,BmScale,BmNavigation,BmPolyline,BmLabel } from 'vue-baidu-map'
   import XuCSS from "@/plugins/XuCSS";
   import XuChart from "@/components/CommonComponents/XuComponent/XuChart";
   import DevHistoryRepairInfosPopUp from "./DevHistoryRepairInfosPopUp";
@@ -296,6 +298,8 @@
                 lng:ele.longitude
               })
             });
+            //4.1处理轨迹为空的情况
+            // console.log(this.trackInfos);
             //5.处理在线率信息
             // console.log(rate);
             this.monthlyOnlineRateInfos = rate;

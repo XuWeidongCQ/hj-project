@@ -54,7 +54,7 @@
       ChartStatics,
       AboutCompany,
       AboutModel,
-      DeviceTable
+      DeviceTable,
     },
     data(){
       return {
@@ -162,9 +162,10 @@
           // console.log(tableData);
           tableData.forEach(ele => {
             this.tableData.push({
-              deviceId:ele.id,
+              id:ele.id,
               companyName:ele['company']['name'],
               modelNumber:ele['model']['modelNumber'],
+              modelName:ele['model']['modelName'],
               csNumber:ele['csNumber'],
               beidouId:ele['beidouId'],
               factoryDate:ele['factoryDate'],

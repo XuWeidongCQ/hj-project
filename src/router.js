@@ -41,6 +41,14 @@ export default new Router({
         {
           path:'/alarm-center',
           component:() => import('./components/AlarmCenter.vue')
+        },
+        {
+          path:'/role-manage',
+          component:() => import('./components/RoleManage.vue')
+        },
+        {
+          path:'/account-manage',
+          component:() => import('./components/AccountManage.vue')
         }
       ]
     }

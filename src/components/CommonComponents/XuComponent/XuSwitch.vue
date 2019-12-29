@@ -1,8 +1,8 @@
 <template>
   <div class="wrapper"
+       @click="changeValue"
        :class="{'switch-on':selectValue === 'on','switch-off':selectValue === 'off'}">
     <span class="toggle-circle"
-          @click="changeValue"
           :class="{'go-on':selectValue === 'on','go-off':selectValue === 'off'}">
     </span>
   </div>
@@ -38,13 +38,15 @@
 
 <style scoped>
   .wrapper {
-    width: 2.4em;
-    height: 1.4em;
-    border-radius: 0.7em;
+    width: 36px;
+    height: 20px;
+    border-radius: 11px;
     position: relative;
     display: inline-block;
-    padding: 0.2em;
+    padding: 2px;
     box-sizing: border-box;
+    cursor: pointer;
+    text-align: start;
   }
   .switch-on {
     background-color: #1aa6ff;
@@ -52,29 +54,28 @@
   }
 
   .switch-off {
-    background-color: #cccccc;
+    background-color: #dcdfe6;
     transition: background-color 0.2s ease 0s;
   }
 
   .toggle-circle {
     position: absolute;
     display: inline-block;
-    height: 1em;
-    width: 1em;
+    height: 16px;
+    width: 16px;
     border-radius: 50%;
-    cursor: pointer;
     box-sizing: border-box;
-    background-color: #eeeeee;
+    background-color: #f2f6fc;
   }
   .go-on {
-    left: 0.2em;
-    top: 0.2em;
+    left: 2px;
+    top: 2px;
     transform: translateX(0px);
     transition: transform 0.2s ease 0s;
   }
   .go-off {
-    top: 0.2em;
-    transform: translateX(1em);
+    top: 2px;
+    transform: translateX(16px);
     transition: transform 0.2s ease 0s;
   }
 </style>

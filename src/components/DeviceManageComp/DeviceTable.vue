@@ -1,6 +1,6 @@
 <template>
     <div class="xubox">
-        <div class="xubox-title"><span>设备概况</span></div>
+        <div class="xubox-title"><span>设备概况(20条)</span></div>
         <div class="xubox-content">
             <table class="xu-table xu-table-hover xu-table-center">
                 <thead class="bg-info xu-text-white-level0">
@@ -15,7 +15,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr v-for="device in tableData" :key="device.id">
+                <tr v-for="device in tableData">
                     <td>
                         <span
                             class="xu-badge"
@@ -31,25 +31,36 @@
                     <td>{{device.companyName}}</td>
                     <td>{{device.factoryDate}}</td>
                     <td>
-                        <span class="xu-indicator xu-indicator-check">单点监控</span>
+                        <span class="xu-indicator xu-indicator-check" @click="showSingleMonitor(device)">单点监控</span>
                         <span class="xu-indicator xu-indicator-edit">远程控制</span>
                     </td>
                 </tr>
                 </tbody>
             </table>
         </div>
+        <single-monitor-pop-up v-if="isSingleMonitorVisible"
+                               :device-info="selectedDevice"
+                               @close="isSingleMonitorVisible = false">
+        </single-monitor-pop-up>
     </div>
 </template>
 
 <script>
   import TableStatics from "@/components/DeviceManageComp/TableStatics";
+  import SingleMonitorPopUp from "@/components/SharePopUp/SingleMonitor/SingleMonitorPopUp";
   export default {
     name: "DeviceTable",
-    components: {TableStatics},
+    components: {TableStatics,SingleMonitorPopUp},
     props:{
       tableData:{
         type:Array,
         default:() => {return []}
+      }
+    },
+    data(){
+      return {
+        selectedDevice:{},
+        isSingleMonitorVisible:false
       }
     },
     filters:{
@@ -65,6 +76,18 @@
             return '未知'
         }
       },
+    },
+    methods:{
+      //1.显示单点监控界面
+      showSingleMonitor:function (device) {
+        this.selectedDevice = {
+          id:device.id,
+          modelName:device.modelName,
+          companyName:device.companyName
+        };
+        // console.log(device);
+        this.isSingleMonitorVisible = true;
+      }
     }
   }
 </script>
