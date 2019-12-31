@@ -12,7 +12,7 @@
                     <div class="xu-col-4">
                         <div class="scrollBar-style comp-fix-height">
                             <table class="xu-table xu-table-hover xu-table-sm xu-table-center">
-                                <thead class="bg-info xu-text-white-level0">
+                                <thead class="xu-bg-silver">
                                 <tr>
                                     <th>机型名称</th>
                                     <th>机型数量</th>

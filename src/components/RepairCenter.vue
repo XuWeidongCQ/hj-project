@@ -12,8 +12,8 @@
                     </label>
                     <button class="xu-btn xu-btn-info ml-integer">搜索</button>
                 </div>
-                <table class="xu-table xu-table-sm xu-table-border xu-table-center xu-table-hover">
-                    <thead class="bg-info xu-text-level2 xu-text-white-level0">
+                <table class="xu-table xu-table-sm xu-table-border xu-table-center xu-table-hover xu-table-strip">
+                    <thead class="xu-bg-silver">
                     <tr>
                         <th>#ID</th>
                         <th>控制系统编号</th>

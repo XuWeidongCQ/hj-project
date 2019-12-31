@@ -97,13 +97,13 @@
 
 <style scoped>
     .main-wrapper {
-        background-color: #2f4050;
+        background-color: #354052;
         width: 100%;
         overflow-x: hidden;
     }
     .navbar-default{
         background-color: transparent;
-        border-color: #2f4050;
+        border-color: #354052;
     }
     .navbar-static-side{
         position: fixed;
@@ -125,7 +125,7 @@
         min-height: 100vh;
     }
     .gray-bg{
-        background-color: #e9e9e9;
+        background-color: #edf2f6;
     }
     .main-footer{
         padding: 10px 20px;

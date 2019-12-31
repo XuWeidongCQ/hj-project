@@ -6,8 +6,8 @@
                 <span class="xu-indicator xu-indicator-add xu-float-right" @click="showAddCompanyForm">添加公司</span>
             </div>
             <div class="xubox-content">
-                <table class="xu-table xu-table-hover xu-table-center">
-                    <thead class="bg-info xu-text-level2 xu-text-white-level0">
+                <table class="xu-table xu-table-hover xu-table-center xu-table-strip">
+                    <thead class="xu-bg-silver">
                     <tr>
                         <th>#ID</th>
                         <th>公司名称</th>

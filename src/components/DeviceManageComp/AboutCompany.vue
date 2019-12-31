@@ -5,8 +5,8 @@
         </div>
         <div class="xubox-content">
             <div class="scrollBar-style comp-about-company-table-wrapper">
-                <table class="xu-table xu-table-sm xu-table-hover">
-                    <thead class="bg-info xu-text-white-level0">
+                <table class="xu-table xu-table-sm xu-table-hover xu-table-strip">
+                    <thead class="xu-bg-silver">
                     <tr>
                         <th>公司名称</th>
                         <th>机型数量</th>

@@ -9,7 +9,7 @@
             <div slot="header">{{dataParse.dataName}}-配置</div>
             <div slot="content">
                 <table class="xu-table xu-table-sm xu-table-hover xu-table-center min-width-800">
-                    <thead class="bg-info xu-text-level2 xu-text-white-level0">
+                    <thead class="xu-bg-silver">
                     <tr>
                         <th>#ID</th>
                         <th>配置数据名称</th>

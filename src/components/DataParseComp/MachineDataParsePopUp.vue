@@ -10,7 +10,7 @@
             </div>
             <div slot="content">
                 <table class="xu-table xu-table-sm xu-table-hover min-width-1000">
-                    <thead class="bg-info xu-text-level2 xu-text-white-level0">
+                    <thead class="xu-bg-silver">
                     <tr>
                         <th>#ID</th>
                         <th>名称</th>

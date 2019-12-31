@@ -6,8 +6,8 @@
                 <span>报警记录</span>
             </div>
             <div class="xubox-content">
-                <table class="xu-table xu-table-center xu-table-hover">
-                    <thead class="bg-info xu-text-level2 xu-text-white-level0">
+                <table class="xu-table xu-table-center xu-table-hover xu-table-strip">
+                    <thead class="xu-bg-silver">
                     <tr>
                         <th>#ID</th>
                         <th>控制系统编号</th>
@@ -54,7 +54,6 @@
 
 <script>
   import XuPageNav from "@/components/CommonComponents/XuComponent/XuPageNav";
-  import {notice} from "@/plugins/toastrConfig";
 
   export default {
     name: "AlarmCenter",

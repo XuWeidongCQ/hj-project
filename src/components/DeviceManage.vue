@@ -36,7 +36,7 @@
         </div>
         <div class="xu-row">
             <div class="xu-col-12">
-                <device-table :table-data="tableData">
+                <device-table>
                 </device-table>
             </div>
         </div>
@@ -75,8 +75,8 @@
         companyInfosInModel:[],
         //最大最小值统计
         minMaxStatistical:{},
-        //处理表格数据--默认20条
-        tableData:[],
+        //处理表格数据--默认20条（放在子组件中获取）
+        // tableData:[],
       }
     },
     methods:{
@@ -84,6 +84,7 @@
       getCollectionInfos: function () {
         this.$Http['deviceManage']['getCollectionInfos']()
         .then(res => {
+          // console.log(res);
           const {StatisticalInfo:chartData,aboutCompany,aboutModel,scrapDeviceLife,devices:tableData} = res;
           //1.处理曲线部分的数据
           // console.log(chartData);
@@ -97,6 +98,7 @@
               this.forChartData['y4'].push(chartData[key]['alarmNum']);
             }
           }
+          this.asyncFlag = true;
           //2.处理每个公司对应相应机型的数据
           // console.log(aboutCompany);
           for (const companyName in aboutCompany){
@@ -160,20 +162,7 @@
           this.minMaxStatistical['maxLifeDeviceCsNumber'] = scrapDeviceLife['使用寿命最大的报废设备编号'];
           //5.处理表格数据
           // console.log(tableData);
-          tableData.forEach(ele => {
-            this.tableData.push({
-              id:ele.id,
-              companyName:ele['company']['name'],
-              modelNumber:ele['model']['modelNumber'],
-              modelName:ele['model']['modelName'],
-              csNumber:ele['csNumber'],
-              beidouId:ele['beidouId'],
-              factoryDate:ele['factoryDate'],
-              status:ele['status']
-            })
-          });
-          this.asyncFlag = true
-          // console.log(this.forChartData)
+
         })
       }
     },
@@ -203,7 +192,9 @@
     .comp-static-wrapper {
         text-align: center;
         font-size: 17px;
-        background-color: #ffffff;
+        background-color: #fefefe;
+        border: #b0d4fe 1px solid;
+        /*box-shadow: 0 0 5px #b0d4fe;*/
         display: flex;
         flex-direction: column;
         flex-wrap: wrap;

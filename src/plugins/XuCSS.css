@@ -370,10 +370,10 @@ body {
 }
 /*5.7 条纹*/
 .xu-table-strip tbody tr:nth-child(2n-1){
-    background-color: #f7f7f7;
+    background-color: #ffffff;
 }
 .xu-table-strip tbody tr:nth-child(2n){
-    background-color: #e8e8e8;
+    background-color: #f9f9f9;
 }
 /*5.8 固定表头表格*/
 .xu-table-fix thead{
@@ -477,13 +477,13 @@ body {
     color: #ffffff;
 }
 .xu-indicator-add {
-     background-color: #007bff;
+     background-color: #00b590;
      color: #ffffff;
-     border: 1px solid  #007bff;
+     border: 1px solid  #00b590;
  }
 .xu-indicator-add:hover {
-    background-color: #006fde;
-    border: 1px solid #006fde;
+    background-color: #00a47f;
+    border: 1px solid #00a47f;
 }
 .xu-indicator-delete {
      background-color:#dc3545;
@@ -531,6 +531,9 @@ body {
 /*10.背景颜色*/
 .xu-bg-white {
     background-color: #ffffff !important;
+}
+.xu-bg-silver {
+    background-color: #eef5fd !important;
 }
 
 /*#.辅助功能*/

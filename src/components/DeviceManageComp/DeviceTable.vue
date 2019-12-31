@@ -1,9 +1,9 @@
 <template>
     <div class="xubox">
-        <div class="xubox-title"><span>设备概况(20条)</span></div>
+        <div class="xubox-title"><span>设备概况</span></div>
         <div class="xubox-content">
-            <table class="xu-table xu-table-hover xu-table-center">
-                <thead class="bg-info xu-text-white-level0">
+            <table class="xu-table xu-table-hover xu-table-center xu-table-strip">
+                <thead class="xu-bg-silver">
                 <tr>
                     <th>状态</th>
                     <th>设备编号</th>
@@ -15,7 +15,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr v-for="device in tableData">
+                <tr v-for="device in deviceInfos">
                     <td>
                         <span
                             class="xu-badge"
@@ -37,6 +37,15 @@
                 </tr>
                 </tbody>
             </table>
+            <div class="xu-text-center">
+                <xu-page-nav :is-shown="true"
+                             :size="serverData.size"
+                             :now-page="serverData.number"
+                             :total-elements="serverData.totalElements"
+                             :total-page="serverData.totalPages"
+                             @selectedPage="jumpSelectedPage($event)">
+                </xu-page-nav>
+            </div>
         </div>
         <single-monitor-pop-up v-if="isSingleMonitorVisible"
                                :device-info="selectedDevice"
@@ -46,21 +55,23 @@
 </template>
 
 <script>
-  import TableStatics from "@/components/DeviceManageComp/TableStatics";
   import SingleMonitorPopUp from "@/components/SharePopUp/SingleMonitor/SingleMonitorPopUp";
+  import XuPageNav from "@/components/CommonComponents/XuComponent/XuPageNav";
   export default {
     name: "DeviceTable",
-    components: {TableStatics,SingleMonitorPopUp},
+    components: {SingleMonitorPopUp,XuPageNav},
     props:{
-      tableData:{
-        type:Array,
-        default:() => {return []}
-      }
+      // tableData:{
+      //   type:Array,
+      //   default:() => {return []}
+      // }
     },
     data(){
       return {
         selectedDevice:{},
-        isSingleMonitorVisible:false
+        isSingleMonitorVisible:false,
+        serverData:{},
+        deviceInfos:[],
       }
     },
     filters:{
@@ -87,7 +98,36 @@
         };
         // console.log(device);
         this.isSingleMonitorVisible = true;
-      }
+      },
+      //2.获取数据
+      getTableData:function (page=0) {
+        this.deviceInfos = [];
+        this.$Http['deviceManage']['getCollectionInfos']('',{params:{start:page}})
+        .then(res => {
+          const {devices:tableData} = res;
+          this.serverData = tableData;
+          const {content} = tableData;
+          content.forEach(ele => {
+            this.deviceInfos.push({
+              id:ele.id,
+              companyName:ele['company']['name'],
+              modelNumber:ele['model']['modelNumber'],
+              modelName:ele['model']['modelName'],
+              csNumber:ele['csNumber'],
+              beidouId:ele['beidouId'],
+              factoryDate:ele['factoryDate'],
+              status:ele['status']
+            })
+          })
+        })
+      },
+      //3.分页器跳转
+      jumpSelectedPage:function(selectedPage){
+        this.getTableData(selectedPage-1)
+      },
+    },
+    created(){
+      this.getTableData()
     }
   }
 </script>
