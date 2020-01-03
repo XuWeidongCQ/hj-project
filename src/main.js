@@ -7,7 +7,7 @@ import $ from 'jquery'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import 'bootstrap/dist/js/bootstrap.min.js'
 import 'font-awesome/css/font-awesome.min.css'
-import VueToastr from "vue-toastr";
+
 
 //自己写的插件
 import '@/plugins/XuCSS.css'
@@ -15,11 +15,7 @@ import XuCSS from "@/plugins/XuCSS"
 import '@/plugins/shareCSS.css'
 import commonJS from "@/plugins/commonJS"
 import Http from "@/service/Http";
-
-
-
-
-
+import {store} from "@/store/store";
 
 
 Vue.config.productionTip = false;
@@ -30,5 +26,6 @@ Vue.prototype.$Http = Http;
 
 new Vue({
   router,
+  store,
   render: h => h(App)
 }).$mount('#app');

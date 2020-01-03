@@ -1,6 +1,8 @@
 
 import axios from 'axios'
 import API from "@/service/api";
+import {store} from "@/store/store";
+import router from "@/router";
 import { XuToastr } from "@/components/CommonComponents/XuComponent/XuToastr/XuToastr";
 import { XuAlert } from "@/components/CommonComponents/XuComponent/XuAlert/XuAlert";
 
@@ -10,12 +12,18 @@ let axiosInst = axios.create({
   baseURL:'http://172.20.29.59:8080/beidou'
 });
 
+// console.log(router);
 
 let Http = {};
+const {state:{login}} = store;
+
 //请求拦截器
 axiosInst.interceptors.request.use(config =>{
   // console.log(config);
-  const {method} = config;
+  // console.log(login);
+  const {method,headers} = config;
+  headers['common']['Access-Token'] = login['token'];
+  // console.log(headers);
   switch (method) {
     case "delete":
       return new Promise(resolve => {
@@ -30,7 +38,8 @@ axiosInst.interceptors.request.use(config =>{
       return config;
   }
 },error => {
-  console.log(error);
+  console.log('请求出错');
+  console.log(error.message);
   return Promise.reject(error)
 });
 
@@ -98,7 +107,13 @@ axiosInst.interceptors.response.use(res=>{
       return res
   }
 },error => {
-  console.log(error);
+  console.log('响应出错');
+  // router.push('/');
+  // console.log(typeof error);
+  console.log(error.message);
+  // console.log(error.constructor);
+  // console.log(error.name);
+  // console.log(error.prototype);
   return Promise.reject(error)
 });
 

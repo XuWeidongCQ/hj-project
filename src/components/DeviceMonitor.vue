@@ -2,11 +2,13 @@
 <!--实时监控主路由界面-->
 <template>
     <div class="vue-views-wrapper">
-        <e-c-u-statics-info :statistical-data="statisticalData"></e-c-u-statics-info>
+        <e-c-u-statics-info :statistical-data="statisticalData">
+        </e-c-u-statics-info>
         <main-map :map-device-infos="mapDeviceInfos"
                   :company-names-dropdown="companyNamesDropdown"
                   :model-names-dropdown="modelNamesDropdown"
-                  @searchInputDone="getSearchResults($event)"></main-map>
+                  @searchInputDone="getSearchResults($event)">
+        </main-map>
     </div>
 </template>
 
@@ -127,7 +129,7 @@
       }
     },
     created(){
-      this.getCollection()
+      this.getCollection();
     }
   }
 </script>

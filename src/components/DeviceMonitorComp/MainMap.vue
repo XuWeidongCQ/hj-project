@@ -16,12 +16,14 @@
                            <span>机型名称：</span>
                            <xu-select v-model="searchData.modelName"
                                       :options="modelNamesDropdown"
-                                      :prefix-options="['不限']"></xu-select>
+                                      :prefix-options="['不限']">
+                           </xu-select>
                            <span class="ml-integer">公司名称：</span>
                            <xu-select v-model="searchData.companyName"
                                       :style-obj="{width:'220px'}"
                                       :options="companyNamesDropdown"
-                                      :prefix-options="['不限']"></xu-select>
+                                      :prefix-options="['不限']">
+                           </xu-select>
                        </div>
                    </div>
                    <div class="right xu-float-right">

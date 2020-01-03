@@ -125,6 +125,7 @@
         border: 1px solid #dcdfe6;
         background-color: #ffffff;
         max-height: 200px;
+        z-index: 1000;
     }
     .xu-select-wrapper .xu-select-option {
         display: block;

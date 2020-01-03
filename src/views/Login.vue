@@ -17,16 +17,14 @@
                     <form style="padding: 5px 10px">
                         <div class="form-group">
                             <label for="username">请输入用户名：</label>
-                            <input id="username" type="text" class="form-control" placeholder="用户名">
+                            <input id="username" type="text" class="form-control" placeholder="用户名" v-model="username">
                         </div>
                         <div class="form-group">
                             <label for="password">请输入密码：</label>
-                            <input id="password" type="password" class="form-control" placeholder="密码">
+                            <input id="password" type="password" class="form-control" placeholder="密码" v-model="password">
                         </div>
-                        <router-link to="/device-monitor" tag="button" class="btn btn-block btn-info">登录</router-link>
+                        <button class="btn btn-block btn-info" @click="login">登录</button>
                         <a href="#"><small>忘记密码？</small></a>
-<!--                        <p class="text-muted text-center"><small>还没有账号？</small></p>-->
-<!--                        <a class="btn btn-block btn-link" href="#">创建一个账户</a>-->
                     </form>
                 </div>
             <hr>
@@ -40,8 +38,37 @@
 </template>
 
 <script>
-  export default {
-    name: "Login"
+    import {axiosInstLogin} from "@/service/login";
+    import {XuAlert} from "@/components/CommonComponents/XuComponent/XuAlert/XuAlert";
+
+    export default {
+    name: "Login",
+    data(){
+      return {
+        username:'',
+        password:'',
+        token:'',
+      }
+    },
+    methods:{
+      //1.点击登录按钮
+      login:function () {
+        axiosInstLogin.post('/login',{username:this.username,password:this.password})
+        .then(res => {
+          const {data:{code,message,data}} = res;
+          // console.log(res);
+          // console.log(code);
+          if (code === 500){
+            XuAlert('登录失败-'+message,'error')
+          } else if (code === 200){
+            this.$store.commit('addUsername',data['userInfo']['username']);
+            this.$store.commit('addPassword',data['userInfo']['password']);
+            this.$store.commit('addToken',data['token']);
+            this.$router.push('/device-monitor')
+          }
+        })
+      }
+    }
   }
 </script>
 

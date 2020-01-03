@@ -38,9 +38,20 @@ const API = {
   },
   //二、设备管理界面
   deviceManage:{
+    //1.获取设备管理界面的所需数据
     getCollectionInfos:{
       method:'get',
       url:'/forDeviceManagement'
+    },
+    //2.获取表格中的数据
+    getTableData:{
+      method:'get',
+      url:'/forDeviceManagementSearch'
+    },
+    //3.搜索功能
+    searchDevices: {
+      method:'post',
+      url:'/forDeviceManagementSearch'
     }
   },
   //三、后台管理部分

@@ -51,7 +51,7 @@
         <div id="page-wrapper" class="gray-bg">
             <div class="login-duration-wrapper text-right">
                 <span><span class="fa fa-clock-o"/> 登录时间：{{ loginTime }}</span>
-                <span><span class="fa fa-user-circle-o"/> 用户名</span>
+                <span><span class="fa fa-user-circle-o"/> 用户名：{{ username }}</span>
             </div>
 
             <!--不同菜单栏的入口-->
@@ -86,7 +86,8 @@
     },
     data:function(){
       return {
-        loginTime:this.extendJS.getDate().YYYYMMDDHHMMSS
+        loginTime:this.extendJS.getDate().YYYYMMDDHHMMSS,
+        username:this.$store.getters['getUsername']
       }
     },
     mounted(){

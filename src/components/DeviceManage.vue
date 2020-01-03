@@ -85,7 +85,7 @@
         this.$Http['deviceManage']['getCollectionInfos']()
         .then(res => {
           // console.log(res);
-          const {StatisticalInfo:chartData,aboutCompany,aboutModel,scrapDeviceLife,devices:tableData} = res;
+          const {StatisticalInfo:chartData,aboutCompany,aboutModel,scrapDeviceLife} = res;
           //1.处理曲线部分的数据
           // console.log(chartData);
           for (const key in chartData){
