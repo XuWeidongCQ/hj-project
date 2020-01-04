@@ -258,11 +258,31 @@ const API = {
   },
   //七、角色管理部分
   roleManage:{
-    //1.获取整体所有数据
+    //1.获取所有角色数据
     getRoleCollectionInfos:{
       method:'get',
       url:'/roles'
-    }
+    },
+    //2.获取所有菜单信息
+    getMenuInfos:{
+      method:'get',
+      url:'/menus'
+    },
+    //3.新建一个角色
+    postRoleInfo:{
+      method:'post',
+      url:'/roles'
+    },
+    //4.删除一个角色
+    delRoleInfo:{
+      method:'delete',
+      url:'/roles/' // /roles/{id}
+    },
+    //5.修改一个角色
+    editRoleInfo:{
+      method:'put',
+      url:'/roles'
+    },
   },
   //八、账号管理部分
   accountManage:{

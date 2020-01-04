@@ -24,7 +24,7 @@
                             <input id="password" type="password" class="form-control" placeholder="密码" v-model="password">
                         </div>
                         <button class="btn btn-block btn-info" @click="login">登录</button>
-                        <a href="#"><small>忘记密码？</small></a>
+<!--                        <a href="#"><small>忘记密码？</small></a>-->
                     </form>
                 </div>
             <hr>
@@ -53,21 +53,29 @@
     methods:{
       //1.点击登录按钮
       login:function () {
-        axiosInstLogin.post('/login',{username:this.username,password:this.password})
-        .then(res => {
-          const {data:{code,message,data}} = res;
-          // console.log(res);
-          // console.log(code);
-          if (code === 500){
-            XuAlert('登录失败-'+message,'error')
-          } else if (code === 200){
-            this.$store.commit('addUsername',data['userInfo']['username']);
-            this.$store.commit('addPassword',data['userInfo']['password']);
-            this.$store.commit('addToken',data['token']);
-            this.$router.push('/device-monitor')
-          }
-        })
-      }
+        if (this.username === '' || this.password === ''){
+          XuAlert('账号或者密码不能为空','error')
+        } else {
+          axiosInstLogin.post('/login',{username:this.username,password:this.password})
+            .then(res => {
+              const {data:{code,message,data}} = res;
+              const {userInfo:{role,company}} = data;
+              // console.log(code,message,data);
+              // console.log(role);
+              if (code === 500){
+                XuAlert('登录失败-'+message,'error')
+              } else if (code === 200){
+                this.$store.commit('addUsername',data['userInfo']['username']);
+                this.$store.commit('addPassword',data['userInfo']['password']);
+                this.$store.commit('addToken',data['token']);
+                this.$store.commit('addRoleName',role['roleName']);
+                this.$store.commit('addMenuList',role['menuList']);
+                this.$router.push('/device-monitor')
+              }
+            })
+        }
+      },
+
     }
   }
 </script>

@@ -10,6 +10,8 @@ const store = new Vuex.Store({
       username:'' || sessionStorage.getItem('username'),
       password:'' || sessionStorage.getItem('password'),
       token:'' || sessionStorage.getItem('token'),
+      roleName:'' || sessionStorage.getItem('roleName'),
+      menuList: sessionStorage.getItem('menuList')
     }
   },
   getters:{
@@ -21,6 +23,12 @@ const store = new Vuex.Store({
     },
     getToken:function (state) {
       return state['login']['token']
+    },
+    getRoleName:function (state) {
+      return state['login']['roleName']
+    },
+    getMenuList:function (state) {
+      return state['login']['menuList']
     }
   },
   mutations:{
@@ -38,7 +46,17 @@ const store = new Vuex.Store({
     addToken:function (state, payload) {
       state['login']['token'] = payload;
       sessionStorage.setItem('token',payload);
-    }
+    },
+    //4.写入角色名
+    addRoleName:function (state, payload) {
+      state['login']['roleName'] = payload;
+      sessionStorage.setItem('roleName',payload);
+    },
+    //5.写入可查看菜单列表
+    addMenuList:function (state, payload) {
+      state['login']['menuList'] = payload;
+      sessionStorage.setItem('menuList',payload);
+    },
   },
   actions:{
     changeUsername:function (context,payload) {

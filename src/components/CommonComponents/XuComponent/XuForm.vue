@@ -53,6 +53,18 @@
                                    :disabled="rules.length !== 0 && applyFormRules(formItem.field)">
                         </label>
                     </div>
+                    <!--4.type=checkbox-->
+                    <div class="xu-form-control clear" v-else-if="formItem.additionalInfo && formItem.additionalInfo.type === 'checkbox'">
+                        <div class="checkbox-left">
+                            <span>{{ formItem.content }}</span>
+                        </div>
+                        <div class="checkbox-right">
+                            <label class="xu-label-choose mr-integer" v-for="option in formItem.additionalInfo.optional">
+                                <input type="checkbox" class="xu-choose xu-checkbox" :value="option" v-model="formItem.value">
+                                <span>{{ option }}</span>
+                            </label>
+                        </div>
+                    </div>
                     <!--*.type=text-->
                     <div class="xu-form-control" v-else>
                         <label class="xu-label-text">
@@ -97,19 +109,19 @@
       //接收数据3：要渲染的表单数据【重要】
       //格式：[{content:'是否匹配：',value:'true',field:'match',additionalInfo:{type:'radio',optional:['true','false']}}]
       renderData:{
-        default:[{content:'默认',value:'',field:''}],
+        default:() => {return [{content:'默认',value:'',field:''}]},
         type:Array
       },
       //接收数据4：表单禁用启用规则
       //格式：[{field:'minValue',limitBy:{field:'match',value:'true',rule:'disable'}}]
       rules:{
-        default:() => [],
+        default:() => {return []},
         type:Array
       },
       //接收数据5：表单验证规则
       //格式：[{content:'公司名称：',field:'name',isPassAuth:function (value) {return value === 'a';},failAuthMsg:'公司名称不符合要求'}]
       authRules:{
-        default:() => [],
+        default:() => {return []},
         type:Array
       }
     },
@@ -199,5 +211,16 @@
         width: 100px;
         text-align: right;
     }
-
+    .checkbox-left {
+        float: left;
+        display: inline-block;
+        width: 100px;
+        text-align: right;
+        padding: 5px 0;
+    }
+    .checkbox-right {
+        float: right;
+        display: inline-block;
+        width: 200px;
+    }
 </style>

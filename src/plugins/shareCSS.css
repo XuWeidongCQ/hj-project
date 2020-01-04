@@ -3,6 +3,6 @@
 .vue-views-wrapper {
     margin: 15px 0;
     min-width: 1600px;
-    padding: 10px 15px;
+    /*padding: 10px 15px;*/
     /*overflow: auto;*/
 }

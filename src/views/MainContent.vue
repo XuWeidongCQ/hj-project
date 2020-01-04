@@ -52,6 +52,7 @@
             <div class="login-duration-wrapper text-right">
                 <span><span class="fa fa-clock-o"/> 登录时间：{{ loginTime }}</span>
                 <span><span class="fa fa-user-circle-o"/> 用户名：{{ username }}</span>
+                <span><span class="fa fa-user-circle-o"/> 角色：{{ roleName }}</span>
             </div>
 
             <!--不同菜单栏的入口-->
@@ -87,7 +88,8 @@
     data:function(){
       return {
         loginTime:this.extendJS.getDate().YYYYMMDDHHMMSS,
-        username:this.$store.getters['getUsername']
+        username:this.$store.getters['getUsername'],
+        roleName:this.$store.getters['getRoleName']
       }
     },
     mounted(){
