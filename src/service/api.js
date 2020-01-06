@@ -259,7 +259,7 @@ const API = {
   //七、角色管理部分
   roleManage:{
     //1.获取所有角色数据
-    getRoleCollectionInfos:{
+    getRoleInfos:{
       method:'get',
       url:'/roles'
     },
@@ -283,11 +283,16 @@ const API = {
       method:'put',
       url:'/roles'
     },
+    //6.获得单个角色
+    getRoleInfo:{
+      method:'get',
+      url:'/roles/' // /roles/{id}
+    }
   },
   //八、账号管理部分
   accountManage:{
     //1.获取整体数据
-    getAccountCollectionInfos:{
+    getAccountInfos:{
       method:'get',
       url:'/users'
     },
@@ -295,6 +300,21 @@ const API = {
     postAccountInfo:{
       method:'post',
       url:'/users'
+    },
+    //3.删除一个账号
+    delAccountInfo:{
+      method:'delete',
+      url:'/users/' // /users/{id}
+    },
+    //4.修改一个账号
+    editAccountInfo:{
+      method:'put',
+      url:'/users'
+    },
+    //5.获得一个账号
+    getAccountInfo:{
+      method:'get',
+      url:'/users/' // /users/{id}
     }
   }
 };

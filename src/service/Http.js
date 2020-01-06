@@ -38,8 +38,10 @@ axiosInst.interceptors.request.use(config =>{
       return config;
   }
 },error => {
-  console.log('请求出错');
-  console.log(error.message);
+  //请求错误时，返回的数据和响应状态码
+  const {data,status} = error.response;
+  console.log(error);
+  console.log('请求出错','响应状态码：',status);
   return Promise.reject(error)
 });
 
@@ -107,13 +109,19 @@ axiosInst.interceptors.response.use(res=>{
       return res
   }
 },error => {
-  console.log('响应出错');
-  // router.push('/');
-  // console.log(typeof error);
-  console.log(error.message);
-  // console.log(error.constructor);
-  // console.log(error.name);
-  // console.log(error.prototype);
+  //错误响应时，返回的数据和响应状态码
+  const {data,status} = error.response;
+  console.log(error);
+  console.log('响应出错','响应状态码：',status);
+  switch (data['code']) {
+    case -3:
+      XuAlert(data['message'],'error');
+      router.push('/');
+      break;
+    case -4:
+      XuAlert('该账户没有权限','error');
+      router.push('/');
+  }
   return Promise.reject(error)
 });
 

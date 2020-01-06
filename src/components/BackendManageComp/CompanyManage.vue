@@ -31,15 +31,6 @@
                     </tr>
                     </tbody>
                 </table>
-                <div class="xu-text-center">
-                    <xu-page-nav :is-shown="true"
-                                 :size="serverData.size"
-                                 :now-page="serverData.number"
-                                 :total-elements="serverData.totalElements"
-                                 :total-page="serverData.totalPages"
-                                 @selectedPage="jumpSelectedPage($event)">
-                    </xu-page-nav>
-                </div>
             </div>
         </div>
         <device-table-pop-up
@@ -59,14 +50,12 @@
 
 <script>
   import XuForm from "@/components/CommonComponents/XuComponent/XuForm";
-  import XuPageNav from "@/components/CommonComponents/XuComponent/XuPageNav";
   import DeviceTablePopUp from "@/components/BackendManageComp/DeviceTablePopUp";
 
   export default {
     name: "CompanyManage",
     components:{
       XuForm,
-      XuPageNav,
       DeviceTablePopUp
     },
     data:function () {
@@ -77,7 +66,6 @@
         formTitle:'',//信息窗口标题
         submitType:0,//信息窗口提交事件的类型，0-post，1-put
         selectedCompany:{},//被选中的公司
-        serverData:{},//从服务器获取的所有数据
         companyInfos:[//存放获取的公司表的信息
           {id:1,name:'重庆大学',address:'沙正街117号'},
           {id:2,name:'重庆大学',address:'沙正街117号'},
@@ -90,14 +78,13 @@
     },
     methods:{
       //1.获取所有客户公司信息
-      getCompanyInfos:function (page = 0) {
+      getCompanyInfos:function () {
         this.companyInfos = [];
-        this.$Http['backendManage']['getCompanyInfos']('',{params:{start:page}})
+        this.$Http['backendManage']['getCompanyInfos']()
           .then( res => {
-            this.serverData = res;
             // console.log(this.serverData);
-            const { content } = res;
-            content.forEach(ele => {
+            // const { content } = res;
+            res.forEach(ele => {
               this.companyInfos.push({id:ele.id,name:ele.name,address:ele.address})
             });
           })

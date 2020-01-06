@@ -24,7 +24,7 @@
                     <td>{{role.createTime}}</td>
                     <td>{{role.remark}}</td>
                     <td>
-                        <span class="xu-indicator xu-indicator-edit">修改</span>
+                        <span class="xu-indicator xu-indicator-edit" @click="editRole(role)">修改</span>
                         <span class="xu-indicator xu-indicator-delete" @click="delRoleInfo(role.roleId)">删除</span>
                     </td>
                 </tr>
@@ -54,21 +54,22 @@
         formRenderData:[],//用于表单渲染的数据
         formTitle:'',//信息窗口标题
         submitType:0,//信息窗口提交事件的类型，0-post，1-put
+        selectedRole:null,//被选中的角色
       }
     },
     methods:{
       //1.获取所有数据
       getRoleCollectionInfos: function () {
         this.roleInfos = [];
-        this.$Http['roleManage']['getRoleCollectionInfos']()
+        this.$Http['roleManage']['getRoleInfos']()
           .then(res => {
-            console.log(res);
+            // console.log(res);
             res.forEach(ele => {
               const {menuList} = ele;
               this.roleInfos.push({
                 roleId:ele['id'],
                 roleName:ele['roleName'],
-                menuList:menuList.map(value => {return value['id'] + value['name']}).join('，') || '无任何权限',
+                menuList:menuList.map(value => {return value['id'] +'-'+ value['name']}).join('，') || '无任何权限',
                 remark:ele['remark'] || '无',
                 createTime:ele['createTime']
               })
@@ -83,10 +84,12 @@
           .then(res => {
             // console.log(res);
             res.forEach(ele => {
-              this.menuInfos.push({
-                menuId:ele['id'],
-                menuName:ele['name']
-              })
+              if (true || ele['type'] === 1){//type表示菜单的类型
+                this.menuInfos.push({
+                  menuId:ele['id'],
+                  menuName:ele['name']
+                })
+              }
             });
             // console.log(this.menuInfos)
           })
@@ -109,12 +112,35 @@
       delRoleInfo: function(roleId){
         this.$Http['roleManage']['delRoleInfo'](roleId)
         .then(res => {
-          console.log(res)
+          res && this.getRoleCollectionInfos()
         })
+      },
+      //5.修改一个角色
+      editRole:function(role){
+        // console.log(role['menuList']);
+        this.selectedRole = role;
+        let menuList;
+        if (role['menuList'] === '无任何权限'){
+          menuList = []
+        } else {
+          menuList = role['menuList'].split('，').map(value => value.split('-')[1])
+        }
+        this.formTitle = '修改角色信息';
+        this.submitType = 1;
+        this.formRenderData = [
+          {content:'角色名称：',value:role['roleName'],field:'roleName'},
+          {content:'权限：',
+           value:menuList,
+           field:'menuList',
+           additionalInfo:{type:'checkbox',optional:this.menuInfos.map(value => value['menuName'])},
+          },
+          {content:'备注：',value:role['remark'],field:'remark',additionalInfo:{type:'textarea'}},
+        ];
+        this.isFormShown = true;
       },
       //*.信息窗口的提交按钮事件
       submit:function (formData) {
-        console.log(formData);
+        // console.log(formData['menuList']);
         formData['menuList'] = formData['menuList'].map(value => {
           let menuId = 0;
           this.menuInfos.forEach(ele => {
@@ -134,8 +160,15 @@
               res && this.getRoleCollectionInfos()
             });
             break;
+          //修改角色
           case 1:
             console.log(formData);
+            formData['id'] = this.selectedRole['roleId'];
+            this.$Http['roleManage']['editRoleInfo'](formData)
+            .then(res => {
+              console.log(res);
+              res && this.getRoleCollectionInfos();
+            });
             break;
         }
       }

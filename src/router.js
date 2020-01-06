@@ -52,6 +52,22 @@ const routes = [
     ]
   }
 ];
+//添加导航守卫
+routes[1]['children'].forEach(ele => {
+  ele['beforeEnter'] = (to,from,next) => {
+    if (sessionStorage.getItem('token') === null){
+      //未登录情况，session中没有token
+      console.log('没有token');
+      // console.log(sessionStorage.getItem('token'));
+      next('/')
+    } else {
+      // console.log('有token');
+      // console.log(sessionStorage.getItem('token'));
+      //session中有token
+      next()
+    }
+  }
+});
 
 const router = new Router({
   routes: routes

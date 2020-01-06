@@ -2,66 +2,185 @@
     <div class="xubox">
         <div class="xubox-title">
             <span>账号情况</span>
-            <span class="xu-indicator xu-indicator-add xu-float-right">新建</span>
+            <span class="xu-indicator xu-indicator-add xu-float-right" @click="addNewAccount">添加账号</span>
         </div>
         <div class="xubox-content">
-            <div class="xubox-content">
-                <table class="xu-table xu-table-center xu-table-hover">
-                    <thead class="bg-info xu-text-white-level0">
-                    <tr>
-                        <th>#账号ID</th>
-                        <th>用户名</th>
-                        <th>角色</th>
-                        <th>手机号</th>
-                        <th>所属公司</th>
-                        <th>状态</th>
-                        <th>创建时间</th>
-                        <th>操作</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr v-for="account in accountInfos" :key="account.accountId">
-                        <td>{{account.accountId}}</td>
-                        <td>{{account.username}}</td>
-                        <td>{{account.role.roleName}}</td>
-                        <td>{{account.mobile}}</td>
-                        <td>{{account.role.company.companyName}}</td>
-                        <td>
-                            <xu-switch :value="account.status | statusFilter" @hasSelected="">
-                            </xu-switch>
-<!--                            <span class="xu-badge"-->
-<!--                                  :class="{'xu-badge-success':account.status === 1,'xu-badge-error':account.status === 0}">-->
-<!--                                {{account.status | statusFilter}}-->
-<!--                            </span>-->
-                        </td>
-                        <td>{{account.createTime}}</td>
-                        <td>
-                            <span class="xu-indicator xu-indicator-edit">修改</span>
-                            <span class="xu-indicator xu-indicator-delete">删除</span>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
+            <table class="xu-table xu-table-center xu-table-hover">
+                <thead class="xu-bg-silver">
+                <tr>
+                    <th>#账号ID</th>
+                    <th>用户名</th>
+                    <th>密码</th>
+                    <th>角色</th>
+                    <th>手机号</th>
+                    <th>所属公司</th>
+                    <th>启用</th>
+                    <th>创建时间</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr v-for="account in accountInfos" :key="account.accountId">
+                    <td>{{account.accountId}}</td>
+                    <td>{{account.username}}</td>
+                    <td>{{account.password}}</td>
+                    <td>{{account.role.roleName}}</td>
+                    <td>{{account.mobile}}</td>
+                    <td>{{account.company.companyName}}</td>
+                    <td>
+                        <xu-switch :value="account.status | statusFilter" @hasSelected="">
+                        </xu-switch>
+                    </td>
+                    <td>{{account.createTime}}</td>
+                    <td>
+                        <span class="xu-indicator xu-indicator-edit">修改</span>
+                        <span class="xu-indicator xu-indicator-delete">删除</span>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
         </div>
+        <xu-form v-if="isFormShown"
+                 :is-pop-up="true"
+                 :form-title="formTitle"
+                 :render-data="formRenderData"
+                 @submit="submit($event)"
+                 @close="isFormShown = false">
+        </xu-form>
     </div>
 </template>
 
 <script>
   import XuSwitch from "@/components/CommonComponents/XuComponent/XuSwitch";
+  import XuForm from "@/components/CommonComponents/XuComponent/XuForm";
   export default {
     name: "AccountDetailTable",
-    components: {XuSwitch},
-    props:{
-      accountInfos:{
-        type:Array,
-        default:() => { return []}
+    components: {XuSwitch,XuForm},
+    data(){
+      return {
+        accountInfos:[],//存放账号信息
+        optionalRoles:[],//可以选择的角色列表
+        optionalCompany:[],//可以选择的公司列表
+        isFormShown:false,//是否显示信息窗口
+        formRenderData:[],//用于表单渲染的数据
+        formTitle:'',//信息窗口标题
+        submitType:0,//信息窗口提交事件的类型，0-post，1-put
+        selectedAccount:null,//被选中的账号
       }
     },
     methods:{
       test:function ($event,count) {
         console.log($event);
         console.log(count);
+      },
+      //1.获取所有账号
+      getAccountInfos: function () {
+        this.accountInfos = [];
+        this.$Http['accountManage']['getAccountInfos']()
+          .then(res => {
+            console.log(res);
+            res.forEach(ele => {
+              const {role,company} = ele;
+              this.accountInfos.push({
+                accountId:ele.id,
+                username:ele.username,
+                mobile:ele.mobile,
+                password:ele.password,
+                status:ele.status,
+                role:{
+                  roleId:role['id'],
+                  roleName:role['roleName']},
+                company:{
+                  companyId:company['id'],
+                  companyName:company['name']},
+                createTime:ele.createTime,
+              })
+            })
+          })
+      },
+      //2.获取所有可以选择的角色列表
+      getOptionalRoles:function () {
+        this.optionalRoles = [];
+        this.$Http['roleManage']['getRoleInfos']()
+        .then(res => {
+          res.forEach(ele => {
+            this.optionalRoles.push({
+              roleId:ele['id'],
+              roleName:ele['roleName']
+            })
+          });
+          // console.log(this.optionalRoles);
+        })
+      },
+      //3.获取所有可以选择的公司列表
+      getOptionalCompany:function () {
+        this.optionalCompany = [];
+        this.$Http['backendManage']['getCompanyInfos']()
+        .then(res => {
+          res.forEach(ele => {
+            this.optionalCompany.push({
+              companyId:ele['id'],
+              companyName:ele['name']
+            })
+          });
+          // console.log(this.optionalCompany);
+        })
+      },
+      //4.新建一个账号
+      addNewAccount:function () {
+        this.formTitle = '新建账号';
+        this.submitType = 0;
+        this.formRenderData = [
+          {content:'用户名：',value:'',field:'username'},
+          {content:'密码：',value:'',field:'password'},
+          {content:'手机号：',value:'',field:'mobile'},
+          {
+            content:'选择角色：',
+            value:'',
+            field:'role',
+            additionalInfo:{type:'select',optional:this.optionalRoles.map(value => value['roleName'])}
+          },
+          {
+            content:'选择公司：',
+            value:'',
+            field:'company',
+            additionalInfo:{type:'select',optional:this.optionalCompany.map(value => value['companyName'])}
+          }
+        ];
+        this.isFormShown = true;
+      },
+      //*.信息窗口的提交按钮事件
+      submit:function (formData) {
+        console.log(formData);
+        for (let i=0;i<this.optionalRoles.length;i++){
+          if (this.optionalRoles[i]['roleName'] === formData['role']){
+            formData['role'] = {id:this.optionalRoles[i]['roleId']};
+            break
+          }
+        }
+        for (let i=0;i<this.optionalCompany.length;i++){
+          if (this.optionalCompany[i]['companyName'] === formData['company']){
+            formData['company'] = {id:this.optionalCompany[i]['companyId']};
+            break
+          }
+        }
+        // formData['menuList'] = fixedMenuList;
+        switch (this.submitType) {
+          //添加角色
+          case 0:
+            console.log(formData);
+            this.$Http['accountManage']['postAccountInfo'](formData)
+            .then(res => {
+              console.log(res);
+              res && this.getAccountInfos();
+            });
+            break;
+          //修改角色
+          case 1:
+            // console.log(formData);
+
+            break;
+        }
       }
     },
     filters:{
@@ -75,6 +194,11 @@
             return 'off'
         }
       }
+    },
+    created(){
+      this.getAccountInfos();
+      this.getOptionalRoles();
+      this.getOptionalCompany();
     }
   }
 </script>
