@@ -11,7 +11,8 @@ const store = new Vuex.Store({
       password:'' || sessionStorage.getItem('password'),
       token:'' || sessionStorage.getItem('token'),
       roleName:'' || sessionStorage.getItem('roleName'),
-      menuList: sessionStorage.getItem('menuList')
+      menuList: sessionStorage.getItem('menuList'),
+      companyName:''||sessionStorage.getItem('companyName')
     }
   },
   getters:{
@@ -29,6 +30,9 @@ const store = new Vuex.Store({
     },
     getMenuList:function (state) {
       return state['login']['menuList']
+    },
+    getCompanyName:function (state) {
+      return state['login']['companyName']
     }
   },
   mutations:{
@@ -57,6 +61,10 @@ const store = new Vuex.Store({
       state['login']['menuList'] = payload;
       sessionStorage.setItem('menuList',payload);
     },
+    addCompanyName:function (state,payload) {
+      state['login']['companyName'] = payload;
+      sessionStorage.setItem('companyName',payload);
+    }
   },
   actions:{
     changeUsername:function (context,payload) {

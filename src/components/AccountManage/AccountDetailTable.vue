@@ -10,7 +10,6 @@
                 <tr>
                     <th>#账号ID</th>
                     <th>用户名</th>
-                    <th>密码</th>
                     <th>角色</th>
                     <th>手机号</th>
                     <th>所属公司</th>
@@ -23,18 +22,17 @@
                 <tr v-for="account in accountInfos" :key="account.accountId">
                     <td>{{account.accountId}}</td>
                     <td>{{account.username}}</td>
-                    <td>{{account.password}}</td>
                     <td>{{account.role.roleName}}</td>
                     <td>{{account.mobile}}</td>
                     <td>{{account.company.companyName}}</td>
                     <td>
-                        <xu-switch :value="account.status | statusFilter" @hasSelected="">
+                        <xu-switch :value="account.status | statusFilter" @hasSelected="enableAccount($event,account)">
                         </xu-switch>
                     </td>
                     <td>{{account.createTime}}</td>
                     <td>
-                        <span class="xu-indicator xu-indicator-edit">修改</span>
-                        <span class="xu-indicator xu-indicator-delete">删除</span>
+                        <span class="xu-indicator xu-indicator-edit" @click="editAccount(account)">修改</span>
+                        <span class="xu-indicator xu-indicator-delete" @click="delAccount(account.accountId)">删除</span>
                     </td>
                 </tr>
                 </tbody>
@@ -69,23 +67,18 @@
       }
     },
     methods:{
-      test:function ($event,count) {
-        console.log($event);
-        console.log(count);
-      },
       //1.获取所有账号
       getAccountInfos: function () {
         this.accountInfos = [];
         this.$Http['accountManage']['getAccountInfos']()
           .then(res => {
-            console.log(res);
+            // console.log(res);
             res.forEach(ele => {
               const {role,company} = ele;
               this.accountInfos.push({
                 accountId:ele.id,
                 username:ele.username,
                 mobile:ele.mobile,
-                password:ele.password,
                 status:ele.status,
                 role:{
                   roleId:role['id'],
@@ -149,6 +142,67 @@
         ];
         this.isFormShown = true;
       },
+      //5.修改一个账号
+      editAccount:function(account){
+        this.selectedAccount = account;
+        console.log(account);
+        this.formTitle = '修改账号信息';
+        this.submitType = 1;
+        this.formRenderData = [
+          {content:'用户名：',value:account['username'],field:'username'},
+          // {content:'密码：',value:'null',field:'password'},
+          {content:'手机号：',value:account['mobile'],field:'mobile'},
+          {
+            content:'选择角色：',
+            value:account['role']['roleName'],
+            field:'role',
+            additionalInfo:{type:'select',optional:this.optionalRoles.map(value => value['roleName'])}
+          },
+          {
+            content:'选择公司：',
+            value:account['company']['companyName'],
+            field:'company',
+            additionalInfo:{type:'select',optional:this.optionalCompany.map(value => value['companyName'])}
+          }
+        ];
+        this.isFormShown = true;
+      },
+      //6.禁用或者启用账号
+      enableAccount:function(status,account){
+        // console.log(account);
+        // this.selectedAccount = account;
+        const data = {
+          id:account['accountId'],
+          username: account['username'],
+          mobile:account['mobile'],
+          status:0,
+          role:{id:account['role']['roleId']},
+          company:{id:account['company']['companyId']},
+        };
+        switch (status) {
+          case 'on':
+            data['status'] = 1;
+            // console.log(data);
+            this.$Http['accountManage']['editAccountInfo'](data)
+            .then(res => {
+              // console.log(res)
+            });
+            break;
+          case 'off':
+            this.$Http['accountManage']['editAccountInfo'](data)
+              .then(res => {
+                // console.log(res)
+              });
+            break;
+        }
+      },
+      //7.删除一个账号
+      delAccount:function(accountId){
+        this.$Http['accountManage']['delAccountInfo'](accountId)
+        .then(res => {
+          res && this.getAccountInfos();
+        })
+      },
       //*.信息窗口的提交按钮事件
       submit:function (formData) {
         console.log(formData);
@@ -168,7 +222,8 @@
         switch (this.submitType) {
           //添加角色
           case 0:
-            console.log(formData);
+            formData['status'] = 1;
+            // console.log(formData);
             this.$Http['accountManage']['postAccountInfo'](formData)
             .then(res => {
               console.log(res);
@@ -177,8 +232,13 @@
             break;
           //修改角色
           case 1:
+            formData['id'] = this.selectedAccount['accountId'];
+            formData['status'] = this.selectedAccount['status'];
             // console.log(formData);
-
+            this.$Http['accountManage']['editAccountInfo'](formData)
+            .then(res => {
+              res && this.getAccountInfos();
+            });
             break;
         }
       }

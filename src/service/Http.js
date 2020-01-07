@@ -2,7 +2,6 @@
 import axios from 'axios'
 import API from "@/service/api";
 import {store} from "@/store/store";
-import router from "@/router";
 import { XuToastr } from "@/components/CommonComponents/XuComponent/XuToastr/XuToastr";
 import { XuAlert } from "@/components/CommonComponents/XuComponent/XuAlert/XuAlert";
 
@@ -60,6 +59,7 @@ axiosInst.interceptors.response.use(res=>{
   // console.log(`请求方法为${reqMethod}`,`请求数据为${reqData}`,'请求参数为',reqParams);
   // console.log(reqConfig);
   const {code,message,data} = resData;
+  // console.log(resStatus);
   switch (reqMethod) {
     //1.获取数据，不进行统一处理
     case "get":
@@ -99,7 +99,7 @@ axiosInst.interceptors.response.use(res=>{
           XuAlert(message,'error');
           return false;
         case 1:
-          XuAlert('提交成功','success');
+          XuAlert('修改成功','success');
           return true;
         default:
           return resData;
@@ -116,11 +116,11 @@ axiosInst.interceptors.response.use(res=>{
   switch (data['code']) {
     case -3:
       XuAlert(data['message'],'error');
-      router.push('/');
+      // router.push('/');
       break;
     case -4:
       XuAlert('该账户没有权限','error');
-      router.push('/');
+      // router.push('/');
   }
   return Promise.reject(error)
 });

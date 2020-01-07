@@ -5,42 +5,42 @@
                 <li class="nav-header">
                     <img src="../assets/hongjiang_logo.png" alt="" style="width: 150px">
                 </li>
-                <li>
+                <li v-if="menuList.includes('实时监控')">
                     <router-link tag="a" to="/device-monitor" active-class="active" exact>
                         <span><span class="fa fa-bullseye"/>实时监控</span>
                     </router-link>
                 </li>
-                <li>
+                <li v-if="menuList.includes('设备管理')">
                     <router-link tag="a" to="/device-manage" active-class="active" exact>
                         <span><span class="fa fa-table"/>设备管理</span>
                     </router-link>
                 </li>
-                <li>
+                <li v-if="menuList.includes('维修中心')">
                     <router-link tag="a" to="/repair-center" active-class="active" exact>
                         <span><span class="fa fa-briefcase"/>维修中心</span>
                     </router-link>
                 </li>
-                <li>
+                <li v-if="menuList.includes('报警中心')">
                     <router-link tag="a" to="/alarm-center" active-class="active" exact>
                         <span><span class="fa fa-bell"/>报警中心</span>
                     </router-link>
                 </li>
-                <li>
+                <li v-if="menuList.includes('数据解析')">
                     <router-link tag="a" to="/data-parse" active-class="active" exact>
                         <span><span class="fa fa-cogs"/>数据解析</span>
                     </router-link>
                 </li>
-                <li>
+                <li v-if="menuList.includes('客户管理')">
                     <router-link tag="a" to="/backend-manage" active-class="active" exact>
                         <span><span class="fa fa-address-book-o"/>客户管理</span>
                     </router-link>
                 </li>
-                <li>
+                <li v-if="menuList.includes('角色管理')">
                     <router-link tag="a" to="/role-manage" active-class="active" exact>
                         <span><span class="fa fa-users"/>角色管理</span>
                     </router-link>
                 </li>
-                <li>
+                <li v-if="menuList.includes('账号管理')">
                     <router-link tag="a" to="/account-manage" active-class="active" exact>
                         <span><span class="fa fa-id-card"/>账号管理</span>
                     </router-link>
@@ -51,6 +51,7 @@
         <div id="page-wrapper" class="gray-bg">
             <div class="login-duration-wrapper text-right">
                 <span><span class="fa fa-clock-o"/> 登录时间：{{ loginTime }}</span>
+                <span><span class="fa fa-user-circle-o"/> 公司：{{ companyName }}</span>
                 <span><span class="fa fa-user-circle-o"/> 用户名：{{ username }}</span>
                 <span><span class="fa fa-user-circle-o"/> 角色：{{ roleName }}</span>
             </div>
@@ -89,7 +90,9 @@
       return {
         loginTime:this.extendJS.getDate().YYYYMMDDHHMMSS,
         username:this.$store.getters['getUsername'],
-        roleName:this.$store.getters['getRoleName']
+        roleName:this.$store.getters['getRoleName'],
+        companyName:this.$store.getters['getCompanyName'],
+        menuList:this.$store.getters['getMenuList']
       }
     },
     mounted(){

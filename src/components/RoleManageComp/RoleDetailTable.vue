@@ -166,7 +166,7 @@
             formData['id'] = this.selectedRole['roleId'];
             this.$Http['roleManage']['editRoleInfo'](formData)
             .then(res => {
-              console.log(res);
+              // console.log(res);
               res && this.getRoleCollectionInfos();
             });
             break;

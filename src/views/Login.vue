@@ -48,6 +48,7 @@
         username:'',
         password:'',
         token:'',
+        companyName:'',
       }
     },
     methods:{
@@ -66,12 +67,19 @@
                 XuAlert('登录失败-'+message,'error')
               } else if (code === 200){
                 const {userInfo:{role,company}} = data;
-                console.log(role);
+                // console.log(role);
+                let menuList = [];
+                role['menuList'].forEach(value => {
+                  if (value['type']===1) {
+                    menuList.push(value['name'])
+                  }
+                });
                 this.$store.commit('addUsername',data['userInfo']['username']);
                 this.$store.commit('addPassword',data['userInfo']['password']);
                 this.$store.commit('addToken',data['token']);
                 this.$store.commit('addRoleName',role['roleName']);
-                this.$store.commit('addMenuList',role['menuList']);
+                this.$store.commit('addMenuList',menuList);
+                this.$store.commit('addCompanyName',company['name']);
                 this.$router.push('/device-monitor')
               }
             })
