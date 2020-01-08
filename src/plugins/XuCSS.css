@@ -9,6 +9,9 @@ a,ul,li,p {
 a {
     color: inherit;
 }
+a:hover {
+    color: inherit;
+}
     /*消除数字input后面的上下三角*/
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
@@ -16,6 +19,9 @@ input::-webkit-inner-spin-button {
 }
 input[type="number"]{
     -moz-appearance: textfield;
+}
+button[disabled]{
+    cursor: not-allowed;
 }
 
 body {

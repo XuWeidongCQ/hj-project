@@ -1,6 +1,6 @@
 
 const API = {
-  //#、单点监控部分
+  //PopUp01、单点监控部分
   singleMonitor:{
     //1 获取整体所有数据
     getSingleDeviceCollectionInfos:{
@@ -22,6 +22,14 @@ const API = {
       method:'post',
       url:'/repairs'
     },
+  },
+  //#、退出登录部分
+  loginOut:{
+    //1.上传退出登录时的相关信息
+    postLoginDuration:{
+      method:'post',
+      url:'/logout'
+    }
   },
   //一、实时监控部分
   deviceMonitor:{
@@ -231,6 +239,11 @@ const API = {
     editRepairInfo:{
       method:'put',
       url:'/repairs'
+    },
+    //7 通过控制系统编号搜索维修记录
+    searchRepairInfos:{
+      method:'get',
+      url:'/devices/repairs'
     }
   },
   //六、报警中心
@@ -254,6 +267,11 @@ const API = {
     delAlarmInfo:{
       method:'delete',
       url:'/alarms/' // '/alarms/{id}'
+    },
+    //5 通过控制系统编号搜索报警记录
+    searchAlarmInfos:{
+      method:'get',
+      url:'/devices/alarms'
     }
   },
   //七、角色管理部分

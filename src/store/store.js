@@ -7,6 +7,7 @@ Vue.use(Vuex);
 const store = new Vuex.Store({
   state:{
     'login':{
+      loginTime: ''||sessionStorage.getItem('loginTime'),
       username:'' || sessionStorage.getItem('username'),
       password:'' || sessionStorage.getItem('password'),
       token:'' || sessionStorage.getItem('token'),
@@ -33,6 +34,9 @@ const store = new Vuex.Store({
     },
     getCompanyName:function (state) {
       return state['login']['companyName']
+    },
+    getLoginTime:function (state,part,key) {
+      return state['login']['loginTime']
     }
   },
   mutations:{
@@ -61,10 +65,16 @@ const store = new Vuex.Store({
       state['login']['menuList'] = payload;
       sessionStorage.setItem('menuList',payload);
     },
+    //6.写入账号所属公司
     addCompanyName:function (state,payload) {
       state['login']['companyName'] = payload;
       sessionStorage.setItem('companyName',payload);
-    }
+    },
+    //7.写入登录时间
+    addLoginTime:function(state,payload){
+      state['login']['loginTime'] = payload;
+      sessionStorage.setItem('loginTime',payload)
+    },
   },
   actions:{
     changeUsername:function (context,payload) {

@@ -63,7 +63,11 @@ axiosInst.interceptors.response.use(res=>{
   switch (reqMethod) {
     //1.获取数据，不进行统一处理
     case "get":
-      return resData;
+      if (resData === ''){
+        return []
+      } else {
+        return resData;
+      }
     //2.   提交数据，对反馈信息进行统一处理
     //2.1  提交成功返回提交的信息
     //2.2  提交成功返回{code(=0成功，=1失败) message data}
@@ -111,7 +115,7 @@ axiosInst.interceptors.response.use(res=>{
 },error => {
   //错误响应时，返回的数据和响应状态码
   const {data,status} = error.response;
-  console.log(error);
+  // console.log(error);
   console.log('响应出错','响应状态码：',status);
   switch (data['code']) {
     case -3:

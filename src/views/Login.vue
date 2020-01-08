@@ -47,8 +47,6 @@
       return {
         username:'',
         password:'',
-        token:'',
-        companyName:'',
       }
     },
     methods:{
@@ -74,6 +72,7 @@
                     menuList.push(value['name'])
                   }
                 });
+                this.$store.commit('addLoginTime',this.extendJS.getDate().YYYYMMDDHHMMSS);
                 this.$store.commit('addUsername',data['userInfo']['username']);
                 this.$store.commit('addPassword',data['userInfo']['password']);
                 this.$store.commit('addToken',data['token']);

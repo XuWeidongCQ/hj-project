@@ -45,7 +45,9 @@
                         <span><span class="fa fa-id-card"/>账号管理</span>
                     </router-link>
                 </li>
-                <li class="nav-footer"><router-link to="/"><span><span class="fa fa-sign-out"/>退出</span></router-link></li>
+                <li class="nav-footer" @click="logout()">
+                    <a><span><span class="fa fa-sign-out"/>退出</span></a>
+                </li>
             </ul>
         </nav>
         <div id="page-wrapper" class="gray-bg">
@@ -72,27 +74,20 @@
 <script>
   export default {
     name: "MainContent",
-    methods:{
-      menuStyle:function () {
-        let li = document.getElementsByTagName('li');
-        let len = li.length;
-        for (let i=1;i<len-1;i++){
-          li[i].onclick = function () {
-            for (let j=1;j<len-1;j++){
-              li[j].removeAttribute('class')
-            }
-            li[i].className = 'active';
-          }
-        }
-      }
-    },
     data:function(){
       return {
-        loginTime:this.extendJS.getDate().YYYYMMDDHHMMSS,
+        loginTime:this.$store.getters['getLoginTime'],
         username:this.$store.getters['getUsername'],
         roleName:this.$store.getters['getRoleName'],
         companyName:this.$store.getters['getCompanyName'],
         menuList:this.$store.getters['getMenuList']
+      }
+    },
+    methods:{
+      logout:function () {
+        let loginTime = new Date(this.loginTime);
+        let logoutTime = new Date(this.extendJS.getDate().YYYYMMDDHHMMSS);
+        console.log(logoutTime.getTime() - loginTime.getTime());//单位毫秒
       }
     },
     mounted(){
@@ -160,6 +155,8 @@
     }
     .x-nav>li>a:hover{
         background-color: black;
+        color: #ffffff;
+        cursor: pointer;
     }
     .x-nav>li>a span{
         margin-right: 10px;

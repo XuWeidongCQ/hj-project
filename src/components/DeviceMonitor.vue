@@ -48,7 +48,7 @@
               alarmNum:statistical.alarmNum
             };
             //只有在线设备才会传到devices中
-            devices.forEach(ele => {
+            devices && devices.forEach(ele => {
               //处理地图显示数据
               this.mapDeviceInfos.push({
                 id:ele.id,
