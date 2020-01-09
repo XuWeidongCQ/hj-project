@@ -91,10 +91,10 @@
     methods:{
       //1 获取报警记录
       getAlarmInfos: function (page=0) {
-        this.alarmInfos = [];
         this.isSearch = false;
         this.$Http['alarmCenter']['getAlarmInfos']('',{params:{start:page}})
           .then(res => {
+            this.alarmInfos = [];
             this.serverData = res;
             const {content} = res;
             content && content.forEach(ele => {
@@ -126,10 +126,10 @@
       },
       //4.搜索报警记录
       searchAlarmInfos: function (page=0) {
-        this.alarmInfos = [];
         this.isSearch = true;
         this.$Http['alarmCenter']['searchAlarmInfos']('',{params:{str:this.searchInfo.csNumber,start: page}})
         .then(res => {
+          this.alarmInfos = [];
           this.serverData = res;
           const {content} = res;
           content && content.forEach(ele => {

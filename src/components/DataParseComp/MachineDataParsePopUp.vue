@@ -111,9 +111,9 @@
       },
       //2.获取某一个机型的数据解析表
       getDataParseInfos:function () {
-        this.dataParseInfos = [];
         this.$Http['dataParse']['getDataParseInfos'](this.machineModel.id+'/parses')
           .then(res => {
+            this.dataParseInfos = [];
             // this.serverData = res.data;
             res.forEach(ele => {
               this.dataParseInfos.push({

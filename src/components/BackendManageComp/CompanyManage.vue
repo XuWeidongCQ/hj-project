@@ -79,9 +79,9 @@
     methods:{
       //1.获取所有客户公司信息
       getCompanyInfos:function () {
-        this.companyInfos = [];
         this.$Http['backendManage']['getCompanyInfos']()
           .then( res => {
+            this.companyInfos = [];
             // console.log(this.serverData);
             // const { content } = res;
             res.forEach(ele => {

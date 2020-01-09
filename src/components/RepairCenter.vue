@@ -92,11 +92,11 @@
     methods:{
       //1. 获取所有维修记录
       getRepairInfos: function (page=0) {
-        this.repairInfos = [];
         this.isSearch = false;
         this.$Http['repairCenter']['getRepairInfos']('',{params:{start:page}})
           .then(res => {
             // console.log(res.data);
+            this.repairInfos = [];
             this.serverData = res;
             const {content} = res;
             content && content.forEach(ele => {
@@ -147,10 +147,10 @@
       },
       //5.通过控制系统编号进行搜索
       searchRepairInfos: function(page=0){
-        this.repairInfos = [];
         this.isSearch = true;
         this.$Http['repairCenter']['searchRepairInfos']('',{params:{str:this.searchInfo.csNumber,start: page}})
         .then(res => {
+          this.repairInfos = [];
           this.serverData = res;
           const {content} = res;
           content && content.forEach(ele => {

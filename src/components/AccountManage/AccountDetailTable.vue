@@ -69,9 +69,9 @@
     methods:{
       //1.获取所有账号
       getAccountInfos: function () {
-        this.accountInfos = [];
         this.$Http['accountManage']['getAccountInfos']()
           .then(res => {
+            this.accountInfos = [];
             // console.log(res);
             res.forEach(ele => {
               const {role,company} = ele;

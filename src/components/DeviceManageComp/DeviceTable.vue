@@ -136,9 +136,9 @@
       },
       //2.获取数据
       getTableData:function (page=0) {
-        this.deviceInfos = [];
         this.$Http['deviceManage']['searchDevices'](this.searchInfo,{},'?start='+page)
         .then(res => {
+          this.deviceInfos = [];
           // console.log(res);
           // const {devices:tableData} = res;
           this.serverData = res;

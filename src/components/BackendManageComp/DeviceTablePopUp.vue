@@ -154,10 +154,9 @@
       },
       //1 获取一个公司的所有设备
       getDeviceInfos: function (page=0) {
-        this.devicesInfos = [];
-        this.modelInfos = [];
         this.$Http['backendManage']['getDeviceInfos'](this.company.id + '/devices',{params:{start:page}})
           .then(res => {
+            this.devicesInfos = [];
             // console.log(res.data);
             this.serverData = res;
             const {content} = res;
@@ -180,6 +179,7 @@
           });
         this.$Http['dataParse']['getMachineModelInfos']()
           .then(res => {
+            this.modelInfos = [];
             res.forEach(ele => {
               this.modelInfos.push({id:ele.id,modelName:ele.modelName,modelNumber:ele.modelNumber})
             })

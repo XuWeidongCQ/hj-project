@@ -60,9 +60,9 @@
     methods:{
       //1.获取所有数据
       getRoleCollectionInfos: function () {
-        this.roleInfos = [];
         this.$Http['roleManage']['getRoleInfos']()
           .then(res => {
+            this.roleInfos = [];
             // console.log(res);
             res.forEach(ele => {
               const {menuList} = ele;

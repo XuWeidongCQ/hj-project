@@ -72,6 +72,8 @@
 </template>
 
 <script>
+  import {XuAlert} from "@/components/CommonComponents/XuComponent/XuAlert/XuAlert";
+
   export default {
     name: "MainContent",
     data:function(){
@@ -87,7 +89,22 @@
       logout:function () {
         let loginTime = new Date(this.loginTime);
         let logoutTime = new Date(this.extendJS.getDate().YYYYMMDDHHMMSS);
-        console.log(logoutTime.getTime() - loginTime.getTime());//单位毫秒
+        const data = {
+          userName:this.username,
+          loginTime:this.loginTime,
+          onlineTime:(logoutTime.getTime() - loginTime.getTime()) / 1000 //单位秒
+        };
+        this.$Http['loginOut']['postLoginDuration'](data)
+        .then(res => {
+          const {code,message} = res;
+          if (code === 200){
+            XuAlert(message);
+            this.$router.push('/');
+          } else {
+            XuAlert('退出失败—' + message,'error')
+          }
+        })
+        // console.log(data);//单位毫秒
       }
     },
     mounted(){

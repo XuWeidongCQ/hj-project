@@ -52,7 +52,7 @@
 <script>
   import XuModal from "@/components/CommonComponents/XuComponent/XuModal";
   import XuForm from "@/components/CommonComponents/XuComponent/XuForm";
-  import {notice} from "@/plugins/toastrConfig";
+
   export default {
     name: "DataParseMatch",
     components: {XuModal,XuForm},
@@ -80,9 +80,9 @@
       },
       //2.获取某一条数据解析下的所有的配置信息
       getMachineConfigInfos:function () {
-        this.dataMatchInfos = [];
         this.$Http['dataParse']['getMachineConfigInfos'](this.dataParse.id+'/matchs')
           .then(res => {
+            this.dataMatchInfos = [];
             res.forEach(ele => {
               const {id,dataName,dataValue,infoMatch} = ele;
               this.dataMatchInfos.push({id,dataName,dataValue,infoMatch})
@@ -125,7 +125,7 @@
           case 0:
             formData['parse'] = {id:this.dataParse.id};//存在外键的情况下添加数据
             formData['dataName'] = this.dataParse.dataName;
-            console.log(formData);
+            // console.log(formData);
             this.$Http['dataParse']['postMachineConfigInfo'](formData)
               .then( res => {
                 res && this.getMachineConfigInfos()

@@ -71,9 +71,9 @@
     methods:{
       //1.获取所有机型信息
       getMachineModelInfos: function (page=0) {
-        this.machineModelInfos = [];
         this.$Http['dataParse']['getMachineModelInfos']('',{params:{start:page}})
           .then(res => {
+            this.machineModelInfos = [];
             res.forEach(ele => {
               this.machineModelInfos.push({id:ele.id,modelName:ele.modelName,modelNumber:ele.modelNumber})
             })
