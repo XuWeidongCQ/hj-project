@@ -53,9 +53,9 @@
         <div id="page-wrapper" class="gray-bg">
             <div class="login-duration-wrapper text-right">
                 <span><span class="fa fa-clock-o"/> 登录时间：{{ loginTime }}</span>
-                <span><span class="fa fa-user-circle-o"/> 公司：{{ companyName }}</span>
-                <span><span class="fa fa-user-circle-o"/> 用户名：{{ username }}</span>
-                <span><span class="fa fa-user-circle-o"/> 角色：{{ roleName }}</span>
+                <span><span class="fa fa-sun-o"/> 公司：{{ companyName }}</span>
+                <span><span class="fa fa-user-o"/> 用户名：{{ username }}</span>
+                <span><span class="fa fa-cube"/> 角色：{{ roleName }}</span>
             </div>
 
             <!--不同菜单栏的入口-->
@@ -78,11 +78,12 @@
     name: "MainContent",
     data:function(){
       return {
-        loginTime:this.$store.getters['getLoginTime'],
-        username:this.$store.getters['getUsername'],
-        roleName:this.$store.getters['getRoleName'],
-        companyName:this.$store.getters['getCompanyName'],
-        menuList:this.$store.getters['getMenuList']
+        loginTime:this.$store.getters['getLoginInfo']['loginTime'],
+        username:this.$store.getters['getLoginInfo']['username'],
+        roleName:this.$store.getters['getLoginInfo']['roleName'],
+        companyName:this.$store.getters['getLoginInfo']['company'],
+        menuList:this.$store.getters['getLoginInfo']['auth']['menuList'],
+        isClose:false,//是否是页面刷新
       }
     },
     methods:{
@@ -92,23 +93,36 @@
         const data = {
           userName:this.username,
           loginTime:this.loginTime,
-          onlineTime:(logoutTime.getTime() - loginTime.getTime()) / 1000 //单位秒
+          onlineTime:logoutTime.getTime() - loginTime.getTime() //单位秒
         };
         this.$Http['loginOut']['postLoginDuration'](data)
         .then(res => {
           const {code,message} = res;
           if (code === 200){
             XuAlert(message);
+            sessionStorage.clear();//退出清除所有数据
             this.$router.push('/');
           } else {
             XuAlert('退出失败—' + message,'error')
           }
         })
-        // console.log(data);//单位毫秒
+      },
+      test(ev){
+        console.log('close page');
+        ev.returnValue = '确定关闭';
+        return '确定关闭'
       }
     },
     mounted(){
-      // this.menuStyle()
+      // window.addEventListener('beforeunload',ev => {
+      //   this.test(ev)
+      // });
+    },
+    destroyed(){
+      // console.log('destroyed');
+      // window.removeEventListener('beforeunload',ev => {
+      //   this.test(ev)
+      // })
     }
   }
 </script>

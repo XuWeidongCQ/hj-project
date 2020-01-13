@@ -58,27 +58,32 @@
           axiosInstLogin.post('/login',{username:this.username,password:this.password})
             .then(res => {
               const {data:{code,message,data}} = res;
-              // const {userInfo:{role,company}} = data;
               console.log(code,message,data);
-              // console.log(role);
               if (code === 500){
-                XuAlert('登录失败-'+message,'error')
+                XuAlert('登录失败-' + message,'error')
               } else if (code === 200){
                 const {userInfo:{role,company}} = data;
-                // console.log(role);
                 let menuList = [];
+                let buttonAuthList = [];
                 role['menuList'].forEach(value => {
                   if (value['type']===1) {
                     menuList.push(value['name'])
+                  } else if (value['type']===2){
+                    buttonAuthList.push(value['name'])
                   }
                 });
-                this.$store.commit('addLoginTime',this.extendJS.getDate().YYYYMMDDHHMMSS);
-                this.$store.commit('addUsername',data['userInfo']['username']);
-                this.$store.commit('addPassword',data['userInfo']['password']);
-                this.$store.commit('addToken',data['token']);
-                this.$store.commit('addRoleName',role['roleName']);
-                this.$store.commit('addMenuList',menuList);
-                this.$store.commit('addCompanyName',company['name']);
+                const loginInfo = {
+                  username:this.username,
+                  company:company['name'],
+                  loginTime:this.extendJS.getDate().YYYYMMDDHHMMSS,
+                  roleName:role['roleName'],
+                  token:data['token'],
+                  auth:{
+                    menuList:menuList,
+                    buttonAuthList:buttonAuthList,
+                  }
+                };
+                this.$store.commit('addLoginInfo',loginInfo);
                 this.$router.push('/device-monitor')
               }
             })

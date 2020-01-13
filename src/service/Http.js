@@ -13,15 +13,13 @@ let axiosInst = axios.create({
 
 // console.log(router);
 
-let Http = {};
-const {state:{login}} = store;
+
 
 //请求拦截器
 axiosInst.interceptors.request.use(config =>{
-  // console.log(config);
-  // console.log(login);
+  const {state:{loginInfo}} = store;
   const {method,headers} = config;
-  headers['common']['Access-Token'] = login['token'];
+  headers['common']['Access-Token'] = loginInfo['token'];
   // console.log(headers);
   switch (method) {
     case "delete":
@@ -130,6 +128,7 @@ axiosInst.interceptors.response.use(res=>{
 });
 
 
+let Http = {};
 Object.keys(API).forEach(key => {
   const uiPart = API[key];
   Http[key] = {};

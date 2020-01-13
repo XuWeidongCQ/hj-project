@@ -333,6 +333,11 @@ const API = {
     getAccountInfo:{
       method:'get',
       url:'/users/' // /users/{id}
+    },
+    //6.修改密码
+    modifyPassword:{
+      method:'post',
+      url:'/users/psw'
     }
   }
 };

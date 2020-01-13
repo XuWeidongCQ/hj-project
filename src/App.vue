@@ -10,6 +10,12 @@
       return {
 
       }
+    },
+    destroyed(){
+      console.log('destroyed');
+      // window.removeEventListener('beforeunload',ev => {
+      //   this.test(ev)
+      // })
     }
   }
 </script>

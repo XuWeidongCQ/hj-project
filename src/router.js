@@ -90,25 +90,29 @@ const router = new Router({
 //添加导航守卫
 router.beforeEach(((to, from, next) => {
   const path = to.path;
-  const token = sessionStorage.getItem('token');
-  const menuList = sessionStorage.getItem('menuList');
   const title = to.meta['title'];
-  if (path === '/'){//是否是登录界面
+  //如果是登录页，直接进入，并且不执行后续的操作
+  if (path === '/'){
     next();
     document.title = title;
+    return;
+  }
+
+  const loginInfo = JSON.parse(sessionStorage.getItem('loginInfo'));
+  const { token,auth:{menuList} } = loginInfo;
+  // console.log(loginInfo);
+  if (token === null ){//是否登录过
+    XuAlert('请登录后访问','error');
+    next('/')
   } else {
-    if (token === null ){//是否登录过
-      XuAlert('请登录后访问','error');
-      next('/')
+    if (menuList.includes(title)){//是否有权限访问该界面
+      document.title = title;
+      next()
     } else {
-      if (menuList.includes(title)){//是否有权限访问该界面
-        document.title = title;
-        next()
-      } else {
-        XuAlert('该账户没有权限访问，请联系管理员','error');
-      }
+      XuAlert('该账户没有权限访问，请联系管理员','error');
     }
   }
+
 }));
 
 export default router
