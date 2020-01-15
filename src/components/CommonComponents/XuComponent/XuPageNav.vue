@@ -10,7 +10,7 @@
         </li>
         <li class="x-page-item x-page-number"  @click="nextPage">下一页</li>
         <li class="x-page-item">
-          共{{ totalPage }}页
+          共{{ totalElements }}条记录
         </li>
         <li class="x-page-item">
           <span>跳到第</span>
@@ -139,7 +139,7 @@
       }
     },
     watch:{
-      totalPage:function () {
+      totalElements:function () {
         this.initPageNumbers();
         this.selectPage = this.nowPage + 1;
       }

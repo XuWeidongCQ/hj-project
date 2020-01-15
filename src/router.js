@@ -98,7 +98,7 @@ router.beforeEach(((to, from, next) => {
     return;
   }
 
-  const loginInfo = JSON.parse(sessionStorage.getItem('loginInfo'));
+  const loginInfo = JSON.parse(sessionStorage.getItem('loginInfo')) || {auth:{}};
   const { token,auth:{menuList} } = loginInfo;
   // console.log(loginInfo);
   if (token === null ){//是否登录过

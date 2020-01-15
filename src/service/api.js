@@ -22,6 +22,16 @@ const API = {
       method:'post',
       url:'/repairs'
     },
+    //5 使发动机停止工作
+    disableEngine:{
+      method:'put',
+      url:'/forDeviceWorkS'
+    },
+    //6 使发动机恢复工作
+    enableEngine:{
+      method:'put',
+      url:'/forDeviceWorkR'
+    },
   },
   //#、退出登录部分
   loginOut:{
@@ -60,7 +70,17 @@ const API = {
     searchDevices: {
       method:'post',
       url:'/forDeviceManagementSearch'
-    }
+    },
+    //4 使发动机停止工作
+    disableEngine:{
+      method:'put',
+      url:'/forDeviceWorkS'
+    },
+    //5 使发动机恢复工作
+    enableEngine:{
+      method:'put',
+      url:'/forDeviceWorkR'
+    },
   },
   //三、后台管理部分
   backendManage:{

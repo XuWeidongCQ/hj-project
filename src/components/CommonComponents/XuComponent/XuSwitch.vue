@@ -12,7 +12,7 @@
   export default {
     name: "XuSwitch",
     props:{
-      //1 v-model必须的传递参数
+      //1 v-model必须的传递参数，格式：‘on’ 'off'
       value:{
         type:String
       }
@@ -24,13 +24,13 @@
     },
     methods:{
       changeValue:function () {
-        if (this.selectValue === 'off'){
+        if (this.value === 'off'){
           this.selectValue = 'on';
         } else {
           this.selectValue = 'off';
         }
         this.$emit('hasSelected',this.selectValue);
-        this.$emit('input',this.selectValue)
+        this.$emit('input',this.selectValue) //只有绑定v-model这个事件才会默认生效
       }
     },
   }
@@ -47,6 +47,7 @@
     box-sizing: border-box;
     cursor: pointer;
     text-align: start;
+    vertical-align: text-bottom;
   }
   .switch-on {
     background-color: #1aa6ff;

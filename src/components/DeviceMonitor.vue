@@ -52,9 +52,11 @@
               //处理地图显示数据
               this.mapDeviceInfos.push({
                 id:ele.id,
-                isAlert:ele.status,//2--报警,1--正常,0--报废(不会出现，报废离线)
+                rotateStatus:ele.rotateStatus,
+                isAlert:ele.status,//2--报警,1--正常,0--报废(不会出现，报废就离线了)
                 modelName:ele.model.modelName,
                 companyName:ele.company.name,
+                //用于信息窗口
                 infoWindowData:{
                   isAlert:ele.status,
                   status:ele.dataDevices.length === 0 ? '': ele.dataDevices[0].status,//设备的文字提示信息
@@ -64,6 +66,7 @@
                   greasePressure:ele.dataDevices.length === 0 ? '': ele.dataDevices[0].greasePressure,
                   coolingWater:ele.dataDevices.length === 0 ? '': ele.dataDevices[0].waterTemp,
                 },
+                //坐标信息
                 coordinate:{
                   lng:ele.dataDevices.length === 0 ? '': ele.dataDevices[0].longitude,
                   lat:ele.dataDevices.length === 0 ? '': ele.dataDevices[0].latitude

@@ -3,13 +3,27 @@
         <xu-modal :shown="true"
                   :header-shown="true"
                   :model-style="{'marginTop':'25px'}"
-                  :header-style="{'backgroundColor':'#48a8ff','color':'#fcfcfc'}"
+                  :header-style="{'backgroundColor':'#354052','color':'#fcfcfc'}"
                   @close="close">
             <div slot="header">#{{deviceInfo.id}} 单点监控模式(测试模式,数据始终为ID为1的设备的数据)</div>
             <div slot="content">
                 <div class="box-title">
-                    <span>客户公司：</span><span class="mr-4">{{ deviceInfo.companyName }}</span>
-                    <span>机型名称：</span><span>{{ deviceInfo.modelName }}</span>
+                    <div class="xu-row mb-integer">
+                        <div class="xu-col-5">
+                            <span>客户公司：{{ deviceInfo.companyName }}</span>
+                        </div>
+                        <div class="xu-col-5">
+                            <span>机型名称：{{ deviceInfo.modelName }}</span>
+                        </div>
+                        <div class="xu-col-2">
+                            <span v-if="auth.includes('停止工作') || auth.includes('恢复工作')">
+                                <span>启用：</span>
+                                <xu-switch :value="deviceInfo.rotateStatus | rotateStatusFilter"
+                                           @hasSelected="changeRotateStatus($event,deviceInfo.id)"/>
+                            </span>
+                        </div>
+                    </div>
+
                 </div>
                 <div class="box-content">
                     <div class="xu-row mb-integer">
@@ -47,12 +61,12 @@
                                        :zoom="7">
                                 <bm-polyline :path="trackInfos"
                                              :stroke-weight="2"
-                                             stroke-color="red"></bm-polyline>
+                                             stroke-color="red"/>
                                 <!--使用v-if是因为position绑定的是异步数据，初次渲染的时候还没有数据，会报错-->
-                                <bm-label content="开始" :position="trackInfos[0]"></bm-label>
-                                <bm-label content="结束" :position="trackInfos[trackInfos.length-1]"></bm-label>
-                                <bm-scale anchor="BMAP_ANCHOR_TOP_LEFT" :offset="{top:'5px',left:'5px'}"></bm-scale>
-                                <bm-navigation anchor="BMAP_ANCHOR_TOP_RIGHT"></bm-navigation>
+                                <bm-label content="开始" :position="trackInfos[0]"/>
+                                <bm-label content="结束" :position="trackInfos[trackInfos.length-1]"/>
+                                <bm-scale anchor="BMAP_ANCHOR_TOP_LEFT" :offset="{top:'5px',left:'5px'}"/>
+                                <bm-navigation anchor="BMAP_ANCHOR_TOP_RIGHT"/>
                             </baidu-map>
                         </div>
                     </div>
@@ -76,7 +90,7 @@
                                 —
                                 <input type="datetime-local" name="endTime" class="xu-input">
                             </label>
-                            <button class="xu-btn xu-btn-info ml-integer"><span class="fa fa-file-excel-o"></span>&nbsp;导出Excel</button>
+                            <button class="xu-btn xu-btn-info ml-integer"><span class="fa fa-file-excel-o"/>&nbsp;导出Excel</button>
                             <button class="xu-btn xu-btn-primary xu-float-right mt-integer" @click="showForm">添加维修记录</button>
                         </div>
                         <!--历史数据表格-->
@@ -196,6 +210,7 @@
   import DevHistoryRepairInfosPopUp from "./DevHistoryRepairInfosPopUp";
   import DevHistoryAlarmInfosPopUp from "@/components/SharePopUp/SingleMonitor/DevHistoryAlarmInfosPopUp";
   import XuForm from "@/components/CommonComponents/XuComponent/XuForm";
+  import XuSwitch from "@/components/CommonComponents/XuComponent/XuSwitch";
 
   export default {
     name: "SingleMonitorModal",
@@ -209,7 +224,8 @@
       BmPolyline,
       XuChart,
       DevHistoryRepairInfosPopUp,
-      DevHistoryAlarmInfosPopUp
+      DevHistoryAlarmInfosPopUp,
+      XuSwitch
     },
     props:{
       deviceInfo:Object,
@@ -228,6 +244,8 @@
         isFormShown:false,//是否显示信息窗口
         formRenderData:[],//用于表单渲染的数据
         formTitle:'',//信息窗口标题
+        //权限
+        auth:this.$store.getters['getLoginInfo']['auth']['buttonAuthList']
       }
     },
     computed:{
@@ -330,6 +348,19 @@
         ];
         this.isFormShown = true;
       },
+      //6 停止或者恢复发动机工作
+      changeRotateStatus:function (status,deviceId) {
+        const data = {id:deviceId};
+        switch (status) {
+          case 'on':
+            this.$Http['singleMonitor']['enableEngine'](data)
+              .then();
+            break;
+          case 'off':
+            this.$Http['singleMonitor']['disableEngine'](data)
+              .then();
+        }
+      },
       //*.信息窗口的提交按钮事件
       submit:function (formData) {
         formData['device'] = {id:this.deviceInfo.id};//正式为this.deviceInfo.id
@@ -383,6 +414,16 @@
         const year = value.match(/^\d+(?=-)/)[0];
         const month = value.match(reg)[1] ? value.match(reg)[1] : '00';
         return year + '年' + month + '月'
+      },
+      rotateStatusFilter: function (value) {
+        switch (value) {
+          case 0:
+            return 'off';
+          case 1:
+            return 'on';
+          default:
+            return 'on'
+        }
       }
     },
     created(){

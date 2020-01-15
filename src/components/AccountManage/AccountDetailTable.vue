@@ -26,13 +26,15 @@
                     <td>{{account.mobile}}</td>
                     <td>{{account.company.companyName}}</td>
                     <td>
-                        <xu-switch :value="account.status | statusFilter" @hasSelected="enableAccount($event,account)">
+                        <xu-switch :value="account.status | statusFilter"
+                                   @hasSelected="enableAccount($event,account)">
                         </xu-switch>
                     </td>
                     <td>{{account.createTime}}</td>
                     <td>
                         <span class="xu-indicator xu-indicator-edit" @click="editAccount(account)">修改</span>
                         <span class="xu-indicator xu-indicator-delete" @click="delAccount(account.accountId)">删除</span>
+                        <span class="xu-indicator xu-indicator-basic" @click="showEditPasswordForm(account)">修改密码</span>
                     </td>
                 </tr>
                 </tbody>
@@ -45,15 +47,20 @@
                  @submit="submit($event)"
                  @close="isFormShown = false">
         </xu-form>
+        <modify-password-pop-up v-if="isPasswordModalShown"
+                                @changePsw="changePsw($event)"
+                                @close="isPasswordModalShown = false">
+        </modify-password-pop-up>
     </div>
 </template>
 
 <script>
   import XuSwitch from "@/components/CommonComponents/XuComponent/XuSwitch";
   import XuForm from "@/components/CommonComponents/XuComponent/XuForm";
+  import ModifyPasswordPopUp from "@/components/AccountManage/ModifyPasswordPopUp";
   export default {
     name: "AccountDetailTable",
-    components: {XuSwitch,XuForm},
+    components: {XuSwitch,XuForm,ModifyPasswordPopUp},
     data(){
       return {
         accountInfos:[],//存放账号信息
@@ -63,7 +70,8 @@
         formRenderData:[],//用于表单渲染的数据
         formTitle:'',//信息窗口标题
         submitType:0,//信息窗口提交事件的类型，0-post，1-put
-        selectedAccount:null,//被选中的账号
+        selectedAccount:null,//被选中的账号,
+        isPasswordModalShown:false
       }
     },
     methods:{
@@ -145,7 +153,7 @@
       //5.修改一个账号
       editAccount:function(account){
         this.selectedAccount = account;
-        console.log(account);
+        // console.log(account);
         this.formTitle = '修改账号信息';
         this.submitType = 1;
         this.formRenderData = [
@@ -169,7 +177,7 @@
       },
       //6.禁用或者启用账号
       enableAccount:function(status,account){
-        // console.log(account);
+        console.log(status);
         // this.selectedAccount = account;
         const data = {
           id:account['accountId'],
@@ -184,15 +192,11 @@
             data['status'] = 1;
             // console.log(data);
             this.$Http['accountManage']['editAccountInfo'](data)
-            .then(res => {
-              // console.log(res)
-            });
+            .then();
             break;
           case 'off':
             this.$Http['accountManage']['editAccountInfo'](data)
-              .then(res => {
-                // console.log(res)
-              });
+              .then();
             break;
         }
       },
@@ -203,9 +207,25 @@
           res && this.getAccountInfos();
         })
       },
+      //8.显示修改密码表单
+      showEditPasswordForm:function(account){
+        this.isPasswordModalShown = true;
+        this.selectedAccount = account
+      },
+      //9.修改密码
+      changePsw:function(password){
+        const data = {
+          id:this.selectedAccount['accountId'],
+          password:password
+        };
+        this.isPasswordModalShown = false;
+        // console.log(data)
+        this.$Http['accountManage']['modifyPassword'](data)
+        .then()
+      },
       //*.信息窗口的提交按钮事件
       submit:function (formData) {
-        console.log(formData);
+        // console.log(formData);
         for (let i=0;i<this.optionalRoles.length;i++){
           if (this.optionalRoles[i]['roleName'] === formData['role']){
             formData['role'] = {id:this.optionalRoles[i]['roleId']};

@@ -156,7 +156,8 @@
         this.propsToSingleMonitorModal = {
           id:marker.id,
           modelName:marker.modelName,
-          companyName:marker.companyName
+          companyName:marker.companyName,
+          rotateStatus:marker.rotateStatus
         };
         this.isSingleMonitorVisible = true;
       },

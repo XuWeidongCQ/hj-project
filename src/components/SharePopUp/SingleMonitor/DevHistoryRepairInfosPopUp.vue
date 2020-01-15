@@ -66,9 +66,9 @@
       },
       //2 获取某一个设备的维修记录
       getOneDeviceRepairInfos:function (page=0) {
-        this.historyDataInfos = [];
         this.$Http['singleMonitor']['getOneDeviceRepairInfos'](this.deviceId+'/repairs',{params:{start:page}})//测试为id=1的设备的历史维修记录
           .then(res => {
+            this.historyDataInfos = [];
             this.serverData = res;
             res.content.forEach(ele => {
               this.historyDataInfos.push({

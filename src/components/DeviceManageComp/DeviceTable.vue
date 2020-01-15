@@ -25,8 +25,9 @@
                     <th>机型名称</th>
                     <th>北斗卡号</th>
                     <th>公司</th>
+                    <th v-if="auth.includes('停止工作') || auth.includes('恢复工作')">启用</th>
                     <th>出厂日期</th>
-                    <th>操作</th>
+                    <th v-if="auth.includes('单点监控')">操作</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -44,10 +45,14 @@
                     <td>{{device.modelName}}</td>
                     <td>{{device.beidouId}}</td>
                     <td>{{device.companyName}}</td>
+                    <td v-if="auth.includes('停止工作') || auth.includes('恢复工作')">
+                        <xu-switch :value="device.rotateStatus | rotateStatusFilter"
+                                   @hasSelected="changeRotateStatus($event,device.id)">
+                        </xu-switch>
+                    </td>
                     <td>{{device.factoryDate}}</td>
-                    <td>
+                    <td v-if="auth.includes('单点监控')">
                         <span class="xu-indicator xu-indicator-check" @click="showSingleMonitor(device)">单点监控</span>
-                        <span class="xu-indicator xu-indicator-edit">远程控制</span>
                     </td>
                 </tr>
                 </tbody>
@@ -73,15 +78,10 @@
   import SingleMonitorPopUp from "@/components/SharePopUp/SingleMonitor/SingleMonitorPopUp";
   import XuPageNav from "@/components/CommonComponents/XuComponent/XuPageNav";
   import XuSelect from "@/components/CommonComponents/XuComponent/XuSelect";
+  import XuSwitch from "@/components/CommonComponents/XuComponent/XuSwitch";
   export default {
     name: "DeviceTable",
-    components: {SingleMonitorPopUp,XuPageNav,XuSelect},
-    props:{
-      // tableData:{
-      //   type:Array,
-      //   default:() => {return []}
-      // }
-    },
+    components: {SingleMonitorPopUp,XuPageNav,XuSelect,XuSwitch},
     data(){
       return {
         selectedDevice:{},
@@ -107,7 +107,9 @@
         //选择的搜索字段
         selectedField:'设备编号',
         selectedValue:'',
-        searchFields:['设备编号','机型名称','公司名称','出厂日期','设备状态']
+        searchFields:['设备编号','机型名称','公司名称','出厂日期','设备状态'],
+        //权限
+        auth:this.$store.getters['getLoginInfo']['auth']['buttonAuthList']
       }
     },
     filters:{
@@ -123,6 +125,16 @@
             return '未知'
         }
       },
+      rotateStatusFilter: function (value) {
+        switch (value) {
+          case 0:
+            return 'off';
+          case 1:
+            return 'on';
+          default:
+            return 'on'
+        }
+      }
     },
     methods:{
       //1.显示单点监控界面
@@ -130,19 +142,21 @@
         this.selectedDevice = {
           id:device.id,
           modelName:device.modelName,
-          companyName:device.companyName
+          companyName:device.companyName,
+          rotateStatus:device.rotateStatus,
         };
         this.isSingleMonitorVisible = true;
       },
       //2.获取数据
       getTableData:function (page=0) {
+        this.deviceInfos = [];
         this.$Http['deviceManage']['searchDevices'](this.searchInfo,{},'?start='+page)
         .then(res => {
-          this.deviceInfos = [];
           // console.log(res);
           // const {devices:tableData} = res;
           this.serverData = res;
           const {content} = res;
+          // console.log(content);
           content.forEach(ele => {
             this.deviceInfos.push({
               id:ele.id,
@@ -152,7 +166,8 @@
               csNumber:ele['csNumber'],
               beidouId:ele['beidouId'],
               factoryDate:ele['factoryDate'],
-              status:ele['status']
+              status:ele['status'],
+              rotateStatus:ele['rotateStatus']
             })
           })
         })
@@ -189,10 +204,23 @@
             this.getTableData()
           }
         });
+      },
+      //5 停止或者恢复发动机工作
+      changeRotateStatus:function (status,deviceId) {
+        const data = {id:deviceId};
+        switch (status) {
+          case 'on':
+            this.$Http['deviceManage']['enableEngine'](data)
+            .then();
+            break;
+          case 'off':
+            this.$Http['deviceManage']['disableEngine'](data)
+              .then();
+        }
       }
     },
     created(){
-      this.getTableData()
+      this.getTableData();
     }
   }
 </script>
