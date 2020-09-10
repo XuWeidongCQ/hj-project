@@ -358,6 +358,16 @@ const API = {
     modifyPassword:{
       method:'post',
       url:'/users/psw'
+    },
+    //7.获取登录日志信息
+    getUserLoginRecord:{
+      method:'get',
+      url:'/userLoginTimeRecord'
+    },
+    //8.获取操作日志信息
+    getOperationRecord:{
+      method:'get',
+      url:'/sysLogs'
     }
   }
 };

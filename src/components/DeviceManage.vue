@@ -14,20 +14,20 @@
         </div>
         <div class="xu-row mb-integer">
             <div class="xu-col-4">
-                <div class="comp-static-wrapper bg-light">
+                <div class="comp-static-wrapper">
                     <p class="static-item">{{ minMaxStatistical.averageLife | msFilter }}</p>
                     <p>报废设备平均使用寿命</p>
                 </div>
             </div>
             <div class="xu-col-4">
-                <div class="comp-static-wrapper bg-light">
+                <div class="comp-static-wrapper">
                     <p>{{ minMaxStatistical.minLife | msFilter }}</p>
                     <p>最小使用寿命</p>
                     <p>设备编号：{{minMaxStatistical.minLifeDeviceCsNumber}}</p>
                 </div>
             </div>
             <div class="xu-col-4">
-                <div class="comp-static-wrapper bg-light">
+                <div class="comp-static-wrapper">
                     <p>{{ minMaxStatistical.maxLife | msFilter }}</p>
                     <p>最大使用寿命</p>
                     <p>设备编号：{{minMaxStatistical.maxLifeDeviceCsNumber}}</p>
@@ -192,9 +192,8 @@
     .comp-static-wrapper {
         text-align: center;
         font-size: 17px;
-        background-color: #fefefe;
-        border: #b0d4fe 1px solid;
-        /*box-shadow: 0 0 5px #b0d4fe;*/
+        background-color: #ffffff;
+        border: 1px solid #dcdfe6;
         display: flex;
         flex-direction: column;
         flex-wrap: wrap;

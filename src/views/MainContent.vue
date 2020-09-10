@@ -153,8 +153,9 @@
         margin: 0 0 0 220px;
         padding: 0 15px 35px 15px;
         position: relative !important;
-        outline: 1px solid red;
+        /* outline: 1px solid red; */
         min-height: 100vh;
+        min-width: 1600px;
     }
     .gray-bg{
         background-color: #edf2f6;
@@ -202,7 +203,7 @@
         padding: 5px 15px;
         font-size: 14px;
         font-weight: 100;
-        outline: 1px solid red;
+        /* outline: 1px solid red; */
     }
     .login-duration-wrapper>span {
         margin-left: 40px;

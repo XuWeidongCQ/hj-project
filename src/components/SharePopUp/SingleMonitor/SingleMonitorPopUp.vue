@@ -109,6 +109,7 @@
                                     <td>{{ item.rotateSpeed }}</td>
                                     <td>{{ item.greasePressure }}</td>
                                     <td>{{ item.coolingWaterTemperature }}</td>
+                                    <td>{{ item.status }}</td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -232,7 +233,7 @@
     },
     data(){
       return {
-        theadContents:['监测时间','转速/rpm','滑油压力/kpa','冷却水温度/℃'],
+        theadContents:['监测时间','转速/rpm','滑油压力/kpa','冷却水温度/℃','状态'],
         alarmInfos:[],//存放设备报警记录信息
         repairInfos:[],//存放设备维修记录信息
         historyDataInfos:[],//存放设备历史传感器数据
@@ -306,9 +307,11 @@
                 rotateSpeed:ele.speed,
                 greasePressure:ele.greasePressure,
                 coolingWaterTemperature:ele.waterTemp,
-                time:ele.createTime
+                time:ele.createTime,
+                status:ele.status,
               });
             });
+            //console.log(data)
             //4.处理轨迹信息
             location && location.forEach(ele => {
               this.trackInfos.push({
@@ -324,6 +327,9 @@
             //6.处理设备统计信息
             // console.log(DeviceTime);
             this.devStatisticsInfos = DeviceTime
+          })
+          .catch(e => {
+            console.log('单点监控解析数据有错！')
           });
         // console.log(this.trackInfos)
       },
@@ -443,7 +449,7 @@
 <style scoped>
     .box-title {
         background-color: transparent;
-        width: 1200px;
+        width: 1400px;
         font-size: 16px;
     }
     .map-container {
@@ -460,11 +466,11 @@
     .statics-item {
         padding: 15px 20px;
         border-radius: 5px;
-        width: 350px;
+        width: 450px;
         text-align: center;
     }
     .history-table {
-        width: 450px;
+        width: 650px;
         height: 350px;
         float: left;
     }
