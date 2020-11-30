@@ -32,7 +32,7 @@
                 </li>
                 <li v-if="menuList.includes('客户管理')">
                     <router-link tag="a" to="/backend-manage" active-class="active" exact>
-                        <span><span class="fa fa-address-book-o"/>客户管理</span>
+                        <span><span class="fa fa-address-book-o"/>公司管理</span>
                     </router-link>
                 </li>
                 <li v-if="menuList.includes('角色管理')">

@@ -1,7 +1,7 @@
 <template>
-    <div>
+    <!-- <div> -->
         <div ref="chart" :style="chartStyle"></div>
-    </div>
+    <!-- </div> -->
 </template>
 
 <script>

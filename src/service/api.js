@@ -32,6 +32,11 @@ const API = {
       method:'put',
       url:'/forDeviceWorkR'
     },
+    //7 导出为excel表
+    exportExcel:{
+      method:'post',
+      url:'/exportExcel'
+    }
   },
   //#、退出登录部分
   loginOut:{

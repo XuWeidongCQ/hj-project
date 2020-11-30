@@ -27,7 +27,8 @@
                     <td>{{account.company.companyName}}</td>
                     <td>
                         <xu-switch :value="account.status | statusFilter"
-                                   @hasSelected="enableAccount($event,account)">
+                                   :isShowConfirm='true'
+                                   @toggle="enableAccount($event,account)">
                         </xu-switch>
                     </td>
                     <td>{{account.createTime}}</td>
@@ -188,15 +189,15 @@
           company:{id:account['company']['companyId']},
         };
         switch (status) {
-          case 'on':
+          case true:
             data['status'] = 1;
             // console.log(data);
             this.$Http['accountManage']['editAccountInfo'](data)
             .then();
             break;
-          case 'off':
+          case false:
             this.$Http['accountManage']['editAccountInfo'](data)
-              .then();
+            .then();
             break;
         }
       },
@@ -267,11 +268,11 @@
       statusFilter:function (value) {
         switch (value) {
           case 0:
-            return 'off';
+            return false;
           case 1:
-            return 'on';
+            return true;
           default:
-            return 'off'
+            return true
         }
       }
     },

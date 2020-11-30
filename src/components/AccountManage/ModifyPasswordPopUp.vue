@@ -10,10 +10,16 @@
         <div slot="content">
             <div class="xu-form-control">
                 <label class="xu-label-text">
-                    <span>新密码：</span>
-                    <input type="text" class="xu-input" :class="{'xu-illegal-border':!isValidate}" v-model="password">
+                    <span>新的密码：</span>
+                    <input type="password" class="xu-input" :class="{'xu-illegal-border':!isValidate}" v-model="password">
+                </label> 
+            </div>
+            <div class="xu-form-control">
+                <label class="xu-label-text">
+                    <span>确认密码：</span>
+                    <input type="password" class="xu-input" :class="{'xu-illegal-border':!isValidate}" v-model="passwordAgain">
                 </label>
-                <p class="xu-illegal-text" v-if="!isValidate">密码只能是8到12位的数字或者字母</p>
+                <p class="xu-illegal-text" v-if="!isValidate">{{ invalidStr }}</p>
             </div>
         </div>
         <div slot="footer">
@@ -33,7 +39,9 @@
     data(){
       return {
         password:'',
-        isValidate:true
+        passwordAgain:'',
+        isValidate:true,
+        invalidStr:''
       }
     },
     methods:{
@@ -42,9 +50,15 @@
       },
       submit:function () {
         let reg = /^\w{8,12}$/; //这里边界很重要
-        this.isValidate = reg.test(this.password);
-        if (this.isValidate){
+        this.isValidate = reg.test(this.password) && this.password === this.passwordAgain;
+        if (this.isValidate){//合法
           this.$emit('changePsw',this.password)
+        } else {//不合法
+          if(this.password !== this.passwordAgain){
+            this.invalidStr = '密码前后不一致'
+          } else {
+            this.invalidStr = '密码只能是8到12位的数字或者字母'
+          }
         }
       },
 

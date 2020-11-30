@@ -1,5 +1,5 @@
 <template>
-    <div class="login-page-wrapper">
+    <div class="login-page-wrapper" @keyup.enter="login">
         <div style="background-color: #23c6c8;height: 50vh;text-align: center">
             <h1 style="color: #ffffff;display:inline-block;margin: 0 auto;padding-top: 50px">欢迎登录发动机远程健康监护系统</h1>
             <div>

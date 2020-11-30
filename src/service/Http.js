@@ -8,7 +8,7 @@ import { XuAlert } from "@/components/CommonComponents/XuComponent/XuAlert/XuAle
 
 //需要登录才能访问的接口
 let axiosInst = axios.create({
-  baseURL:'http://172.20.29.59:8080/beidou'
+  baseURL:'http://47.92.211.37:8080/beidou'
 });
 
 // console.log(router);
@@ -20,7 +20,7 @@ axiosInst.interceptors.request.use(config =>{
   const {state:{loginInfo}} = store;
   const {method,headers} = config;
   headers['common']['Access-Token'] = loginInfo['token'];
-  // console.log(headers);
+  // console.log(config);
   switch (method) {
     case "delete":
       return new Promise(resolve => {
@@ -57,7 +57,7 @@ axiosInst.interceptors.response.use(res=>{
   // console.log(`请求方法为${reqMethod}`,`请求数据为${reqData}`,'请求参数为',reqParams);
   // console.log(reqConfig);
   const {code,message,data} = resData;
-  // console.log(resStatus);
+  // console.log(res);
   switch (reqMethod) {
     //1.获取数据，不进行统一处理
     case "get":
@@ -102,7 +102,7 @@ axiosInst.interceptors.response.use(res=>{
           return false;
         case 1:
           XuAlert('修改成功','success');
-          return true;
+          return resData;
         default:
           return resData;
       }

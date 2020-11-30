@@ -5,7 +5,7 @@
                   :model-style="{'marginTop':'25px'}"
                   :header-style="{'backgroundColor':'#354052','color':'#fcfcfc'}"
                   @close="close">
-            <div slot="header">#{{deviceInfo.id}} 单点监控模式(测试模式,数据始终为ID为1的设备的数据)</div>
+            <div slot="header">#{{deviceInfo.id}} 单点监控模式</div>
             <div slot="content">
                 <div class="box-title">
                     <div class="xu-row mb-integer">
@@ -18,8 +18,11 @@
                         <div class="xu-col-2">
                             <span v-if="auth.includes('停止工作') || auth.includes('恢复工作')">
                                 <span>启用：</span>
-                                <xu-switch :value="deviceInfo.rotateStatus | rotateStatusFilter"
-                                           @hasSelected="changeRotateStatus($event,deviceInfo.id)"/>
+                                <xu-switch 
+                                   :value="deviceInfo.rotateStatus | rotateStatusFilter"
+                                   :isShowConfirm='true'
+                                   @toggle="changeRotateStatus($event,deviceInfo.id)">
+                                </xu-switch>
                             </span>
                         </div>
                     </div>
@@ -86,11 +89,13 @@
                         <div class="table-title">
                             <label class="xu-label-text">
                                 <span>选择时段:</span>
-                                <input type="datetime-local" name="startTime" class="xu-input">
+                                <input type="datetime-local" name="startTime" class="xu-input" v-model="startTime">
                                 —
-                                <input type="datetime-local" name="endTime" class="xu-input">
+                                <input type="datetime-local" name="endTime" class="xu-input" v-model="endTime">
                             </label>
-                            <button class="xu-btn xu-btn-info ml-integer"><span class="fa fa-file-excel-o"/>&nbsp;导出Excel</button>
+                            <button class="xu-btn xu-btn-info ml-integer" @click="export2Excel()">
+                              <span class="fa fa-file-excel-o"/>&nbsp;导出Excel
+                            </button>
                             <button class="xu-btn xu-btn-primary xu-float-right mt-integer" @click="showForm">添加维修记录</button>
                         </div>
                         <!--历史数据表格-->
@@ -212,6 +217,7 @@
   import DevHistoryAlarmInfosPopUp from "@/components/SharePopUp/SingleMonitor/DevHistoryAlarmInfosPopUp";
   import XuForm from "@/components/CommonComponents/XuComponent/XuForm";
   import XuSwitch from "@/components/CommonComponents/XuComponent/XuSwitch";
+  import { XuAlert } from "@/components/CommonComponents/XuComponent/XuAlert/XuAlert";
 
   export default {
     name: "SingleMonitorModal",
@@ -226,7 +232,8 @@
       XuChart,
       DevHistoryRepairInfosPopUp,
       DevHistoryAlarmInfosPopUp,
-      XuSwitch
+      XuSwitch,
+      XuAlert
     },
     props:{
       deviceInfo:Object,
@@ -238,6 +245,8 @@
         repairInfos:[],//存放设备维修记录信息
         historyDataInfos:[],//存放设备历史传感器数据
         trackInfos:[],//轨迹信息
+        startTime:'',//Excel开始时间
+        endTime:'',//Excel结束时间
         monthlyOnlineRateInfos:{},//月份在线率信息
         devStatisticsInfos:{},//月份在线率信息
         showDevHistoryRepairInfosPopUp:false,//是否显示设备历史维修记录弹窗
@@ -356,16 +365,45 @@
       },
       //6 停止或者恢复发动机工作
       changeRotateStatus:function (status,deviceId) {
-        const data = {id:deviceId};
+        const tranData = {id:deviceId};
         switch (status) {
-          case 'on':
-            this.$Http['singleMonitor']['enableEngine'](data)
-              .then();
+          case true:
+            this.$Http['deviceManage']['enableEngine'](tranData)
+              .then(res => {
+                // console.log(res)
+                // this.getTableData();
+            });
             break;
-          case 'off':
-            this.$Http['singleMonitor']['disableEngine'](data)
-              .then();
+          case false:
+            this.$Http['deviceManage']['disableEngine'](tranData)
+              .then(res => {
+                // console.log(res)
+                // this.getTableData();
+            });
         }
+      },
+      //7 导出为excel表格
+      export2Excel(){
+        if(!this.startTime || !this.endTime){
+          XuAlert('请选择时间段','error')
+          return
+        }
+        const tranData = {
+          id:this.deviceInfo.id,
+          startTime:this.startTime.split('T').join(' ') + ':00',
+          endTime:this.endTime.split('T').join(' ') + ':00',
+        }
+        // console.log(tranData)
+        this.$Http['singleMonitor']['exportExcel'](tranData,{responseType:'blob'})
+        .then(res => {
+          console.log(res)
+          let link = document.createElement('a')
+          link.style.display = 'none'
+          link.href = URL.createObjectURL(res)
+          document.body.appendChild(link)
+          link.click()
+          document.body.removeChild(link)
+        })
       },
       //*.信息窗口的提交按钮事件
       submit:function (formData) {
@@ -424,11 +462,11 @@
       rotateStatusFilter: function (value) {
         switch (value) {
           case 0:
-            return 'off';
+            return false;
           case 1:
-            return 'on';
+            return true;
           default:
-            return 'on'
+            return true
         }
       }
     },

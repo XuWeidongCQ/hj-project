@@ -3,7 +3,7 @@
     <div class="vue-views-wrapper">
         <div class="xu-row mb-integer">
             <div class="xu-col-6">
-                <chart-statics :chart-data="forChartData" v-if="asyncFlag"/>
+                <chart-statics :chart-data="forChartData"/>
             </div>
             <div class="xu-col-3">
                 <about-company :model-infos-in-company="modelInfosInCompany"/>
@@ -88,6 +88,7 @@
           const {StatisticalInfo:chartData,aboutCompany,aboutModel,scrapDeviceLife} = res;
           //1.处理曲线部分的数据
           // console.log(chartData);
+          this.forChartData = {'x':[],'y':[],'y1':[],'y2':[],'y3':[],'y4':[]}
           for (const key in chartData){
             if (chartData.hasOwnProperty(key)){
               this.forChartData['x'].push(key);
@@ -98,7 +99,7 @@
               this.forChartData['y4'].push(chartData[key]['alarmNum']);
             }
           }
-          this.asyncFlag = true;
+          // this.asyncFlag = true;
           //2.处理每个公司对应相应机型的数据
           // console.log(aboutCompany);
           for (const companyName in aboutCompany){

@@ -24,14 +24,15 @@
                     <th>设备编号</th>
                     <th>机型名称</th>
                     <th>北斗卡号</th>
+                    <th>5G接口</th>
                     <th>公司</th>
                     <th v-if="auth.includes('停止工作') || auth.includes('恢复工作')">启用</th>
                     <th>出厂日期</th>
-                    <th v-if="auth.includes('单点监控')">操作</th>
+                    <th>操作</th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr v-for="device in deviceInfos">
+                <tr v-for="device in deviceInfos" :key="device.id">
                     <td>
                         <span
                             class="xu-badge"
@@ -44,15 +45,22 @@
                     <td>{{device.csNumber}}</td>
                     <td>{{device.modelName}}</td>
                     <td>{{device.beidouId}}</td>
+                    <td>{{device.ipPort}}</td>
                     <td>{{device.companyName}}</td>
                     <td v-if="auth.includes('停止工作') || auth.includes('恢复工作')">
                         <xu-switch :value="device.rotateStatus | rotateStatusFilter"
-                                   @hasSelected="changeRotateStatus($event,device.id)">
+                                   :isShowConfirm='true'
+                                   @toggle="changeRotateStatus($event,device.id)">
                         </xu-switch>
                     </td>
                     <td>{{device.factoryDate}}</td>
-                    <td v-if="auth.includes('单点监控')">
-                        <span class="xu-indicator xu-indicator-check" @click="showSingleMonitor(device)">单点监控</span>
+                    <td>
+                        <span class="xu-indicator xu-indicator-delete"
+                              @click="delDeviceInfo(device.id)">删除</span>
+                        <span class="xu-indicator xu-indicator-check" 
+                              @click="showSingleMonitor(device)" 
+                              v-if="auth.includes('单点监控')">单点监控</span>
+
                     </td>
                 </tr>
                 </tbody>
@@ -79,9 +87,10 @@
   import XuPageNav from "@/components/CommonComponents/XuComponent/XuPageNav";
   import XuSelect from "@/components/CommonComponents/XuComponent/XuSelect";
   import XuSwitch from "@/components/CommonComponents/XuComponent/XuSwitch";
+  import { XuToastr } from "@/components/CommonComponents/XuComponent/XuToastr/XuToastr";
   export default {
     name: "DeviceTable",
-    components: {SingleMonitorPopUp,XuPageNav,XuSelect,XuSwitch},
+    components: {SingleMonitorPopUp,XuPageNav,XuSelect,XuSwitch,XuToastr},
     data(){
       return {
         selectedDevice:{},
@@ -128,13 +137,13 @@
       rotateStatusFilter: function (value) {
         switch (value) {
           case 0:
-            return 'off';
+            return false;
           case 1:
-            return 'on';
+            return true;
           default:
-            return 'on'
+            return true
         }
-      }
+      },
     },
     methods:{
       //1.显示单点监控界面
@@ -167,7 +176,8 @@
               beidouId:ele['beidouId'],
               factoryDate:ele['factoryDate'],
               status:ele['status'],
-              rotateStatus:ele['rotateStatus']
+              rotateStatus:ele['rotateStatus'],
+              ipPort:ele['ipPort'] === null ? '暂无' : ele['ipPort']
             })
           })
         })
@@ -207,17 +217,31 @@
       },
       //5 停止或者恢复发动机工作
       changeRotateStatus:function (status,deviceId) {
-        const data = {id:deviceId};
+        const tranData = {id:deviceId};
         switch (status) {
-          case 'on':
-            this.$Http['deviceManage']['enableEngine'](data)
-            .then();
+          case true:
+            this.$Http['deviceManage']['enableEngine'](tranData)
+              .then(res => {
+                // console.log(res)
+                // this.getTableData();
+            });
             break;
-          case 'off':
-            this.$Http['deviceManage']['disableEngine'](data)
-              .then();
+          case false:
+            this.$Http['deviceManage']['disableEngine'](tranData)
+              .then(res => {
+                // console.log(res)
+                // this.getTableData();
+            });
         }
-      }
+      },
+      //6.删除一台设备
+      delDeviceInfo:function(deviceInfoId){
+        this.$Http['backendManage']['delDeviceInfo'](deviceInfoId)
+          .then( res => {
+            res && this.getTableData()
+          })
+          .catch(error => {});
+      },
     },
     created(){
       this.getTableData();

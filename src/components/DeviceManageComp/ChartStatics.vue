@@ -42,7 +42,7 @@
         justify-content: space-between;
     }
     .chart-body {
-        /*border: solid 1px black;*/
+        height: 250px;
     }
     #line-chart{
         height: 300px;
