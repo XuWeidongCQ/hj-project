@@ -27,6 +27,8 @@
         mapDeviceInfos:[],//用来地图上显示的设备
         modelNamesDropdown:[],//机型名下拉列表
         companyNamesDropdown:[],//客户公司名下拉列表
+        timer:null,
+        interval:2*60*1000
       }
     },
     methods:{
@@ -133,6 +135,10 @@
     },
     created(){
       this.getCollection();
+      this.timer = setInterval(this.getCollection,this.interval)
+    },
+    beforeDestroy(){
+      clearInterval(this.timer)
     }
   }
 </script>

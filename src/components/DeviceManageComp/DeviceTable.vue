@@ -2,6 +2,7 @@
     <div class="xubox">
         <div class="xubox-title">
             <span>设备概况</span>
+            <span class="xu-indicator xu-indicator-add xu-float-right" @click="showAddDeviceForm">添加设备</span>
         </div>
         <div class="xubox-content">
             <div>
@@ -57,6 +58,8 @@
                     <td>
                         <span class="xu-indicator xu-indicator-delete"
                               @click="delDeviceInfo(device.id)">删除</span>
+                        <span class="xu-indicator xu-indicator-edit"
+                              @click="showEditDeviceForm(device)">修改</span>
                         <span class="xu-indicator xu-indicator-check" 
                               @click="showSingleMonitor(device)" 
                               v-if="auth.includes('单点监控')">单点监控</span>
@@ -79,6 +82,14 @@
                                :device-info="selectedDevice"
                                @close="isSingleMonitorVisible = false">
         </single-monitor-pop-up>
+        <xu-form v-if="isFormShown"
+                 :is-pop-up="true"
+                 :form-title="formTitle"
+                 :render-data="formRenderData"
+                 :rules="getFormRules()"
+                 @submit="submit($event)"
+                 @close="isFormShown = false">
+        </xu-form>
     </div>
 </template>
 
@@ -88,9 +99,12 @@
   import XuSelect from "@/components/CommonComponents/XuComponent/XuSelect";
   import XuSwitch from "@/components/CommonComponents/XuComponent/XuSwitch";
   import { XuToastr } from "@/components/CommonComponents/XuComponent/XuToastr/XuToastr";
+  import XuForm from "@/components/CommonComponents/XuComponent/XuForm";
+
+  
   export default {
     name: "DeviceTable",
-    components: {SingleMonitorPopUp,XuPageNav,XuSelect,XuSwitch,XuToastr},
+    components: {SingleMonitorPopUp,XuPageNav,XuSelect,XuSwitch,XuToastr,XuForm},
     data(){
       return {
         selectedDevice:{},
@@ -118,7 +132,16 @@
         selectedValue:'',
         searchFields:['设备编号','机型名称','公司名称','出厂日期','设备状态'],
         //权限
-        auth:this.$store.getters['getLoginInfo']['auth']['buttonAuthList']
+        auth:this.$store.getters['getLoginInfo']['auth']['buttonAuthList'],
+        //所有的机型信息
+        modelInfos:[],
+        //所有的公司信息
+        companyInfos:[],
+        isFormShown:false,//是否显示信息窗口
+        formRenderData:[],//用于表单渲染的数据
+        formTitle:'',//信息窗口标题
+        submitType:0,//信息窗口提交事件的类型，0-post，1-put
+        selectedDeviceInfo:[]
       }
     },
     filters:{
@@ -165,7 +188,7 @@
           // const {devices:tableData} = res;
           this.serverData = res;
           const {content} = res;
-          // console.log(content);
+          console.log(content);
           content.forEach(ele => {
             this.deviceInfos.push({
               id:ele.id,
@@ -177,7 +200,11 @@
               factoryDate:ele['factoryDate'],
               status:ele['status'],
               rotateStatus:ele['rotateStatus'],
-              ipPort:ele['ipPort'] === null ? '暂无' : ele['ipPort']
+              ipPort:ele['ipPort'] === null ? '暂无' : ele['ipPort'],
+              model:ele['model'],
+              company:ele['company'],
+              startDate:ele['startDate'],
+              scrapTime:ele['scrapTime'] ? ele['scrapTime'].split(' ')[0] : ''
             })
           })
         })
@@ -242,9 +269,116 @@
           })
           .catch(error => {});
       },
+      //7.获取所有已知机型数据
+      getModelInfos:function(){
+        this.$Http['dataParse']['getMachineModelInfos']()
+          .then(res => {
+            this.modelInfos = [];
+            res.forEach(ele => {
+              this.modelInfos.push({id:ele.id,modelName:ele.modelName,modelNumber:ele.modelNumber})
+            })
+          })
+      },
+      //8.获取所有已知公司数据
+      getCompanyInfos:function () {
+        this.$Http['backendManage']['getCompanyInfos']()
+          .then( res => {
+            this.companyInfos = [];
+            // console.log(this.serverData);
+            // const { content } = res;
+            res.forEach(ele => {
+              this.companyInfos.push({id:ele.id,name:ele.name,address:ele.address})
+            });
+          })
+          .catch( error => {})
+      },
+      //9 表单渲染规则
+      getFormRules:function(){
+        return [
+          {field:'scrapTime',limitBy:{field:'status',value:'否',rule:'disable'}},
+        ]
+      },
+      //10.新建一台设备
+      showAddDeviceForm:function(){
+        const selectModel = this.modelInfos.map(value => 'ID#' + value.id + '—' + value.modelName);
+        const companyArray = this.companyInfos.map(value => 'ID#' + value.id + '—' + value.name)
+        this.formTitle = '添加设备';
+        this.submitType = 0;
+        this.formRenderData = [
+          {content:'选择公司：',value:'',field:'companyName',additionalInfo:{type:'select',optional:companyArray}},
+          {content:'选择机型：',value:'',field:'modelName',additionalInfo:{type:'select',optional:selectModel}},
+          {content:'控制系统编号：',value:'',field:'csNumber'},
+          {content:'北斗编号：',value:'',field:'beidouId'},
+          {content:'出厂日期：',value:'',field:'factoryDate',additionalInfo:{type:'date'}},
+          {content:'使用时期：',value:'',field:'startDate',additionalInfo:{type:'date'}},
+          {content:'是否报废：',value:'否',field:'status',additionalInfo:{type:'radio',optional:['是','否']}},
+          {content:'报废时间：',value:'',field:'scrapTime',additionalInfo:{type:'date'}},
+        ];
+        this.isFormShown = true
+      },
+      //11.修改一台设备
+      showEditDeviceForm:function(deviceInfo){
+        const selectModel = this.modelInfos.map(value => 'ID#' + value.id + '—' + value.modelName);//构造机型信息用于表单的下拉选择
+        const companyArray = this.companyInfos.map(value => 'ID#' + value.id + '—' + value.name)
+        const isScrap = deviceInfo.status === 0 ? '是':'否';
+        this.selectedDeviceInfo = deviceInfo;
+        this.formTitle = '修改设备信息';
+        this.submitType = 1;
+        this.formRenderData = [
+          {content:'选择公司：',value:'ID#' + deviceInfo.company.id + '—' + deviceInfo.company.name,field:'companyName',additionalInfo:{type:'select',optional:companyArray}},
+          {content:'选择机型：',value:'ID#' + deviceInfo.model.id + '—' + deviceInfo.model.modelName,field:'modelName',additionalInfo:{type:'select',optional:selectModel}},
+          {content:'控制系统编号：',value:deviceInfo.csNumber,field:'csNumber'},
+          {content:'北斗编号：',value:deviceInfo.beidouId,field:'beidouId'},
+          {content:'出厂日期：',value:deviceInfo.factoryDate,field:'factoryDate',additionalInfo:{type:'date'}},
+          {content:'使用时期：',value:deviceInfo.startDate,field:'startDate',additionalInfo:{type:'date'}},
+          {content:'是否报废：',value:isScrap,field:'status',additionalInfo:{type:'radio',optional:['是','否']}},
+          {content:'报废时间：',value:deviceInfo.scrapTime,field:'scrapTime',additionalInfo:{type:'date'}},
+        ];
+        this.isFormShown = true
+      },
+      //*.信息窗口的提交按钮事件
+      submit:function (formData) {
+        const reg= /(\d+)(?=—)/;
+        const modelId = formData.modelName.match(reg)[0];
+        const companyId = formData.companyName.match(reg)[0];
+        if(formData['status'] === '否'){
+          formData.status = 1;
+          delete formData.scrapTime;
+        } else {
+          formData.status = 0;
+          formData.scrapTime += ' 00:00:00';//修复报废时间，和后端接口对应。
+        }
+        delete formData.modelName;
+        //添加外键信息
+        formData['model'] = {id:modelId};
+        formData['company'] = {id:companyId};
+        switch (this.submitType) {
+          //添加设备信息
+          case 0:
+            // console.log(formData);
+            this.$Http['backendManage']['postDeviceInfo'](formData)
+              .then( res => {
+                res && this.getTableData()
+              })
+              .catch(error => {});
+            break;
+          //修改设备信息
+          case 1:
+            // console.log(formData);
+            formData['id'] = this.selectedDeviceInfo.id;
+            this.$Http['backendManage']['editDeviceInfo'](formData)
+              .then( res => {
+                res && this.getTableData()
+              })
+              .catch(error => {});
+            break;
+        }
+      }
     },
     created(){
       this.getTableData();
+      this.getModelInfos();
+      this.getCompanyInfos()
     }
   }
 </script>

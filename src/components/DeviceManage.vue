@@ -77,6 +77,8 @@
         minMaxStatistical:{},
         //处理表格数据--默认20条（放在子组件中获取）
         // tableData:[],
+        timer:null,
+        interval:2*60*1000,
       }
     },
     methods:{
@@ -184,7 +186,11 @@
       },
     },
     created(){
-      this.getCollectionInfos()
+      this.getCollectionInfos();
+      this.timer = setInterval(this.getCollectionInfos,this.interval)
+    },
+    beforeDestroy(){
+      clearInterval(this.timer)
     }
   }
 </script>

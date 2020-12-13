@@ -205,6 +205,7 @@
       showEditDeviceForm:function(deviceInfo){
         const selectModel = this.modelInfos.map(value => 'ID#' + value.id + '—' + value.modelName);//构造机型信息用于表单的下拉选择
         const isScrap = deviceInfo.status === 0 ? '是':'否';
+        const scrapTime = deviceInfo.scrapTime ? deviceInfo.scrapTime.split(' ')[0] : ''
         this.selectedDeviceInfo = deviceInfo;
         this.formTitle = '修改设备信息';
         this.submitType = 1;
@@ -215,7 +216,7 @@
           {content:'出厂日期：',value:deviceInfo.factoryDate,field:'factoryDate',additionalInfo:{type:'date'}},
           {content:'使用时期：',value:deviceInfo.startDate,field:'startDate',additionalInfo:{type:'date'}},
           {content:'是否报废：',value:isScrap,field:'status',additionalInfo:{type:'radio',optional:['是','否']}},
-          {content:'报废时间：',value:deviceInfo.scrapTime,field:'scrapTime',additionalInfo:{type:'date'}},
+          {content:'报废时间：',value:scrapTime,field:'scrapTime',additionalInfo:{type:'date'}},
         ];
         this.isFormShown = true
       },
