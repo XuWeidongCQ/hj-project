@@ -88,6 +88,7 @@
         .then(res => {
           // console.log(res);
           const {StatisticalInfo:chartData,aboutCompany,aboutModel,scrapDeviceLife} = res;
+          
           //1.处理曲线部分的数据
           // console.log(chartData);
           this.forChartData = {'x':[],'y':[],'y1':[],'y2':[],'y3':[],'y4':[]}
@@ -104,6 +105,7 @@
           // this.asyncFlag = true;
           //2.处理每个公司对应相应机型的数据
           // console.log(aboutCompany);
+          this.modelInfosInCompany = []
           for (const companyName in aboutCompany){
             if (aboutCompany.hasOwnProperty(companyName)){
               const {totalNumber,deviceChange} = aboutCompany[companyName];
@@ -136,6 +138,7 @@
           // console.log(this.modelInfosInCompany);
           //3.每个机型对应相应公司的数据
           // console.log(aboutModel);
+          this.companyInfosInModel = []
           for(const modelName in aboutModel){
             if (aboutModel.hasOwnProperty(modelName)){
               const {totalNumber} = aboutModel[modelName];

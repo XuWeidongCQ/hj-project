@@ -107,9 +107,10 @@
         type: String
       },
       //接收数据3：要渲染的表单数据【重要】
-      //格式：[{content:'是否匹配：',value:'true',field:'match',additionalInfo:{type:'radio',optional:['true','false']}}]
+      //格式：[{content:'是否匹配：',value:'true',field:'match',additionalInfo:{type:'radio',optional:['true','false']},canEmpty:undefined}]
+      //canEmpty如果为undedined或者为false表示非空
       renderData:{
-        default:() => {return [{content:'默认',value:'',field:''}]},
+        default:() => {return [{content:'默认',value:'',field:'',canEmpty:false}]},
         type:Array
       },
       //接收数据4：表单禁用启用规则
@@ -123,7 +124,7 @@
       authRules:{
         default:() => {return []},
         type:Array
-      }
+      },
     },
     data:function(){
       return {
@@ -139,10 +140,15 @@
       submit:function () {
         let hasFormEmpty = false;
         const formData = {};
-        this.renderData.forEach(ele => {formData[ele.field] = ele.value});
+        const canEmptyMap = {};//用来存放表单是否可以为空
+        this.renderData.forEach(ele => {
+          formData[ele.field] = ele.value;
+          canEmptyMap[ele.field] = ele.canEmpty ? true : false
+        });
+
         //1.表单中是否有空值
         for (const key in formData){
-          if (!this.applyFormRules(key) && formData[key] === ''){
+          if (!this.applyFormRules(key) && formData[key] === '' && !canEmptyMap[key]){
             hasFormEmpty = true;
             break;
           }

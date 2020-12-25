@@ -64,6 +64,7 @@
                   status:ele.dataDevices.length === 0 ? '': ele.dataDevices[0].status,//设备的文字提示信息
                   csNumber:ele.csNumber,
                   beidouId: ele.beidouId,
+                  ipPort:ele.ipPort === null ? '暂无' : ele['ipPort'],
                   rotateSpeed:ele.dataDevices.length === 0 ? '': ele.dataDevices[0].speed,
                   greasePressure:ele.dataDevices.length === 0 ? '': ele.dataDevices[0].greasePressure,
                   coolingWater:ele.dataDevices.length === 0 ? '': ele.dataDevices[0].waterTemp,

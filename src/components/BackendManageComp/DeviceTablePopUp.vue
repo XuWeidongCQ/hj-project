@@ -193,7 +193,7 @@
         this.formRenderData = [
           {content:'选择机型：',value:'',field:'modelName',additionalInfo:{type:'select',optional:selectModel}},
           {content:'控制系统编号：',value:'',field:'csNumber'},
-          {content:'北斗编号：',value:'',field:'beidouId'},
+          {content:'北斗编号：',value:'',field:'beidouId',canEmpty:true},
           {content:'出厂日期：',value:'',field:'factoryDate',additionalInfo:{type:'date'}},
           {content:'使用时期：',value:'',field:'startDate',additionalInfo:{type:'date'}},
           {content:'是否报废：',value:'否',field:'status',additionalInfo:{type:'radio',optional:['是','否']}},
@@ -212,7 +212,7 @@
         this.formRenderData = [
           {content:'选择机型：',value:'ID#' + deviceInfo.model.id + '—' + deviceInfo.model.modelName,field:'modelName',additionalInfo:{type:'select',optional:selectModel}},
           {content:'控制系统编号：',value:deviceInfo.csNumber,field:'csNumber'},
-          {content:'北斗编号：',value:deviceInfo.beidouId,field:'beidouId'},
+          {content:'北斗编号：',value:deviceInfo.beidouId,field:'beidouId',canEmpty:true},
           {content:'出厂日期：',value:deviceInfo.factoryDate,field:'factoryDate',additionalInfo:{type:'date'}},
           {content:'使用时期：',value:deviceInfo.startDate,field:'startDate',additionalInfo:{type:'date'}},
           {content:'是否报废：',value:isScrap,field:'status',additionalInfo:{type:'radio',optional:['是','否']}},

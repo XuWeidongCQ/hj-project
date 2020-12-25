@@ -11,7 +11,10 @@ let axiosInst = axios.create({
   baseURL:'http://47.92.211.37:8080/beidou'
 });
 
-// console.log(router);
+//不需要进行响应拦截的接口
+const specApi = new Set([
+  '/exportExcel'
+])
 
 
 
@@ -52,12 +55,19 @@ axiosInst.interceptors.response.use(res=>{
   //4.reqMethod    -HTTP请求的方法
   //5.reqData      -HTTP请求过程中上传的数据(放在请求体中)
   //6.reqParams    -HTTP请求过程中上传的数据(放在url中)
-  const {config:reqConfig,data:resData,status:resStatus} = res;
-  const {method:reqMethod,data:reqData,params:reqParams} = reqConfig;
+  const {config:reqConfig,data:resData,status:resStatus,headers} = res;
+  const {method:reqMethod,data:reqData,params:reqParams,url} = reqConfig;
   // console.log(`请求方法为${reqMethod}`,`请求数据为${reqData}`,'请求参数为',reqParams);
   // console.log(reqConfig);
   const {code,message,data} = resData;
   // console.log(res);
+
+  //不需要进行拦截的接口
+  if(specApi.has(url)){
+    return res
+  }
+
+
   switch (reqMethod) {
     //1.获取数据，不进行统一处理
     case "get":
@@ -70,7 +80,6 @@ axiosInst.interceptors.response.use(res=>{
     //2.1  提交成功返回提交的信息
     //2.2  提交成功返回{code(=0成功，=1失败) message data}
     case "post":
-      // console.log(resData);
       switch (code) {
         case -1:
           XuAlert(message,'error');
@@ -96,14 +105,17 @@ axiosInst.interceptors.response.use(res=>{
       }
     //4.修改数据,目前没有做任何限制
     case "put":
+      // console.log(resData)
       switch (code) {
         case -1:
           XuAlert(message,'error');
           return false;
         case 1:
           XuAlert('修改成功','success');
+          // console.log(resData)
           return resData;
         default:
+          // XuAlert(message,'error');
           return resData;
       }
 

@@ -255,9 +255,10 @@
           case 1:
             formData['id'] = this.selectedAccount['accountId'];
             formData['status'] = this.selectedAccount['status'];
-            // console.log(formData);
+            console.log(formData);
             this.$Http['accountManage']['editAccountInfo'](formData)
             .then(res => {
+              console.log(res)
               res && this.getAccountInfos();
             });
             break;

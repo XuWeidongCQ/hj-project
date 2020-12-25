@@ -4,11 +4,13 @@
             <div class="left">
                 <p>设备控制系统编号：</p>
                 <p>北斗卡号：</p>
+                <p>5G接口：</p>
                 <p>状态：</p>
             </div>
             <div class="right">
                 <p>{{ pointInfo.data.csNumber }}</p>
                 <p>{{ pointInfo.data.beidouId  }}</p>
+                <p>{{ pointInfo.data.ipPort  }}</p>
                 <p>{{ pointInfo.data.status  }}</p>
             </div>
         </div>

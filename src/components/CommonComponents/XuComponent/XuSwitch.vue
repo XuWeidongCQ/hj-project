@@ -19,6 +19,11 @@
         type:Boolean,
         default:false
       },
+      //3 是否需要改变状态的反馈
+      feedback:{
+        type:Boolean,
+        default:true,
+      },
       //提示框显示的内容
       tips:{
         type:Array,

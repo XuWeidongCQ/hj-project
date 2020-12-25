@@ -15,7 +15,7 @@
                         <div class="xu-col-5">
                             <span>机型名称：{{ deviceInfo.modelName }}</span>
                         </div>
-                        <div class="xu-col-2">
+                        <!-- <div class="xu-col-2">
                             <span v-if="auth.includes('停止工作') || auth.includes('恢复工作')">
                                 <span>启用：</span>
                                 <xu-switch 
@@ -24,7 +24,7 @@
                                    @toggle="changeRotateStatus($event,deviceInfo.id)">
                                 </xu-switch>
                             </span>
-                        </div>
+                        </div> -->
                     </div>
 
                 </div>
@@ -335,7 +335,7 @@
             this.monthlyOnlineRateInfos = rate;
             //6.处理设备统计信息
             // console.log(DeviceTime);
-            this.devStatisticsInfos = DeviceTime
+            this.devStatisticsInfos = DeviceTime ? DeviceTime : {}
           })
           .catch(e => {
             console.log('单点监控解析数据有错！')
@@ -394,12 +394,16 @@
           endTime:this.endTime.split('T').join(' ') + ':00',
         }
         // console.log(tranData)
-        this.$Http['singleMonitor']['exportExcel'](tranData,{responseType:'blob'})
+        this.$Http['singleMonitor']['exportExcel'](tranData,{responseType:'arraybuffer'})
         .then(res => {
           console.log(res)
+          const blob = new Blob([res],{type:'application/vnd.ms-excel;charset=utf-8'})
+          console.log( blob)
+          // const fileName = res.headers['content-disposition'].split(';')[1].split('=')[1].split('.')[0]
           let link = document.createElement('a')
+          //link.download = decodeURIComponent(fileName) 给文件命名
           link.style.display = 'none'
-          link.href = URL.createObjectURL(res)
+          link.href = URL.createObjectURL(blob)
           document.body.appendChild(link)
           link.click()
           document.body.removeChild(link)
