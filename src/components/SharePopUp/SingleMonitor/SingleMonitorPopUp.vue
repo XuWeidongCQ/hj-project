@@ -89,9 +89,9 @@
                         <div class="table-title">
                             <label class="xu-label-text">
                                 <span>选择时段:</span>
-                                <input type="datetime-local" name="startTime" class="xu-input" v-model="startTime">
+                                <input type="date" name="startTime" class="xu-input" v-model="startTime">
                                 —
-                                <input type="datetime-local" name="endTime" class="xu-input" v-model="endTime">
+                                <input type="date" name="endTime" class="xu-input" v-model="endTime">
                             </label>
                             <button class="xu-btn xu-btn-info ml-integer" @click="export2Excel()">
                               <span class="fa fa-file-excel-o"/>&nbsp;导出Excel
@@ -390,18 +390,19 @@
         }
         const tranData = {
           id:this.deviceInfo.id,
-          startTime:this.startTime.split('T').join(' ') + ':00',
-          endTime:this.endTime.split('T').join(' ') + ':00',
+          startTime:this.startTime + ' ' + '00:00:00',
+          endTime:this.endTime + ' ' + '00:00:00',
         }
         // console.log(tranData)
-        this.$Http['singleMonitor']['exportExcel'](tranData,{responseType:'arraybuffer'})
+        this.$Http['singleMonitor']['exportExcel'](tranData,{responseType:'blob'})
         .then(res => {
-          console.log(res)
-          const blob = new Blob([res],{type:'application/vnd.ms-excel;charset=utf-8'})
+          // console.log(res)
+          const blob = new Blob([res.data],{type:'application/vnd.ms-excel'})
           console.log( blob)
-          // const fileName = res.headers['content-disposition'].split(';')[1].split('=')[1].split('.')[0]
+          const fileName = res.headers['content-disposition'].split('#')[1]
+          // console.log(fileName)
           let link = document.createElement('a')
-          //link.download = decodeURIComponent(fileName) 给文件命名
+          link.download = decodeURIComponent(fileName) //给文件命名
           link.style.display = 'none'
           link.href = URL.createObjectURL(blob)
           document.body.appendChild(link)
