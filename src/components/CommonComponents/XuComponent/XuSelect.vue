@@ -65,7 +65,7 @@
     .xu-select-wrapper {
         position: relative;
         display: inline-block;
-        /*width: 400px;*/
+        /* max-width: 150px; */
     }
     .xu-select-wrapper .span-area {
         width: 100%;

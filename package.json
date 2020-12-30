@@ -8,9 +8,11 @@
   },
   "dependencies": {
     "axios": "^0.19.2",
+    "babel-polyfill": "^6.26.0",
     "bootstrap": "^4.5.3",
     "core-js": "^2.6.11",
     "echarts": "^4.9.0",
+    "element-ui": "^2.14.1",
     "font-awesome": "^4.7.0",
     "jquery": "^3.5.1",
     "popper.js": "^1.16.1",
@@ -23,6 +25,7 @@
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.12.1",
     "@vue/cli-service": "^3.12.1",
+    "babel-plugin-component": "^1.1.1",
     "vue-template-compiler": "^2.6.12"
   }
 }

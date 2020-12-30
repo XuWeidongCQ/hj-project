@@ -89,9 +89,27 @@
                         <div class="table-title">
                             <label class="xu-label-text">
                                 <span>选择时段:</span>
-                                <input type="date" name="startTime" class="xu-input" v-model="startTime">
-                                —
-                                <input type="date" name="endTime" class="xu-input" v-model="endTime">
+                                <el-date-picker
+                                 v-model="startTime"
+                                 type="datetime"
+                                 placeholder="选择开始时间"
+                                 default-time="12:00:00"
+                                 size="small"
+                                 value-format="yyyy-MM-dd HH:mm:ss"
+                                >
+                                </el-date-picker>
+                                <!-- <input type="date" name="startTime" class="xu-input" v-model="startTime"> -->
+                                <span>&nbsp;-&nbsp;</span>
+                                <el-date-picker
+                                 v-model="endTime"
+                                 type="datetime"
+                                 placeholder="选择开始时间"
+                                 default-time="12:00:00"
+                                 size="small"
+                                 value-format="yyyy-MM-dd HH:mm:ss"
+                                >
+                                </el-date-picker>
+                                <!-- <input type="date" name="endTime" class="xu-input" v-model="endTime"> -->
                             </label>
                             <button class="xu-btn xu-btn-info ml-integer" @click="export2Excel()">
                               <span class="fa fa-file-excel-o"/>&nbsp;导出Excel
@@ -99,7 +117,7 @@
                             <button class="xu-btn xu-btn-primary xu-float-right mt-integer" @click="showForm">添加维修记录</button>
                         </div>
                         <!--历史数据表格-->
-                        <div class="history-table xu-fix-table-wrapper scrollBar-style">
+                        <div class="history-table scrollBar-style">
                             <table class="xu-table xu-table-center xu-table-sm xu-table-hover">
                                 <thead class="xu-text-white-level0">
                                 <tr class="bg-info">
@@ -218,6 +236,8 @@
   import XuForm from "@/components/CommonComponents/XuComponent/XuForm";
   import XuSwitch from "@/components/CommonComponents/XuComponent/XuSwitch";
   import { XuAlert } from "@/components/CommonComponents/XuComponent/XuAlert/XuAlert";
+
+
 
   export default {
     name: "SingleMonitorModal",
@@ -390,17 +410,21 @@
         }
         const tranData = {
           id:this.deviceInfo.id,
-          startTime:this.startTime + ' ' + '00:00:00',
-          endTime:this.endTime + ' ' + '00:00:00',
+          startTime:this.startTime,
+          endTime:this.endTime,
         }
-        // console.log(tranData)
+        console.log('开始下载文件',tranData)
         this.$Http['singleMonitor']['exportExcel'](tranData,{responseType:'blob'})
         .then(res => {
           // console.log(res)
           const blob = new Blob([res.data],{type:'application/vnd.ms-excel'})
           console.log( blob)
           const fileName = res.headers['content-disposition'].split('#')[1]
-          // console.log(fileName)
+          //兼容IE
+          if('msSaveOrOpenBlob' in navigator){
+            window.navigator.msSaveOrOpenBlob(blob,fileName)
+            return
+          }
           let link = document.createElement('a')
           link.download = decodeURIComponent(fileName) //给文件命名
           link.style.display = 'none'
@@ -484,7 +508,7 @@
     },
     //异步数据更新后执行
     updated(){
-      XuCSS.fixTableThead()
+      // XuCSS.fixTableThead()
     }
   }
 </script>

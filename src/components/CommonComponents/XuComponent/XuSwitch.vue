@@ -115,7 +115,7 @@
   cursor: pointer;
   vertical-align: bottom;
   transition: background-color 0.2s;
-  text-align: start;
+  text-align: left;
 }
 .on {
   background-color: #1aa6ff;

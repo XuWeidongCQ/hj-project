@@ -5,7 +5,7 @@
             <span class="xu-indicator xu-indicator-add xu-float-right" @click="showAddDeviceForm">添加设备</span>
         </div>
         <div class="xubox-content">
-            <div>
+            <div style="display:table-cell;vertical-align:middle;">
                 <xu-select v-model="selectedField" :options="searchFields">
                 </xu-select>
                 <span class="comp-input-inter">—</span>
@@ -188,7 +188,7 @@
           // const {devices:tableData} = res;
           this.serverData = res;
           const {content} = res;
-          console.log(content);
+          // console.log(content);
           content.forEach(ele => {
             this.deviceInfos.push({
               id:ele.id,
