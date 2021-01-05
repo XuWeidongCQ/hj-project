@@ -50,7 +50,7 @@
                         <label class="xu-label-text">
                             <span class="fix-width-100">{{ formItem.content }}</span>
                             <input type="date" class="xu-input" v-model="formItem.value"
-                                   :disabled="rules.length !== 0 && applyFormRules(formItem.field)">
+                                   :disabled="rules.length !== 0 && applyFormRules(formItem.field)" placeholder="2020-03-04">
                         </label>
                     </div>
                     <!--4.type=checkbox-->
@@ -170,6 +170,7 @@
             }
           }
           if (invalid){
+            // console.log(formData)
             this.$emit('submit',formData);
             this.$emit('close');
           }

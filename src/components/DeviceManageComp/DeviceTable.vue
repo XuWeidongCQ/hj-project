@@ -186,6 +186,7 @@
         .then(res => {
           // console.log(res);
           // const {devices:tableData} = res;
+          // console.log(this.searchInfo)
           this.serverData = res;
           const {content} = res;
           // console.log(content);
@@ -215,6 +216,14 @@
       },
       //4.搜索
       searchDevices:function () {
+        //状态还原
+        this.searchInfo = {
+          csNumberOrFactoryDate:null,
+          modelName:null,
+          companyName:null,
+          factoryDate:null,
+          status:null,
+        }
         const searchInfo = {field:this.selectedField,value:this.selectedValue};
         let value ='';
         if (searchInfo.field === '设备状态'){
