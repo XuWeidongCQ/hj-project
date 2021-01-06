@@ -254,6 +254,7 @@
       //5 停止或者恢复发动机工作
       changeRotateStatus:function (status,deviceId) {
         const tranData = {id:deviceId};
+        console.log(`改变发动机状态为${status}`)
         switch (status) {
           case true:
             this.$Http['deviceManage']['enableEngine'](tranData)
@@ -270,8 +271,10 @@
           case false:
             this.$Http['deviceManage']['disableEngine'](tranData)
               .then(res => {
-                console.log(res)
                 // console.log(res)
+                if(!res){
+                  this.getTableData();
+                }
                 // this.getTableData();
             }).catch(e => {
               this.getTableData();

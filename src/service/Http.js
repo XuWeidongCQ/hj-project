@@ -14,7 +14,7 @@ let axiosInst = axios.create({
 
 //不需要进行响应拦截的接口
 const specApi = new Set([
-  '/exportExcel'
+  '/exportExcel',
 ])
 
 
@@ -61,7 +61,7 @@ axiosInst.interceptors.response.use(res=>{
   // console.log(`请求方法为${reqMethod}`,`请求数据为${reqData}`,'请求参数为',reqParams);
   // console.log(reqConfig);
   const {code,message,data} = resData;
-  // console.log(res);
+  // console.log(resData);
 
   //不需要进行拦截的接口
   if(specApi.has(url)){
@@ -89,6 +89,10 @@ axiosInst.interceptors.response.use(res=>{
           XuAlert('提交成功','success');
           return true;
         case 2:
+          //这里是为了规避设备管理界面中弹窗出搜索完毕，因为这个接口有问题，不应该是post,而应该为get
+          if(url.includes('/forDeviceManagementSearch')){
+            return data
+          }
           XuAlert('搜索完毕','success');
           return data;
         default:
