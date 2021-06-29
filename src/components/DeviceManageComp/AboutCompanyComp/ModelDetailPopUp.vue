@@ -30,7 +30,7 @@
                     <div class="xu-col-8">
                         <div class="xubox">
                             <div class="xubox-title">
-                                <span class="xu-text-level2">月份新增设备统计</span>
+                                <span class="xu-text-level2">每月设备总数统计</span>
                             </div>
                             <div class="xubox-content">
                                 <xu-chart :type="'bar'"

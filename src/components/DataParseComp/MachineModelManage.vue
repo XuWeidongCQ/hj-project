@@ -103,8 +103,8 @@
         this.submitType = 1;
         this.selectedMachineModel = machineModel;
         this.formRenderData = [
-          {content:'公司名称：',value:machineModel.modelName,field:'modelName'},
-          {content:'公司地址：',value:machineModel.modelNumber,field:'modelNumber'},
+          {content:'机型名称：',value:machineModel.modelName,field:'modelName'},
+          {content:'机型编号：',value:machineModel.modelNumber,field:'modelNumber'},
         ];
         this.isFormShown = true
       },

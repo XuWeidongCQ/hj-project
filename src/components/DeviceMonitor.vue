@@ -34,7 +34,7 @@
     methods:{
       //1 获取整个页面所需数据
       getCollection: function () {
-        this.statisticalData = {};
+        // this.statisticalData = {};
         this.mapDeviceInfos = [];
         this.modelNamesDropdown = [];
         this.companyNamesDropdown = [];

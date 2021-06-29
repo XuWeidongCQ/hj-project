@@ -7,9 +7,10 @@ import { XuAlert } from "@/components/CommonComponents/XuComponent/XuAlert/XuAle
 
 
 //需要登录才能访问的接口
+//旧的IP http://47.92.211.37:8080/beidou
 const isDevelopmentMode = false
 let axiosInst = axios.create({
-  baseURL:isDevelopmentMode ? 'http://172.20.29.59:8080/beidou' : 'http://47.92.211.37:8080/beidou'
+  baseURL:isDevelopmentMode ? 'http://172.20.29.59:8080/beidou' : 'http://106.13.207.231:8080/beidou'
 });
 
 //不需要进行响应拦截的接口

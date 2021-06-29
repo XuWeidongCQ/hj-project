@@ -175,7 +175,7 @@
     filters:{
       msFilter:function (value) {
         if (value <= 0){
-          return '无'
+          return '--'
         } else {
           const day = Math.floor(value / 86400000);
           const hour = Math.floor(value % 86400000 / 3600000 );
