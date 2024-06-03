@@ -58,6 +58,7 @@ body {
 #totalIncomeText > img {
     width: 17px;
     /* vertical-align: bottom; */
+    vertical-align: -2px;
 }
 
 #totalIncome, #totalTax {
